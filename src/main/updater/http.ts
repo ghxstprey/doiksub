@@ -18,7 +18,7 @@
 
 import { fetchBuffer, fetchJson } from "@main/utils/http";
 import { IpcEvents } from "@shared/IpcEvents";
-import { VENCORD_USER_AGENT } from "@shared/vencordUserAgent";
+import { DOIKSUB_USER_AGENT as VENCORD_USER_AGENT } from "@shared/vencordUserAgent";
 import { ipcMain } from "electron";
 import { writeFile } from "fs/promises";
 import { join } from "path";

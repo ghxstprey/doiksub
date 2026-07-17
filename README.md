@@ -1,5 +1,7 @@
 # doiksub
 
+![image](assets/doiksub.ico)
+
 ## overview
 
 doiksub is a fork of [Vencord](https://github.com/Vendicated/Vencord) with a curated plugin set, custom feature packs, and plugins ported from Equicord.
