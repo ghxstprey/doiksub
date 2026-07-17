@@ -1,0 +1,3 @@
+doiksub, a Vencord fork
+Copyright (c) {year} {author}
+SPDX-License-Identifier: GPL-3.0-or-later
