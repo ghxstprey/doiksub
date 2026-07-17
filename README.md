@@ -12,14 +12,14 @@ doiksub is a fork of [Vencord](https://github.com/Vendicated/Vencord) with a cur
 - `src/utils/constants.ts` — `doiksubDevs` for developer identities
 - `scripts/` — build tools, plugin generator
 
-## feature packs
+## schizo devs (one guy)
 
-| Pack | Authored by | Focus |
+| Short | Author | Focus |
 |------|-------------|-------|
 | `ghxst` | ghxstprey | stealth stuff |
 | `oddy` | OddyNuff | qol n cosmetics |
 | `sqz` | sqzass | i be sqzing azz |
-| `god` | us | developer tooling |
+| `god` | yungpharaoh | developer tooling |
 
 ## building & injecting
 
