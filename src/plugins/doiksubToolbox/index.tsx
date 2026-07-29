@@ -20,7 +20,7 @@ import "./styles.css";
 
 import { definePluginSettings } from "@api/Settings";
 import ErrorBoundary from "@components/ErrorBoundary";
-import { Devs } from "@utils/constants";
+import { Devs, doiksubDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { findComponentByCodeLazy } from "@webpack";
 import { Popout, useRef, useState } from "@webpack/common";
@@ -68,7 +68,7 @@ function VencordPopoutButton() {
                     ref={buttonRef}
                     className="vc-toolbox-btn"
                     onClick={() => setShow(v => !v)}
-                    tooltip={isShown ? null : "Vencord Toolbox"}
+                    tooltip={isShown ? null : "doiksub Toolbox"}
                     icon={() => <Icon isShown={isShown} />}
                     selected={isShown}
                 />
@@ -78,10 +78,10 @@ function VencordPopoutButton() {
 }
 
 export default definePlugin({
-    name: "VencordToolbox",
-    description: "Adds a button to the titlebar that houses Vencord quick actions",
-    tags: ["Utility", "Developers"],
-    authors: [Devs.Ven, Devs.AutumnVN],
+    name: "doiksub Toolbox",
+    description: "Adds a button to the titlebar that houses doiksub quick actions, built off vencord's",
+    tags: ["Utility", "Developers", "Sigil"],
+    authors: [Devs.Ven, Devs.AutumnVN, doiksubDevs.oddy, doiksubDevs.god],
 
     settings,
 

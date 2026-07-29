@@ -5,6 +5,7 @@
  */
 
 import { ApplicationCommandInputType, ApplicationCommandOptionType, findOption, sendBotMessage } from "@api/Commands";
+import { doiksubDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { findByPropsLazy } from "@webpack";
 
@@ -30,8 +31,9 @@ function startTypingLoop() {
 
 export default definePlugin({
     name: "FakeTyping",
-    description: "Simulate infinite typing in channels.",
-    authors: [doiksubDevs.sqz, { name: "yungpharaoh", id: 1136337246631497849n }],
+    description: "Simulate infinite typing in channels. Use /infinitype.",
+    authors: [doiksubDevs.sqz, doiksubDevs.god],
+    tags: ["Sigil"],
     dependencies: ["CommandsAPI"],
 
     commands: [

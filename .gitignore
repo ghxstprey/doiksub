@@ -21,3 +21,5 @@ lerna-debug.log*
 
 ExtensionCache/
 /settings
+
+swift.bat

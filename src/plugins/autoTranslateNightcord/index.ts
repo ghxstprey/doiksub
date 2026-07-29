@@ -7,7 +7,7 @@
 import definePlugin from "@utils/types";
 
 export type TranslationMap = Record<string, { en: string; es: string; ru: string; zh: string; }>;
-
+// oddy: i was gonna do translations, but lwk might remove this entirely and remove dependancies on this
 export const translations: TranslationMap = {
     "Account to modify": { en: "Account to modify", es: "Cuenta a modificar", ru: "??????? ??? ?????????", zh: "??????" },
     "Left click": { en: "Left click", es: "Clic izquierdo", ru: "????? ????", zh: "????" },
@@ -259,7 +259,7 @@ export const translations: TranslationMap = {
     "Boost Badge (Server Booster)": { en: "Boost Badge (Server Booster)", es: "Insignia de Boost (Server Booster)", ru: "?????? Boost (???? ???????)", zh: "????(??????)" },
     "Special Badges": { en: "Special Badges", es: "Insignias especiales", ru: "??????????? ??????", zh: "????" },
     "Completed a quest": { en: "Completed a quest", es: "Completó una misión", ru: "???????? ?????", zh: "???????" },
-    "Orbs — Apprentice": { en: "Orbs — Apprenticece", es: "Orbs — Aprendiz", ru: "Orbs — ??????", zh: "Orbs — ??" },
+    "Orbs — Apprentice": { en: "Orbs — Apprentice", es: "Orbs — Aprendiz", ru: "Orbs — ??????", zh: "Orbs — ??" },
     "Old username": { en: "Old username", es: "Antiguo seudónimo", ru: "?????? ???????", zh: "????" },
     "Old username displayed in tooltip": { en: "Old username displayed in tooltip", es: "Antiguo seudónimo mostrado en le tooltip", ru: "?????? ??????? ? ?????????", zh: "?????????????" },
     "Avatar decoration": { en: "Avatar decoration", es: "Decoración de avatar", ru: "????????? ???????", zh: "????" },
@@ -387,10 +387,11 @@ export const translations: TranslationMap = {
     "In progress…": { en: "In progress…", es: "En curso…", ru: "? ????????…", zh: "???…" },
 };
 
-const AutoTranslateNightcord = definePlugin({
+export default definePlugin({
     name: "AutoTranslateNightcord",
     enabledByDefault: true,
     description: "Automatic translation for Nightcord.",
+    tags: ["Sigil"],
     authors: [{ name: "Trigger", id: 0n }],
     options: {
         autoTranslate: {
@@ -416,5 +417,3 @@ export function useTranslation() {
         lang: "en",
     };
 }
-
-export default AutoTranslateNightcord;

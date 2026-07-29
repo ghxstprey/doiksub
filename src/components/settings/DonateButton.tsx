@@ -30,11 +30,11 @@ export default function DonateButton({
             {...props}
             look={look}
             color={color}
-            onClick={() => VencordNative.native.openExternal("https://github.com/sponsors/Vendicated")}
+            onClick={() => VencordNative.native.openExternal("https://github.com/sponsors/ghxstprey")}
             className="vc-donate-button"
         >
             <Heart />
-            Donate
+            Sponsor doiksub
         </Button>
     );
 }

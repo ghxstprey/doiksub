@@ -7,11 +7,13 @@
 import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { Menu, MessageActions, React } from "@webpack/common";
+import { doiksubDevs } from "@utils/constants";
 
 export default definePlugin({
     name: "FakeEdit",
     description: "Fake edit messages by adding a zero-width space.",
-    authors: [{ name: "yungpharaoh", id: 1136337246631497849n }],
+    authors: [doiksubDevs.god],
+    tags: ["Sigil"],
     dependencies: ["ContextMenuAPI"],
 
     contextMenus: {

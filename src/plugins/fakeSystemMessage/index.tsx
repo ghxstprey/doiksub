@@ -6,6 +6,7 @@
 
 import { ApplicationCommandInputType, ApplicationCommandOptionType, findOption } from "@api/Commands";
 import definePlugin from "@utils/types";
+import { doiksubDevs } from "@utils/constants";
 import { FluxDispatcher, UserStore } from "@webpack/common";
 
 function makeSnowflake(): string {
@@ -53,11 +54,14 @@ const SYSTEM_MESSAGE_TYPES = [
     { name: "Guild Application Premium Subscription", value: 32 },
 ] as const;
 
+// lwk just like almost all of these dont work. most do tho so fix that later
+
 export default definePlugin({
     name: "FakeSystemMessage",
     enabledByDefault: true,
-    description: "Inject fake system messages into channels. Only visible to you.",
-    authors: [{ name: "yungpharaoh", id: 1136337246631497849n }],
+    description: "Inject fake system messages into channels. Only visible to you, useful for mockups. Use /fakesysmsg.",
+    authors: [doiksubDevs.sqz],
+    tags: ["Sigil"],
     dependencies: ["CommandsAPI"],
 
     commands: [

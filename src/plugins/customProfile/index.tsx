@@ -22,6 +22,7 @@ import { AuthenticationStore, Button, FluxDispatcher, IconUtils, Menu, React, Se
 import virtualMerge from "virtual-merge";
 
 import { t } from "../autoTranslateNightcord";
+import { doiksubDevs } from "@utils/constants";
 
 const DS_KEY = "customProfile_data";
 const DS_ENABLED = "customProfile_enabled";
@@ -106,7 +107,6 @@ const AVATAR_DECORATIONS: AvatarDecoration[] = [
     { id: "1432550258126229565", label: "Neon", passthrough: true },
     { id: "1462116613632426014", label: "Cyber City", passthrough: true },
     { id: "1462116613682757888", label: "Retro", passthrough: true },
-    { id: "1144307629225572846", label: "Fire", passthrough: true },
     { id: "1341506443718688768", label: "Void", passthrough: true },
     { id: "1447654090640330763", label: "Celestial", passthrough: true },
     { id: "1483857762890022923", label: "Snowy", passthrough: false },
@@ -118,6 +118,13 @@ const AVATAR_DECORATIONS: AvatarDecoration[] = [
     { id: "1220514048068812901", label: "Summer", passthrough: false },
     { id: "1427463138634109026", label: "Autumn", passthrough: false },
     { id: "1341506443865489408", label: "Darkness", passthrough: true },
+    // new additions
+    { id: "1287835633787732070", label: "Fangs", passthrough: true },
+    { id: "1402472280478580767", label: "Emo Cat Hoodie", passthrough: true },
+    { id: "1212569433839636530", label: "Cat Ears", passthrough: true },
+    { id: "1402472280642289775", label: "RawrXD", passthrough: true },
+    { id: "1516559294819074088", label: "Crawling Skeleton", passthrough: true }
+
 ];
 
 function getDecorationUrl(assetId: string, animated = false): string {
@@ -146,12 +153,12 @@ interface CustomProfileData {
     copiedUserId?: string;
 }
 
-const LS_KEY_DATA = "NightcordCP_data";
-const LS_KEY_ENABLED = "NightcordCP_enabled";
+const LS_KEY_DATA = "doiksubCP_data";
+const LS_KEY_ENABLED = "doiksubCP_enabled";
 const DS_ALL_DATA = "customProfile_allData";
 const DS_ALL_ENABLED = "customProfile_allEnabled";
-const LS_ALL_DATA = "NightcordCP_allData";
-const LS_ALL_ENABLED = "NightcordCP_allEnabled";
+const LS_ALL_DATA = "doiksubCP_allData";
+const LS_ALL_ENABLED = "doiksubCP_allEnabled";
 
 let storedData: CustomProfileData = {};
 let isEnabled = false;
@@ -705,6 +712,18 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
                     onClick={() => onCustomIds(customIds.includes("orbs") ? customIds.filter(x => x !== "orbs") : [...customIds, "orbs"])} />
                 <BadgeBtn label={t("Old username")} icon={OLD_NAME_BADGE_ICON} active={hasOldName}
                     onClick={() => onCustomIds(hasOldName ? customIds.filter(x => x !== "oldname") : [...customIds, "oldname"])} />
+                <BadgeBtn label={t("April Fools 2026 - Level 4")} icon="https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png"
+                    active={customIds.includes("aprilfools2026")}
+                    onClick={() => onCustomIds(customIds.includes("aprilfools2026") ? customIds.filter(x => x !== "aprilfools2026") : [...customIds, "aprilfools2026"])} />
+                <BadgeBtn label={t("Gifting Patron")} icon="https://cdn.discordapp.com/assets/content/5b6468c40307207971f787cfbefa7ad294919a525998fbd10216d9600638341c.png"
+                    active={customIds.includes("giftingpatron")}
+                    onClick={() => onCustomIds(customIds.includes("giftingpatron") ? customIds.filter(x => x !== "giftingpatron") : [...customIds, "giftingpatron"])} />
+                <BadgeBtn label={t("Gifting Legend")} icon="https://cdn.discordapp.com/assets/content/d3890ee50e6d2284b7dda50e8c66605487c2400fd4b6b9a595feedb9e1b140a0.png"
+                    active={customIds.includes("gifting")}
+                    onClick={() => onCustomIds(customIds.includes("gifting") ? customIds.filter(x => x !== "gifting") : [...customIds, "gifting"])} />
+                <BadgeBtn label={t("Gifting Icon")} icon="https://cdn.discordapp.com/assets/content/ec769381117e0ad3bcd72f568545e5f7df9bf0fa5e41fc8e0b93be6830fe2249.png"
+                    active={customIds.includes("giftingicon")}
+                    onClick={() => onCustomIds(customIds.includes("giftingicon") ? customIds.filter(x => x !== "giftingicon") : [...customIds, "giftingicon"])} />
             </div>
             {hasOldName && (
                 <div className="cp-field" style={{ marginTop: 6 }}>
@@ -979,8 +998,9 @@ function CustomProfileButton() {
 export default definePlugin({
     name: "CustomProfile",
     enabledByDefault: true,
-    description: t("Visually customize your Discord profile (username, PFP, banner, badges, bio...) — persistent, only visible to you."),
-    authors: [{ name: "yungpharaoh", id: 1136337246631497849n }],
+    tags: ["Sigil"],
+    description: t("Entirely change what your profile looks like, only you until I figure out a server."),
+    authors: [doiksubDevs.ghxst],
     dependencies: ["HeaderBarAPI", "ContextMenuAPI"],
 
     patches: [
@@ -1627,6 +1647,26 @@ export default definePlugin({
                 // 15. Orbs
                 if (storedData.customBadgeIds?.includes("orbs")) {
                     badgeList.push({ id: "orbs", description: "Orbs — Apprentice", iconSrc: "https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png", position: 0, props: { style } });
+                }
+
+                // 16. April Fools 2026 - Level 4
+                if (storedData.customBadgeIds?.includes("orbs2")) {
+                    badgeList.push({ id: "orbs2", description: "April Fools 2026 - Level 4", iconSrc: "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", position: 0, props: { style } });
+                }
+
+                // 17. Gifting Patron
+                if (storedData.customBadgeIds?.includes("giftingpatron")) {
+                    badgeList.push({ id: "giftingpatron", description: "Gifting Patron", iconSrc: "https://cdn.discordapp.com/assets/content/5b6468c40307207971f787cfbefa7ad294919a525998fbd10216d9600638341c.png", position: 0, props: { style } });
+                }
+
+                // 18. Gifting Legend
+                if (storedData.customBadgeIds?.includes("gifting")) {
+                    badgeList.push({ id: "gifting", description: "Gifting Legend", iconSrc: "https://cdn.discordapp.com/assets/content/d3890ee50e6d2284b7dda50e8c66605487c2400fd4b6b9a595feedb9e1b140a0.png", position: 0, props: { style } });
+                }
+
+                // 19. Gifting Icon
+                if (storedData.customBadgeIds?.includes("giftingicon")) {
+                    badgeList.push({ id: "giftingicon", description: "Gifting Icon", iconSrc: "https://cdn.discordapp.com/assets/content/ec769381117e0ad3bcd72f568545e5f7df9bf0fa5e41fc8e0b93be6830fe2249.png", position: 0, props: { style } });
                 }
 
                 badges.push(...badgeList);

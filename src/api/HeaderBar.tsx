@@ -5,15 +5,22 @@
 
 import { React } from "@webpack/common";
 
-let buttons: Record<string, () => JSX.Element> = {};
+interface HeaderBarEntry {
+    render: () => JSX.Element;
+    priority: number;
+}
+
+let buttons: Record<string, HeaderBarEntry> = {};
 
 export function addHeaderBarButton(id: string, button: () => JSX.Element, priority?: number) {
-    buttons[id] = button;
+    buttons[id] = { render: button, priority: priority ?? 0 };
 }
 
 export function removeHeaderBarButton(id: string) {
     delete buttons[id];
 }
+
+export { buttons };
 
 export function HeaderBarButton(props: React.ComponentPropsWithoutRef<"div"> & { icon: React.ReactNode; tooltip?: string; onClick?: () => void }) {
     const { icon, tooltip, onClick, ...rest } = props;

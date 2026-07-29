@@ -674,12 +674,16 @@ export const doiksubDevs = /* #__PURE__*/ Object.freeze({
         id: 1518140533586006126n,
     },
     oddy: {
-        name: "OddyNuff (scrimscigarette)",
+        name: "OddyNuff",
         id: 1517254170984448103n,
     },
     sqz: {
         name: "sqzass",
         id: 1527236156310425651n,
+    },
+    god: {
+        name: "yungpharaoh",
+        id: 1136337246631497849n,
     },
 } satisfies Record<string, Dev>);
 

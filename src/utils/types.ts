@@ -42,6 +42,7 @@ export function makeRange(start: number, end: number, step = 1) {
 }
 
 export const PluginTags = [
+    "Sigil",
     "Accessibility",
     "Activity",
     "Appearance",

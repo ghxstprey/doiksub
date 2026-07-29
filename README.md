@@ -19,22 +19,13 @@ doiksub is a fork of [Vencord](https://github.com/Vendicated/Vencord) with a cur
 | `ghxst` | ghxstprey | stealth stuff |
 | `oddy` | OddyNuff | qol n cosmetics |
 | `sqz` | sqzass | i be sqzing azz |
-| `god` | yungpharaoh | developer tooling |
+| `god` | yungpharaoh | misc / random |
 
 ## building & injecting
 
 ```bash
-pnpm install
-pnpm build          # build for Discord Desktop
-pnpm inject         # inject into Discord
-```
-
-## development
-
-```bash
-pnpm dev            # watch mode (rebuild upon file edits)
-pnpm lint           # eslint + stylelint checks
-pnpm testTsc        # type checking
+pnpm install --frozen-lockfile
+pnpm build && node scripts/runInstaller.mjs -- --install        # optionally, -auto for automatic injection
 ```
 
 ### creating a new plugin
@@ -45,5 +36,5 @@ pnpm new-plugin myPluginName
 
 ## License
 
-GPL-3.0-or-later — see [LICENSE](./LICENSE).
+GPL-3.0-or-later - see [LICENSE](./LICENSE).
 doiksub is a fork of [Vencord](https://github.com/Vendicated/Vencord) which is Copyright (c) 2022 Vendicated and contributors.

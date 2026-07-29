@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+// oddy: add gradient support instead of just solid colors. will require having to dissect the css variables in discord but fuck it we ball
+
 import "./clientTheme.css";
 
 import { definePluginSettings } from "@api/Settings";

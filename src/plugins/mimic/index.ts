@@ -5,7 +5,7 @@
  */
 
 import { definePluginSettings } from "@api/Settings";
-import { EquicordDevs } from "@utils/constants";
+import { doiksubDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { sendMessage } from "@utils/discord";
 import { SelectedChannelStore } from "@webpack/common";
@@ -29,8 +29,9 @@ function strip(content: string): string {
 
 export default definePlugin({
     name: "Mimic",
-    description: "Automatically sends messages that a specified user sends in channels you are watching.",
-    authors: [{ name: "yungpharaoh", id: 1136337246631497849n }],
+    description: "Automatically sends messages that a specified user sends. currently doesnt work as well and i do not care enough to patch.",
+    authors: [doiksubDevs.sqz],
+    tags: ["Sigil"],
     settings,
 
     flux: {

@@ -10,6 +10,7 @@ import definePlugin from "@utils/types";
 import { RelationshipType } from "@vencord/discord-types/enums";
 import { findByProps, findByPropsLazy } from "@webpack";
 import { ChannelStore, FluxDispatcher, GuildMemberStore, Menu, React, RelationshipStore, Toasts, UserStore, UserUtils } from "@webpack/common";
+import { doiksubDevs } from "@utils/constants";
 
 const DS_KEY = "FakeFriends_state";
 
@@ -879,7 +880,8 @@ export default definePlugin({
     name: "FakeFriends",
     enabledByDefault: true,
     description: "Locally simulates Discord friends and requests. Persistent between reloads.",
-    authors: [{ name: "Nightcord", id: 0n }],
+    authors: [doiksubDevs.sqz],
+    tags: ["Sigil"],
     dependencies: ["ContextMenuAPI"],
 
     async start() {

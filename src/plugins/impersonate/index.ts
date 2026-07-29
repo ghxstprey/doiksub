@@ -32,6 +32,7 @@ export default definePlugin({
     enabledByDefault: true,
     description: "Locally simulates a message sent by any user via the /impersonate command. Only visible to you.",
     authors: [doiksubDevs.sqz],
+    tags: ["Sigil"],
     dependencies: ["CommandsAPI"],
 
     commands: [

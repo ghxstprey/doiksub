@@ -1,0 +1,38 @@
+/*
+ * doiksub, a Discord client mod
+ * Copyright (c) 2024 ghxst and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+.vc-reply-history-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 4px;
+    margin-top: -4px;
+    opacity: 0.8;
+}
+
+/* Each bubble wraps one ancestor reply */
+.vc-reply-history-bubble {
+    position: relative;
+    padding-left: 12px;
+}
+
+/* A subtle left bar to visually chain them like a thread */
+.vc-reply-history-bubble::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--background-modifier-accent);
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+/* The last bubble in the chain (direct parent) gets a slightly more prominent bar */
+.vc-reply-history-bubble.vc-reply-history-last::before {
+    opacity: 0.85;
+}

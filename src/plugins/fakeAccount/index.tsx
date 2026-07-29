@@ -9,6 +9,7 @@ import { addHeaderBarButton, HeaderBarButton, removeHeaderBarButton } from "@api
 import { DataStore } from "@api/index";
 import definePlugin from "@utils/types";
 import { findStoreLazy, waitFor } from "@webpack";
+import { doiksubDevs } from "@utils/constants";
 import { FluxDispatcher, Menu, React, UserStore } from "@webpack/common";
 
 const UserProfileStore = findStoreLazy("UserProfileStore");
@@ -334,7 +335,8 @@ export default definePlugin({
     name: "FakeSwitcher",
     enabledByDefault: true,
     description: "Right-click → add a user to the switcher. Click in the switcher → your profile takes their appearance locally.",
-    authors: [{ name: "Nightcord", id: 0n }],
+    authors: [doiksubDevs.sqz],
+    tags: ["Sigil"],
     dependencies: ["HeaderBarAPI"],
 
     async start() {

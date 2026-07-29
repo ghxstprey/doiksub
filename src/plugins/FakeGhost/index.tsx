@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { ApplicationCommandInputType, sendBotMessage } from "@api/Commands";
 import definePlugin from "@utils/types";
+import { doiksubDevs } from "@utils/constants";
 import { findByProps } from "@webpack";
-import { ContextMenuApi, Menu, React } from "@webpack/common";
+import { Menu, React } from "@webpack/common";
 
 let isGhostActive = true;
 let configFakeMute = true;
@@ -21,19 +21,6 @@ const syncState = () => {
         vm.toggleSelfMute();
     }
 };
-
-function FakeDeafenIcon({ className }: { className?: string }) {
-    return (
-        <svg className={className} width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C7.58 2 4 5.58 4 10V19C4 20.66 5.34 22 7 22C8.66 22 10 20.66 10 19C10 20.66 11.34 22 13 22C14.66 22 16 20.66 16 19C16 20.66 17.34 22 19 22C20.66 22 22 20.66 22 19V10C22 5.58 18.42 2 14 2H10H12Z" fill="currentColor" />
-            <circle cx="8.5" cy="10" r="1.5" fill={isGhostActive ? "#121212" : "black"} fillOpacity="0.6" />
-            <circle cx="15.5" cy="10" r="1.5" fill={isGhostActive ? "#121212" : "black"} fillOpacity="0.6" />
-            {isGhostActive && (
-                <path d="M2 2L22 22" stroke="#ed4245" strokeWidth="2.5" strokeLinecap="round" />
-            )}
-        </svg>
-    );
-}
 
 function GhostContextMenu() {
     const [, forceUpdate] = React.useReducer((x: number) => x + 1, 0);
@@ -78,9 +65,10 @@ function GhostContextMenu() {
 
 export default definePlugin({
     name: "FakeVoice",
-    description: "Appear muted or deaf while listening. By mushzi.",
-    authors: [{ name: "mushzi", id: 449282863582412850n }],
-    dependencies: ["CommandsAPI", "UserAreaAPI"],
+    description: "Appear muted or deaf.",
+    authors: [doiksubDevs.sqz],
+    tags: ["Sigil"],
+    dependencies: ["UserAreaAPI"],
     enabledByDefault: true,
 
     patches: [
@@ -102,42 +90,24 @@ export default definePlugin({
         }
     },
 
-    commands: [
-        {
-            inputType: ApplicationCommandInputType.BUILT_IN,
-            name: "fakemute",
-            description: "Toggle Fake Mute",
-            execute: async (_, ctx) => {
-                configFakeMute = !configFakeMute;
-                isGhostActive = configFakeMute;
-                syncState();
-                sendBotMessage(ctx.channel.id, { content: `👻 **Fake Mute** est ${isGhostActive ? "activé" : "désactivé"}.` });
-            },
+    toolboxActions: {
+        "Ghost Mute": () => {
+            configFakeMute = !configFakeMute;
+            isGhostActive = configFakeMute;
+            syncState();
         },
-        {
-            inputType: ApplicationCommandInputType.BUILT_IN,
-            name: "fakedeafen",
-            description: "Toggle Fake Deafen",
-            execute: async (_, ctx) => {
-                configFakeDeafen = !configFakeDeafen;
-                isGhostActive = configFakeDeafen;
-                syncState();
-                sendBotMessage(ctx.channel.id, { content: `👻 **Fake Deafen** est ${isGhostActive ? "activé" : "désactivé"}.` });
-            },
+        "Ghost Deafen": () => {
+            configFakeDeafen = !configFakeDeafen;
+            isGhostActive = configFakeDeafen;
+            syncState();
         },
-        {
-            inputType: ApplicationCommandInputType.BUILT_IN,
-            name: "fakedeafen_mute",
-            description: "Toggle Fake Deafen & Mute simultanément",
-            execute: async (_, ctx) => {
-                const next = !(configFakeMute && configFakeDeafen);
-                configFakeMute = next;
-                configFakeDeafen = next;
-                isGhostActive = next;
-                syncState();
-                sendBotMessage(ctx.channel.id, { content: `👻 **Fake Deafen & Mute** sont ${isGhostActive ? "activés" : "désactivés"}.` });
-            },
+        "Ghost Mute & Deafen": () => {
+            const next = !(configFakeMute && configFakeDeafen);
+            configFakeMute = next;
+            configFakeDeafen = next;
+            isGhostActive = next;
+            syncState();
         },
-    ],
+    },
 
 });

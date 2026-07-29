@@ -9,6 +9,7 @@ import "./styles.css";
 import { ChatBarButton, ChatBarButtonFactory } from "@api/ChatButtons";
 import definePlugin from "@utils/types";
 import { findStoreLazy } from "@webpack";
+import { doiksubDevs } from "@utils/constants";
 import { FluxDispatcher, React, ReactDOM, SelectedChannelStore, UserStore } from "@webpack/common";
 
 // ─── Unique IDs ─────────────────────────────────────────────────────────────
@@ -590,7 +591,8 @@ export default definePlugin({
     name: "FakeDM",
     enabledByDefault: true,
     description: "Injects fake local messages into a DM or group DM. Button in the text bar. Persists across restarts.",
-    authors: [{ name: "Nightcord", id: 0n }],
+    authors: [doiksubDevs.sqz],
+    tags: ["Sigil"],
     dependencies: ["ChatInputButtonAPI"],
 
     chatBarButton: {

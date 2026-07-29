@@ -179,7 +179,7 @@ const messageContextMenuPatch: NavContextMenuPatchCallback = (children, { messag
     // Prefer the full cached user from UserStore; fall back to the partial on the message
     const author = UserStore.getUser(message.author.id) ?? message.author;
     const displayName: string = (author as any).globalName ?? author.username ?? "Unknown";
-
+    // it looks very ugly so i will also need to fix that... whatever
     children.push(
         <Menu.MenuSeparator key="injectas-sep" />,
         <Menu.MenuItem
@@ -201,8 +201,9 @@ const messageContextMenuPatch: NavContextMenuPatchCallback = (children, { messag
 export default definePlugin({
     name: "InjectAs",
     enabledByDefault: true,
-    description: "Right-click any message to inject a fake local reply as that user. Local only — only you see it.",
+    description: "Right-click any message to inject a fake local reply as that user. Used in cases such as Discord where you can't type in chat.",
     authors: [doiksubDevs.sqz],
+    tags: ["Sigil"],
 
     contextMenus: {
         "message": messageContextMenuPatch,

@@ -20,7 +20,7 @@ import { Dirent, readdirSync, readFileSync, writeFileSync } from "fs";
 import { access, readFile } from "fs/promises";
 import { join, sep } from "path";
 import { normalize as posixNormalize, sep as posixSep } from "path/posix";
-import { BigIntLiteral, createSourceFile, Identifier, isArrayLiteralExpression, isCallExpression, isExportAssignment, isIdentifier, isObjectLiteralExpression, isPropertyAccessExpression, isPropertyAssignment, isSatisfiesExpression, isStringLiteral, isVariableStatement, NamedDeclaration, NodeArray, ObjectLiteralExpression, ScriptTarget, StringLiteral, SyntaxKind } from "typescript";
+import { BigIntLiteral, createSourceFile, Identifier, isArrayLiteralExpression, isBigIntLiteral, isCallExpression, isExportAssignment, isIdentifier, isObjectLiteralExpression, isPropertyAccessExpression, isPropertyAssignment, isSatisfiesExpression, isStringLiteral, isVariableStatement, NamedDeclaration, NodeArray, ObjectLiteralExpression, ScriptTarget, StringLiteral, SyntaxKind } from "typescript";
 
 import { getPluginTarget } from "./utils.mjs";
 
@@ -63,32 +63,36 @@ function getObjectProp(node: ObjectLiteralExpression, name: string) {
 function parseDevs() {
     const file = createSourceFile("constants.ts", readFileSync("src/utils/constants.ts", "utf8"), ScriptTarget.Latest);
 
+    let found = false;
     for (const child of file.getChildAt(0).getChildren()) {
         if (!isVariableStatement(child)) continue;
 
-        const devsDeclaration = child.declarationList.declarations.find(d => hasName(d, "Devs"));
-        if (!devsDeclaration?.initializer || !isCallExpression(devsDeclaration.initializer)) continue;
+        for (const declaration of child.declarationList.declarations) {
+            const declName = getName(declaration);
+            if (declName !== "Devs" && declName !== "doiksubDevs") continue;
+            if (!declaration.initializer || !isCallExpression(declaration.initializer)) continue;
 
-        const value = devsDeclaration.initializer.arguments[0];
+            const value = declaration.initializer.arguments[0];
 
-        if (!isSatisfiesExpression(value) || !isObjectLiteralExpression(value.expression)) throw new Error("Failed to parse devs: not an object literal");
+            if (!isSatisfiesExpression(value) || !isObjectLiteralExpression(value.expression)) throw new Error("Failed to parse devs: not an object literal");
 
-        for (const prop of value.expression.properties) {
-            const name = (prop.name as Identifier).text;
-            const value = isPropertyAssignment(prop) ? prop.initializer : prop;
+            for (const prop of value.expression.properties) {
+                const name = (prop.name as Identifier).text;
+                const value = isPropertyAssignment(prop) ? prop.initializer : prop;
 
-            if (!isObjectLiteralExpression(value)) throw new Error(`Failed to parse devs: ${name} is not an object literal`);
+                if (!isObjectLiteralExpression(value)) throw new Error(`Failed to parse devs: ${name} is not an object literal`);
 
-            devs[name] = {
-                name: (getObjectProp(value, "name") as StringLiteral).text,
-                id: (getObjectProp(value, "id") as BigIntLiteral).text.slice(0, -1)
-            };
+                devs[name] = {
+                    name: (getObjectProp(value, "name") as StringLiteral).text,
+                    id: (getObjectProp(value, "id") as BigIntLiteral).text.slice(0, -1)
+                };
+            }
+
+            found = true;
         }
-
-        return;
     }
 
-    throw new Error("Could not find Devs constant");
+    if (!found) throw new Error("Could not find Devs constant");
 }
 
 async function parseFile(fileName: string) {
@@ -123,8 +127,13 @@ async function parseFile(fileName: string) {
             switch (key) {
                 case "name":
                 case "description":
-                    if (!isStringLiteral(value)) throw fail(`${key} is not a string literal`);
-                    data[key] = value.text;
+                    if (isStringLiteral(value)) {
+                        data[key] = value.text;
+                    } else if (isCallExpression(value) && value.arguments.length > 0 && isStringLiteral(value.arguments[0])) {
+                        data[key] = (value.arguments[0] as StringLiteral).text;
+                    } else {
+                        throw fail(`${key} is not a string literal or t() call`);
+                    }
                     break;
                 case "patches":
                     data.hasPatches = true;
@@ -135,10 +144,22 @@ async function parseFile(fileName: string) {
                 case "authors":
                     if (!isArrayLiteralExpression(value)) throw fail("authors is not an array literal");
                     data.authors = value.elements.map(e => {
-                        if (!isPropertyAccessExpression(e)) throw fail("authors array contains non-property access expressions");
-                        const d = devs[getName(e)!];
-                        if (!d) throw fail(`couldn't look up author ${getName(e)}`);
-                        return d;
+                        if (isPropertyAccessExpression(e)) {
+                            const d = devs[getName(e)!];
+                            if (!d) throw fail(`couldn't look up author ${getName(e)}`);
+                            return d;
+                        }
+                        if (isObjectLiteralExpression(e)) {
+                            const nameProp = getObjectProp(e, "name");
+                            const idProp = getObjectProp(e, "id");
+                            if (!isStringLiteral(nameProp)) throw fail("inline author object has no string 'name' property");
+                            if (!isBigIntLiteral(idProp)) throw fail("inline author object has no bigint 'id' property");
+                            return {
+                                name: nameProp.text,
+                                id: idProp.text.slice(0, -1)
+                            };
+                        }
+                        throw fail("authors array contains non-property access and non-object literal expressions");
                     });
                     break;
                 case "tags":
