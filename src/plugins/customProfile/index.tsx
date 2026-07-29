@@ -23,6 +23,7 @@ import virtualMerge from "virtual-merge";
 
 import { t } from "../autoTranslateNightcord";
 import { doiksubDevs } from "@utils/constants";
+import { PassThrough } from "stream";
 
 const DS_KEY = "customProfile_data";
 const DS_ENABLED = "customProfile_enabled";
@@ -119,11 +120,20 @@ const AVATAR_DECORATIONS: AvatarDecoration[] = [
     { id: "1427463138634109026", label: "Autumn", passthrough: false },
     { id: "1341506443865489408", label: "Darkness", passthrough: true },
     // new additions
+    // { id: "placeholder", label: "placeholder", passthrough: true },
     { id: "1287835633787732070", label: "Fangs", passthrough: true },
     { id: "1402472280478580767", label: "Emo Cat Hoodie", passthrough: true },
     { id: "1212569433839636530", label: "Cat Ears", passthrough: true },
     { id: "1402472280642289775", label: "RawrXD", passthrough: true },
-    { id: "1516559294819074088", label: "Crawling Skeleton", passthrough: true }
+    { id: "1516559294819074088", label: "Crawling Skeleton", passthrough: true },
+    { id: "1459194821221810319", label: "Stars", passthrough: true },
+    { id: "1458472704469499965", label: "Rainbow Clouds", passthrough: true },
+    { id: "1462116613653401775", label: "White Roses", passthrough: false },
+    { id: "1333866045236314327", label: "Angelic", passthrough: true },
+    { id: "1521661571665756180", label: "Red Bull", passthrough: true },
+    { id: "1432550258247995533", label: "HeavenDust", passthrough: true },
+    { id: "1462116613691281560", label: "Celestial White", passthrough: true },
+    { id: "1341506443718688768", label: "Japanese Exclaim", passthrough: true },
 
 ];
 
