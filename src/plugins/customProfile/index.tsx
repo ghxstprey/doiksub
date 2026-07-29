@@ -23,7 +23,6 @@ import virtualMerge from "virtual-merge";
 
 import { t } from "../autoTranslateNightcord";
 import { doiksubDevs } from "@utils/constants";
-import { PassThrough } from "stream";
 
 const DS_KEY = "customProfile_data";
 const DS_ENABLED = "customProfile_enabled";
