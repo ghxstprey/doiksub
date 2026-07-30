@@ -96,43 +96,118 @@ interface AvatarDecoration {
 }
 
 const AVATAR_DECORATIONS: AvatarDecoration[] = [
-    { id: "1144307957425778779", label: "Hearts", passthrough: false },
-    { id: "1144308196723408958", label: "Hearts Animated", passthrough: true },
-    { id: "1212569433839636530", label: "Lofi Cafe", passthrough: false },
-    { id: "1481387347642810480", label: "Winter", passthrough: false },
-    { id: "1343751617362661526", label: "Magic Orb", passthrough: false },
-    { id: "1373015260465987705", label: "Dragon", passthrough: false },
-    { id: "1333866045303423026", label: "Ghost", passthrough: true },
-    { id: "1144308439720394944", label: "Sakura Drift", passthrough: true },
-    { id: "1432550258126229565", label: "Neon", passthrough: true },
-    { id: "1462116613632426014", label: "Cyber City", passthrough: true },
-    { id: "1462116613682757888", label: "Retro", passthrough: true },
-    { id: "1341506443718688768", label: "Void", passthrough: true },
-    { id: "1447654090640330763", label: "Celestial", passthrough: true },
-    { id: "1483857762890022923", label: "Snowy", passthrough: false },
-    { id: "1479561706672885811", label: "Ice", passthrough: false },
-    { id: "1212569856189407352", label: "Cozy", passthrough: false },
-    { id: "1485784028710830242", label: "New Year", passthrough: false },
-    { id: "1341506444150702080", label: "Abyss", passthrough: true },
-    { id: "1232071712695386162", label: "Spring", passthrough: false },
-    { id: "1220514048068812901", label: "Summer", passthrough: false },
-    { id: "1427463138634109026", label: "Autumn", passthrough: false },
-    { id: "1341506443865489408", label: "Darkness", passthrough: true },
-    // new additions
-    // { id: "placeholder", label: "placeholder", passthrough: true },
-    { id: "1287835633787732070", label: "Fangs", passthrough: true },
-    { id: "1402472280478580767", label: "Emo Cat Hoodie", passthrough: true },
+    { id: "1144307957425778779", label: "Hearts", passthrough: true },
+    { id: "1333866045303423026", label: "Hearts Arrow", passthrough: true },
+    { id: "1341506443718688768", label: "Japanese Exclaim", passthrough: true },
+    { id: "1144308196723408958", label: "Japanese Exclaim (Pink)", passthrough: true },
     { id: "1212569433839636530", label: "Cat Ears", passthrough: true },
+    { id: "1341506443865489408", label: "Cat Ears (Yellow)", passthrough: true },
+    { id: "1481387347642810480", label: "Venom (Marvel?)", passthrough: true },
+    { id: "1343751617362661526", label: "Witchy Dust", passthrough: true },
+    { id: "1462116613682757888", label: "Celestial", passthrough: true },
+    { id: "1462116613691281560", label: "Celestial White", passthrough: true },
+    { id: "1373015260465987705", label: "Fallen Angel (Red)", passthrough: true },
+    { id: "1144308439720394944", label: "Angry", passthrough: true },
+    { id: "1432550258126229565", label: "Moonlit", passthrough: true },
+    { id: "1432550258147328050", label: "Moonlit (Purple)", passthrough: true },
+    { id: "1432550258134487124", label: "Moonlit (Red)", passthrough: true },
+    { id: "1432550258155720704", label: "Moonlit (Blue)", passthrough: true },
+    { id: "1462116613653401775", label: "White Roses", passthrough: true },
+    { id: "1462116613632426014", label: "Purple Roses", passthrough: true },
+    { id: "1447654090640330763", label: "Goat Horns", passthrough: true },
+    { id: "1483857762890022923", label: "Bugs Bunny", passthrough: true },
+    { id: "1479561706672885811", label: "NASCAR Helmet", passthrough: true },
+    { id: "1212569856189407352", label: "Lightning", passthrough: true },
+    { id: "1485784028710830242", label: "Cat Ears Headphones", passthrough: true },
+    { id: "1341506444150702080", label: "Shock", passthrough: true },
+    { id: "1232071712695386162", label: "Constellations", passthrough: true },
+    { id: "1220514048068812901", label: "Video Game Kunai", passthrough: true },
+    { id: "1427463138634109026", label: "NCS-Type", passthrough: true },
+    // { id: "placeholder", label: "placeholder", passthrough: true },
+    { id: "1287835633787732070", label: "Fangs (ghxst approved)", passthrough: true },
+    { id: "1287835633817227297", label: "Fangs (Radioactive)", passthrough: true },
+    { id: "1287835633842258022", label: "Fangs (24kMidas)", passthrough: true },
+    { id: "1402472280478580767", label: "Emo Cat Hoodie", passthrough: true },
     { id: "1402472280642289775", label: "RawrXD", passthrough: true },
     { id: "1516559294819074088", label: "Crawling Skeleton", passthrough: true },
     { id: "1459194821221810319", label: "Stars", passthrough: true },
     { id: "1458472704469499965", label: "Rainbow Clouds", passthrough: true },
-    { id: "1462116613653401775", label: "White Roses", passthrough: false },
     { id: "1333866045236314327", label: "Angelic", passthrough: true },
+    { id: "1333866045236314327", label: "Angelic (Hearts)", passthrough: true },
     { id: "1521661571665756180", label: "Red Bull", passthrough: true },
     { id: "1432550258247995533", label: "HeavenDust", passthrough: true },
-    { id: "1462116613691281560", label: "Celestial White", passthrough: true },
-    { id: "1341506443718688768", label: "Japanese Exclaim", passthrough: true },
+    { id: "1488180278475227266", label: "Hello Kitty", passthrough: true },
+    { id: "1488242384113369300", label: "Purin", passthrough: true },
+    { id: "1488243577019695174", label: "Cinnamaroll", passthrough: true },
+    { id: "1488243796239061062", label: "Pochacco", passthrough: true },
+    { id: "1488243999306416303", label: "Kuromi", passthrough: true },
+    { id: "1488244167045021816", label: "My Melody", passthrough: true },
+    { id: "1488244261362340101", label: "Kiki & Lala", passthrough: true },
+    { id: "1488244383466651909", label: "Chococat", passthrough: true },
+    { id: "1488244507689484432", label: "Keroppi", passthrough: true },
+    { id: "1488244619144855712", label: "Tuxedo Sam", passthrough: true },
+    { id: "1385050947767505106", label: "Pink Milk", passthrough: true },
+    { id: "1385050947834613820", label: "Duck", passthrough: true },
+    { id: "1352407446303412304", label: "Egg (static)", passthrough: false },
+    { id: "1352407446303412304", label: "Egg", passthrough: true },
+    { id: "1144305233707671573", label: "Ghost", passthrough: true },
+    { id: "1341506443685134336", label: "Ghost (Blue)", passthrough: true },
+    { id: "1144307257807491094", label: "Sweat_Erm", passthrough: true },
+    { id: "1341506443659968512", label: "Sweat_Erm (Light Blue)", passthrough: true },
+    { id: "1341506443664162817", label: "Sweat_Erm (Pink)", passthrough: true },
+    { id: "1212570596970467378", label: "Sweat", passthrough: true },
+    { id: "1341506443806769152", label: "Sweat (Purple)", passthrough: true },
+    { id: "1341506443810963456", label: "Sweat (Pink)", passthrough: true },
+    { id: "1341506443819352064", label: "Sweat (Yellow)", passthrough: true },
+    { id: "1341506443823546368", label: "Sweat (Green)", passthrough: true },
+    { id: "1207047597294886923", label: "Wet", passthrough: true },
+    { id: "1207047808838799410", label: "Windy", passthrough: true },
+    { id: "1212570343567261736", label: "White&Pink Hearts&Flowers", passthrough: true },
+    { id: "1232071157746765906", label: "White Star Swirling-Portal", passthrough: true },
+    { id: "1256321669426053198", label: "Sickle", passthrough: true },
+    { id: "1271174640026255380", label: "Sakura", passthrough: true },
+    { id: "1271174732577767626", label: "Katanas Clang", passthrough: true },
+    { id: "1286504131325853739", label: "Butterfly", passthrough: true },
+    { id: "1282816431850782730", label: "Butterfly (Blue)", passthrough: true },
+    { id: "1285465421193154560", label: "Feet (??? why does discord have this)", passthrough: true },
+    { id: "1287835633590734848", label: "Black Candles", passthrough: true },
+    { id: "1293373563302318110", label: "Sleeping Cat", passthrough: true },
+    { id: "1293373563327483984", label: "Sleeping Cat (White)", passthrough: true },
+    { id: "1298033986668335135", label: "Angel Antlers", passthrough: true },
+    { id: "1306330662990643252", label: "Bunny Sleeping", passthrough: true },
+    { id: "1333866045261480007", label: "Succubus but family friendly", passthrough: true },
+    { id: "1333866045282451527", label: "Cupid Bunny", passthrough: true },
+    { id: "1333866045324394547", label: "Rose Wreath", passthrough: true },
+    { id: "1333866045345366136", label: "Rose Wreath (Blue)", passthrough: true },
+    { id: "1341506443580276736", label: ">< Fingers", passthrough: true },
+    { id: "1341506443584471040", label: ">< Fingers (Hearts)", passthrough: true },
+    { id: "1341506443777409024", label: "Glossy Hearts (Purple)", passthrough: true },
+    { id: "1341506443781603328", label: "Glossy Hearts (Blue)", passthrough: true },
+    { id: "1341506443789991936", label: "Glossy Hearts (Yellow)", passthrough: true },
+    { id: "1341506443794186240", label: "Glossy Hearts (Green)", passthrough: true },
+    { id: "1352407446328578078", label: "Chicken Nugget", passthrough: false },
+    { id: "1352407446370648166", label: "yellow emoji guy", passthrough: false },
+    { id: "1387888352539312288", label: "sigh. skibidi toilet.", passthrough: true },
+    { id: "1428438924589662298", label: "Yuji's Black Flash", passthrough: true },
+    { id: "1428438924619022436", label: "Goji's Infinity", passthrough: true },
+    { id: "1428438924669358120", label: "Sukuna's Domain", passthrough: true },
+    { id: "1428438924698718268", label: "Mini Yuji", passthrough: true },
+    { id: "1428438924728078436", label: "Mini Megumi", passthrough: true },
+    { id: "1428438924757438666", label: "Mini Nobara", passthrough: true },
+    { id: "1428438924790992946", label: "Mini Gojo", passthrough: true },
+    { id: "1428438924820353184", label: "Mini Kento-Dude", passthrough: true },
+    { id: "1428438924853907596", label: "Mini Sukuna", passthrough: true },
+    { id: "1428438924883267715", label: "Mini Mahito", passthrough: true },
+    { id: "1428438924912627853", label: "Mini Geto", passthrough: true },
+    { id: "1461062060141051946", label: "Demonic", passthrough: true },
+    { id: "1483911783268876489", label: "Clappy Feet", passthrough: true },
+    { id: "1483912153596559581", label: "Clappy Feet (White)", passthrough: true },
+    { id: "1483912356919513209", label: "Clappy Feet (Brown)", passthrough: true },
+    { id: "1483912597710569612", label: "Clappy Feet (Black)", passthrough: true },
+    { id: "1498445907169902712", label: "Sleeping Cat (Strawberry Edition)", passthrough: true },
+    { id: "1516559294819074088", label: "Wraiths", passthrough: true },
+    { id: "1516559585601786028", label: "Damned Souls", passthrough: true },
+    { id: "1516559674776752290", label: "Straight Teeth", passthrough: true },
 
 ];
 
@@ -539,28 +614,57 @@ function updateCachedRealData() {
     try { const myId = AuthenticationStore?.getId?.(); if (myId) _cachedMyId = myId; } catch { }
 }
 
+// Cache date variants to avoid recomputing them for every text node
+let _cachedRealDates: string[] | null = null;
+let _cachedFakeDates: string[] | null = null;
+let _cachedCreatedAt: string | null = null;
+let _cachedUsername: string | null = null;
+let _cachedGlobalName: string | null = null;
+
+function refreshCachedVariantData() {
+    try {
+        if (_trueOriginalUser) {
+            _realUsername = _trueOriginalUser.username || _realUsername;
+            _realGlobalName = _trueOriginalUser.globalName || _realGlobalName;
+        }
+    } catch { }
+    _cachedUsername = storedData.username || null;
+    _cachedGlobalName = storedData.globalName || null;
+    if (storedData.createdAt) {
+        if (_cachedCreatedAt !== storedData.createdAt) {
+            _cachedRealDates = getRealDateVariants();
+            _cachedFakeDates = getFakeDateVariants(storedData.createdAt);
+            _cachedCreatedAt = storedData.createdAt;
+        }
+    } else {
+        _cachedRealDates = null;
+        _cachedFakeDates = null;
+        _cachedCreatedAt = null;
+    }
+}
+
 let _domQueued = false;
 let _domMutations: MutationRecord[] = [];
+const MAX_BATCH_SIZE = 200;
+const TEXT_NODE_MIN_LENGTH = 2;
 
 function scanTextNode(node: Text) {
-    if (!isEnabled || !node.nodeValue) return;
+    if (!isEnabled || !node.nodeValue || node.nodeValue.length < TEXT_NODE_MIN_LENGTH) return;
     const val = (node as any).__cp_orig || node.nodeValue;
-    let result = val;
-    try { if (_trueOriginalUser) { _realUsername = _trueOriginalUser.username || _realUsername; _realGlobalName = _trueOriginalUser.globalName || _realGlobalName; } } catch { }
+    const v = node.nodeValue;
+    if (v === val) return;
+    let result = v;
     let replaced = false;
-    if (storedData.createdAt) {
-        const realDates = getRealDateVariants(); const fakeDates = getFakeDateVariants(storedData.createdAt);
-        if (realDates.length > 0 && fakeDates.length > 0) {
-            for (let i = 0; i < realDates.length; i++) {
-                const realDate = realDates[i];
-                if (realDate.length >= 4 && (val.includes(realDate) || val.toLowerCase().includes(realDate.toLowerCase()))) {
-                    result = result.split(realDate).join(fakeDates[0]); replaced = true;
-                }
+    if (_cachedRealDates && _cachedFakeDates) {
+        for (let i = 0; i < _cachedRealDates.length; i++) {
+            const realDate = _cachedRealDates[i];
+            if (realDate.length >= 4 && (v.includes(realDate) || v.toLowerCase().includes(realDate.toLowerCase()))) {
+                result = result.split(realDate).join(_cachedFakeDates[0]); replaced = true;
             }
         }
     }
-    if (_realUsername && storedData.username && result.includes(_realUsername)) { result = result.split(_realUsername).join(storedData.username); replaced = true; }
-    if (_realGlobalName && storedData.globalName && result.includes(_realGlobalName)) { result = result.split(_realGlobalName).join(storedData.globalName); replaced = true; }
+    if (_cachedUsername && result.includes(_cachedUsername)) { result = result.split(_cachedUsername).join(storedData.username); replaced = true; }
+    if (_cachedGlobalName && result.includes(_cachedGlobalName)) { result = result.split(_cachedGlobalName).join(storedData.globalName); replaced = true; }
     if (replaced && result !== node.nodeValue) { if ((node as any).__cp_orig === undefined) (node as any).__cp_orig = val; node.nodeValue = result; }
 }
 
@@ -574,17 +678,30 @@ function scanNode(node: Node) {
 function processDomBatch() {
     _domQueued = false;
     if (!isEnabled) { _domMutations = []; return; }
-    const batch = _domMutations; _domMutations = [];
-    for (const m of batch) { if (m.type === "characterData") scanTextNode(m.target as Text); else for (const n of m.addedNodes) scanNode(n); }
+    refreshCachedVariantData();
+    const batch = _domMutations.slice(0, MAX_BATCH_SIZE);
+    if (batch.length < _domMutations.length) _domMutations = _domMutations.slice(batch.length);
+    else _domMutations = [];
+    for (const m of batch) {
+        if (m.type === "characterData") scanTextNode(m.target as Text);
+        else for (let i = 0; i < m.addedNodes.length; i++) scanNode(m.addedNodes[i]);
+    }
 }
 
 function startDomObserver() {
     stopDomObserver(); if (!isEnabled) return;
-    scanNode(document.body);
+    refreshCachedVariantData();
+    requestAnimationFrame(() => {
+        if (!isEnabled) return;
+        scanNode(document.body);
+    });
     domObserver = new MutationObserver(mutations => {
         if (!isEnabled || !mutations.length) return;
         _domMutations.push(...mutations);
-        if (!_domQueued) { _domQueued = true; setTimeout(() => requestAnimationFrame(processDomBatch), 10); }
+        if (!_domQueued) {
+            _domQueued = true;
+            setTimeout(() => requestAnimationFrame(processDomBatch), 16);
+        }
     });
     domObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
 }
@@ -727,12 +844,12 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
                 <BadgeBtn label={t("Gifting Patron")} icon="https://cdn.discordapp.com/assets/content/5b6468c40307207971f787cfbefa7ad294919a525998fbd10216d9600638341c.png"
                     active={customIds.includes("giftingpatron")}
                     onClick={() => onCustomIds(customIds.includes("giftingpatron") ? customIds.filter(x => x !== "giftingpatron") : [...customIds, "giftingpatron"])} />
+                <BadgeBtn label={t("Gifting Icon")} icon="https://cdn.discordapp.com/assets/content/ec769381117e0ad3bcd72f568545e5f7df9bf0fa5e41fc8e0b93be6830fe2249.png"
+                    active={customIds.includes("1")}
+                    onClick={() => onCustomIds(customIds.includes("giftingicon") ? customIds.filter(x => x !== "giftingicon") : [...customIds, "giftingicon"])} />
                 <BadgeBtn label={t("Gifting Legend")} icon="https://cdn.discordapp.com/assets/content/d3890ee50e6d2284b7dda50e8c66605487c2400fd4b6b9a595feedb9e1b140a0.png"
                     active={customIds.includes("gifting")}
                     onClick={() => onCustomIds(customIds.includes("gifting") ? customIds.filter(x => x !== "gifting") : [...customIds, "gifting"])} />
-                <BadgeBtn label={t("Gifting Icon")} icon="https://cdn.discordapp.com/assets/content/ec769381117e0ad3bcd72f568545e5f7df9bf0fa5e41fc8e0b93be6830fe2249.png"
-                    active={customIds.includes("giftingicon")}
-                    onClick={() => onCustomIds(customIds.includes("giftingicon") ? customIds.filter(x => x !== "giftingicon") : [...customIds, "giftingicon"])} />
             </div>
             {hasOldName && (
                 <div className="cp-field" style={{ marginTop: 6 }}>
@@ -740,7 +857,7 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
                     <input className="cp-input" value={oldName} placeholder="OldUser#0000"
                         onChange={e => onOldName(e.target.value)} />
                     <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 3 }}>
-                        {t('Ex : Triggerr#5954 — will appear as "Old username: Triggerr#5954" when hovering the badge.')}
+                        {t('Ex : ghxstprey#0666 — will appear as "Old username: ghxstprey#0666" when hovering the badge.')}
                     </div>
                 </div>
             )}
@@ -961,9 +1078,10 @@ function CustomProfileModal({ rootProps }: { rootProps: any; }) {
                     selected={data.badgeFlags ?? 0} onChange={v => set("badgeFlags", v)}
                     nitroType={nitroLevel} onNitroType={v => {
                         set("nitroLevel", v as any);
-                        // Levels 1+ (Bronze to Opal) automatically enable Simulate Nitro
-                        // Level 0 (Nitro without months) and None (-1) do not enable it
-                        if (v >= 1) set("nitro", true);
+                        // Do NOT automatically enable Simulate Nitro here.
+                        // The user controls "Simulate Nitro" independently via the toggle.
+                        // This allows selecting a nitro badge (e.g. Opal) without
+                        // forcing the gradient/banner on.
                     }}
                     boostLevel={boostLevel} onBoostLevel={v => set("boostMonths", v)}
                     customIds={customIds} onCustomIds={v => set("customBadgeIds", v)}
@@ -988,7 +1106,7 @@ function CustomProfileModal({ rootProps }: { rootProps: any; }) {
                         </button>
                     ))}
                 </div>
-                <div className="cp-hint">{t("Visual and local modifications only — persistent between restarts.")}</div>
+                <div className="cp-hint">{t("Persistent between restarts. Email \"killkillkill@atomicmail.io\"")}</div>
             </ModalContentAny>
             <ModalFooterAny className="cp-footer">
                 <button className="cp-btn cp-btn-ghost" onClick={rootProps.onClose}>{t("Cancel")}</button>
@@ -1195,10 +1313,14 @@ export default definePlugin({
             clone.avatarDecorationData = decoData;
         }
 
-        // Override flags/nitro/boost so Discord doesn't show real native badges
-        const wantedFlags = (isEnabled && storedData.badgeFlags != null) ? storedData.badgeFlags : realUser.publicFlags;
-        clone.publicFlags = wantedFlags;
-        clone.flags = wantedFlags;
+        // Override flags/nitro/boost so Discord doesn't show real native badges.
+        // Only override publicFlags when the user has explicitly selected flag badges
+        // (non-zero). When badgeFlags is 0 or undefined, preserve real flags so native
+        // badges still show. Custom badges are handled by userProfileBadges.
+        if (isEnabled && storedData.badgeFlags) {
+            clone.publicFlags = storedData.badgeFlags;
+            clone.flags = storedData.badgeFlags;
+        }
 
         if (isEnabled && storedData.nitro) {
             clone.premiumType = 2;
@@ -1267,7 +1389,11 @@ export default definePlugin({
                 merged.avatarDecorationData = decoData;
             }
 
-            if (isEnabled && (storedData.nitro || storedData.badgeFlags != null)) {
+            // Only enter this block when there's actually something to override:
+            // - storedData.nitro is true (simulate nitro)
+            // - storedData.badgeFlags is truthy (non-zero, user selected flag badges)
+            // If badgeFlags is 0 or undefined, skip entirely to preserve real profile values.
+            if (isEnabled && (storedData.nitro || storedData.badgeFlags)) {
                 merged.premiumType = storedData.nitro ? 2 : 0;
 
                 if (storedData.nitro) {
@@ -1295,9 +1421,14 @@ export default definePlugin({
                     merged.premiumGuildSince = null;
                 }
 
-                // On s'assure que les badges originaux sont écrasés dans le profil
-                merged.publicFlags = (storedData.badgeFlags != null) ? storedData.badgeFlags : profile.publicFlags;
-                merged.badges = []; // Force Discord à recalculer la liste à partir de publicFlags et premiumType
+                // Only override publicFlags when the user has explicitly selected flag badges
+                // (non-zero). When badgeFlags is 0 or undefined, preserve real flags so native
+                // badges still show. Custom badges are handled by userProfileBadges.
+                if (storedData.badgeFlags) {
+                    merged.publicFlags = storedData.badgeFlags;
+                }
+                // Do NOT set merged.badges = [] here — that would wipe out badges added by
+                // userProfileBadges and cause "all badges disappear" when enabling a single badge.
             } else if (isEnabled && storedData.nitro === false) {
                 // Si Nitro simulation est OFF, on force la suppression des badges simulés
                 merged.premiumType = profile.premiumType ?? 0;
@@ -1529,160 +1660,158 @@ export default definePlugin({
         }
     },
 
-    userProfileBadges: [
-        {
-            getBadges({ userId, badges: nativeBadges }: { userId: string; guildId: string; badges: ProfileBadge[]; }) {
-                if (!isEnabled) return nativeBadges || [];
-                if (userId !== UserStore.getCurrentUser()?.id) return nativeBadges || [];
+    userProfileBadge: {
+        getBadges({ userId, badges: nativeBadges }: { userId: string; guildId: string; badges: ProfileBadge[]; }) {
+            if (!isEnabled) return nativeBadges || [];
+            if (userId !== UserStore.getCurrentUser()?.id) return nativeBadges || [];
 
-                let badges: ProfileBadge[] = [...(nativeBadges || [])];
-                const style = { borderRadius: "50%", width: "22px", height: "22px" };
+            let badges: ProfileBadge[] = [...(nativeBadges || [])];
+            const style = { borderRadius: "50%", width: "22px", height: "22px" };
 
-                // Determine which fake badges are active to filter real ones (avoid duplicates)
-                const nl = storedData.nitroLevel ?? -1;
-                const bm = storedData.boostMonths ?? -1;
-                const hasNitroFake = nl >= 0 && nl < NITRO_LEVELS.length;
-                const hasBoostFake = bm >= 0 && bm < BOOST_ICONS.length;
-                const wantedFlags = storedData.badgeFlags ?? 0;
+            // Determine which fake badges are active to filter real ones (avoid duplicates)
+            const nl = storedData.nitroLevel ?? -1;
+            const bm = storedData.boostMonths ?? -1;
+            const hasNitroFake = nl >= 0 && nl < NITRO_LEVELS.length;
+            const hasBoostFake = bm >= 0 && bm < BOOST_ICONS.length;
+            const wantedFlags = storedData.badgeFlags ?? 0;
 
-                // Robust filtering of native badges to avoid duplicates (multi-language support)
-                badges = badges.filter(b => {
-                    const desc = (b.description || "").toLowerCase();
-                    const icon = (b.iconSrc || "").toLowerCase();
+            // Robust filtering of native badges to avoid duplicates (multi-language support)
+            badges = badges.filter(b => {
+                const desc = (b.description || "").toLowerCase();
+                const icon = (b.iconSrc || "").toLowerCase();
 
-                    // Nitro / Subscriber
-                    if (isEnabled) { // ALWAYS filter native nitro/boost if plugin is enabled for this user
-                        const nitroKeywords = ["nitro", "subscriber", "abonn", "premium", "inscrit"];
-                        if (nitroKeywords.some(k => desc.includes(k))) return false;
-                        if (icon.includes("nitro") || icon.includes("premium")) return false;
+                // Nitro / Subscriber
+                if (isEnabled) { // ALWAYS filter native nitro/boost if plugin is enabled for this user
+                    const nitroKeywords = ["nitro", "subscriber", "abonn", "premium", "inscrit"];
+                    if (nitroKeywords.some(k => desc.includes(k))) return false;
+                    if (icon.includes("nitro") || icon.includes("premium")) return false;
 
-                        const boostKeywords = ["booster", "boost"];
-                        if (boostKeywords.some(k => desc.includes(k))) return false;
-                        if (icon.includes("boost") || icon.includes("leveling")) return false;
+                    const boostKeywords = ["booster", "boost"];
+                    if (boostKeywords.some(k => desc.includes(k))) return false;
+                    if (icon.includes("boost") || icon.includes("leveling")) return false;
+                }
+                // Logic for other flags (Staff, Partner, HypeSquad, etc.)
+                for (const badge of BADGES) {
+                    if (wantedFlags & badge.flag) {
+                        const badgeKeywords = badge.label.toLowerCase().split(" ");
+                        if (badgeKeywords.some(k => k.length > 3 && desc.includes(k))) return false;
+                        const iconParts = badge.icon.split("/");
+                        const iconName = iconParts[iconParts.length - 1];
+                        if (icon.includes(iconName)) return false;
                     }
-                    // Logic for other flags (Staff, Partner, HypeSquad, etc.)
-                    for (const badge of BADGES) {
-                        if (wantedFlags & badge.flag) {
-                            const badgeKeywords = badge.label.toLowerCase().split(" ");
-                            if (badgeKeywords.some(k => k.length > 3 && desc.includes(k))) return false;
-                            const iconParts = badge.icon.split("/");
-                            const iconName = iconParts[iconParts.length - 1];
-                            if (icon.includes(iconName)) return false;
-                        }
-                    }
-
-                    return true;
-                });
-
-                const badgeList: ProfileBadge[] = [];
-
-                // 1. Staff Discord
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.STAFF)) {
-                    badgeList.push({ id: "staff", description: t("Staff Discord"), iconSrc: "https://cdn.discordapp.com/badge-icons/5e74e9b61934fc1f67c65515d1f7e60d.png", position: 0, props: { style } });
                 }
 
-                // 2. Partner
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.PARTNER)) {
-                    badgeList.push({ id: "partner", description: t("Partenaire"), iconSrc: "https://cdn.discordapp.com/badge-icons/3f9748e53446a137a052f3454e2de41e.png", position: 0, props: { style } });
-                }
+                return true;
+            });
 
-                // 3. NITRO (Image 2 shows it here)
-                if (hasNitroFake) {
-                    badgeList.push({ id: "nitro", description: "NITRO\nSubscribed since 10/22/21", iconSrc: NITRO_LEVELS[nl].icon, position: 0, props: { style, title: "Nitro" } });
-                }
+            const badgeList: ProfileBadge[] = [];
 
-                // 4. HypeSquad Events
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.HYPESQUAD)) {
-                    badgeList.push({ id: "hypesquad", description: t("HypeSquad Events"), iconSrc: "https://cdn.discordapp.com/badge-icons/bf01d1073931f921909045f3a39fd264.png", position: 0, props: { style } });
-                }
-
-                // 5. Bug Hunter 2
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BUG_HUNTER_2)) {
-                    badgeList.push({ id: "bughunter2", description: t("Bug Hunter Lvl 2"), iconSrc: "https://cdn.discordapp.com/badge-icons/848f79194d4be5ff5f81505cbd0ce1e6.png", position: 0, props: { style } });
-                }
-
-                // 6. House Badges (HypeSquad Houses)
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BALANCE)) {
-                    badgeList.push({ id: "balance", description: t("HypeSquad Balance"), iconSrc: "https://cdn.discordapp.com/badge-icons/3aa41de486fa12454c3761e8e223442e.png", position: 0, props: { style } });
-                }
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BRAVERY)) {
-                    badgeList.push({ id: "bravery", description: t("HypeSquad Bravery"), iconSrc: "https://cdn.discordapp.com/badge-icons/8a88d63823d8a71cd5e390baa45efa02.png", position: 0, props: { style } });
-                }
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BRILLIANCE)) {
-                    badgeList.push({ id: "brilliance", description: t("HypeSquad Brilliance"), iconSrc: "https://cdn.discordapp.com/badge-icons/011940fd013da3f7fb926e4a1cd2e618.png", position: 0, props: { style } });
-                }
-
-                // 7. Bug Hunter 1
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BUG_HUNTER_1)) {
-                    badgeList.push({ id: "bughunter1", description: t("Bug Hunter Lvl 1"), iconSrc: "https://cdn.discordapp.com/badge-icons/2717692c7dca7289b35297368a940dd0.png", position: 0, props: { style } });
-                }
-
-                // 8. Developer (Verified)
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.DEV_VERIFIED)) {
-                    badgeList.push({ id: "developer", description: t("Verified Developer"), iconSrc: "https://cdn.discordapp.com/badge-icons/6df5892e0f35b051f8b61eace34f4967.png", position: 0, props: { style } });
-                }
-
-                // 9. Former Moderator
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.MOD_ALUMNI)) {
-                    badgeList.push({ id: "moderator", description: t("Former Moderator"), iconSrc: "https://cdn.discordapp.com/badge-icons/fee1624003e2fee35cb398e125dc479b.png", position: 0, props: { style } });
-                }
-
-                // 10. Early Supporter
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.EARLY_SUPPORTER)) {
-                    badgeList.push({ id: "earlysupporter", description: t("Early Supporter"), iconSrc: "https://cdn.discordapp.com/badge-icons/7060786766c9c840eb3019e725d2b358.png", position: 0, props: { style } });
-                }
-
-                // 11. SERVER BOOST (Right after Early Supporter on image 2)
-                if (hasBoostFake) {
-                    badgeList.push({ id: "boost", description: `Server Booster — ${BOOST_LABELS[bm]}`, iconSrc: BOOST_ICONS[bm], position: 0, props: { style, title: `Server Booster — ${BOOST_LABELS[bm]}` } });
-                }
-
-                // 12. Active Developer
-                if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.ACTIVE_DEVELOPER)) {
-                    badgeList.push({ id: "activedeveloper", description: t("Active Developer"), iconSrc: "https://cdn.discordapp.com/badge-icons/6bdc42827a38498929a4920da12695d9.png", position: 0, props: { style } });
-                }
-
-                // 13. Old Name (Ancien nom d'utilisateur)
-                if (storedData.customBadgeIds?.includes("oldname")) {
-                    const oldNameText = storedData.oldName ? `Old username\u00a0: ${storedData.oldName}` : "Old username";
-                    badgeList.push({ id: "oldname", description: oldNameText, iconSrc: OLD_NAME_BADGE_ICON, position: 0, props: { style, title: oldNameText } });
-                }
-
-                // 14. Completed Quest (Quêtes)
-                if (storedData.customBadgeIds?.includes("quest")) {
-                    badgeList.push({ id: "quest", description: "Completed a quest", iconSrc: "https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png", position: 0, props: { style } });
-                }
-
-                // 15. Orbs
-                if (storedData.customBadgeIds?.includes("orbs")) {
-                    badgeList.push({ id: "orbs", description: "Orbs — Apprentice", iconSrc: "https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png", position: 0, props: { style } });
-                }
-
-                // 16. April Fools 2026 - Level 4
-                if (storedData.customBadgeIds?.includes("orbs2")) {
-                    badgeList.push({ id: "orbs2", description: "April Fools 2026 - Level 4", iconSrc: "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", position: 0, props: { style } });
-                }
-
-                // 17. Gifting Patron
-                if (storedData.customBadgeIds?.includes("giftingpatron")) {
-                    badgeList.push({ id: "giftingpatron", description: "Gifting Patron", iconSrc: "https://cdn.discordapp.com/assets/content/5b6468c40307207971f787cfbefa7ad294919a525998fbd10216d9600638341c.png", position: 0, props: { style } });
-                }
-
-                // 18. Gifting Legend
-                if (storedData.customBadgeIds?.includes("gifting")) {
-                    badgeList.push({ id: "gifting", description: "Gifting Legend", iconSrc: "https://cdn.discordapp.com/assets/content/d3890ee50e6d2284b7dda50e8c66605487c2400fd4b6b9a595feedb9e1b140a0.png", position: 0, props: { style } });
-                }
-
-                // 19. Gifting Icon
-                if (storedData.customBadgeIds?.includes("giftingicon")) {
-                    badgeList.push({ id: "giftingicon", description: "Gifting Icon", iconSrc: "https://cdn.discordapp.com/assets/content/ec769381117e0ad3bcd72f568545e5f7df9bf0fa5e41fc8e0b93be6830fe2249.png", position: 0, props: { style } });
-                }
-
-                badges.push(...badgeList);
-                return badges;
+            // 1. Staff Discord
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.STAFF)) {
+                badgeList.push({ id: "staff", description: t("Staff Discord"), iconSrc: "https://cdn.discordapp.com/badge-icons/5e74e9b61934fc1f67c65515d1f7e60d.png", position: 0, props: { style } });
             }
-        } as ProfileBadge
-    ] as ProfileBadge[],
+
+            // 2. Partner
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.PARTNER)) {
+                badgeList.push({ id: "partner", description: t("Partenaire"), iconSrc: "https://cdn.discordapp.com/badge-icons/3f9748e53446a137a052f3454e2de41e.png", position: 0, props: { style } });
+            }
+
+            // 3. NITRO (Image 2 shows it here)
+            if (hasNitroFake) {
+                badgeList.push({ id: "nitro", description: "NITRO\nSubscribed since 10/22/21", iconSrc: NITRO_LEVELS[nl].icon, position: 0, props: { style, title: "Nitro" } });
+            }
+
+            // 4. HypeSquad Events
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.HYPESQUAD)) {
+                badgeList.push({ id: "hypesquad", description: t("HypeSquad Events"), iconSrc: "https://cdn.discordapp.com/badge-icons/bf01d1073931f921909045f3a39fd264.png", position: 0, props: { style } });
+            }
+
+            // 5. Bug Hunter 2
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BUG_HUNTER_2)) {
+                badgeList.push({ id: "bughunter2", description: t("Bug Hunter Lvl 2"), iconSrc: "https://cdn.discordapp.com/badge-icons/848f79194d4be5ff5f81505cbd0ce1e6.png", position: 0, props: { style } });
+            }
+
+            // 6. House Badges (HypeSquad Houses)
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BALANCE)) {
+                badgeList.push({ id: "balance", description: t("HypeSquad Balance"), iconSrc: "https://cdn.discordapp.com/badge-icons/3aa41de486fa12454c3761e8e223442e.png", position: 0, props: { style } });
+            }
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BRAVERY)) {
+                badgeList.push({ id: "bravery", description: t("HypeSquad Bravery"), iconSrc: "https://cdn.discordapp.com/badge-icons/8a88d63823d8a71cd5e390baa45efa02.png", position: 0, props: { style } });
+            }
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BRILLIANCE)) {
+                badgeList.push({ id: "brilliance", description: t("HypeSquad Brilliance"), iconSrc: "https://cdn.discordapp.com/badge-icons/011940fd013da3f7fb926e4a1cd2e618.png", position: 0, props: { style } });
+            }
+
+            // 7. Bug Hunter 1
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.BUG_HUNTER_1)) {
+                badgeList.push({ id: "bughunter1", description: t("Bug Hunter Lvl 1"), iconSrc: "https://cdn.discordapp.com/badge-icons/2717692c7dca7289b35297368a940dd0.png", position: 0, props: { style } });
+            }
+
+            // 8. Developer (Verified)
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.DEV_VERIFIED)) {
+                badgeList.push({ id: "developer", description: t("Verified Developer"), iconSrc: "https://cdn.discordapp.com/badge-icons/6df5892e0f35b051f8b61eace34f4967.png", position: 0, props: { style } });
+            }
+
+            // 9. Former Moderator
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.MOD_ALUMNI)) {
+                badgeList.push({ id: "moderator", description: t("Former Moderator"), iconSrc: "https://cdn.discordapp.com/badge-icons/fee1624003e2fee35cb398e125dc479b.png", position: 0, props: { style } });
+            }
+
+            // 10. Early Supporter
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.EARLY_SUPPORTER)) {
+                badgeList.push({ id: "earlysupporter", description: t("Early Supporter"), iconSrc: "https://cdn.discordapp.com/badge-icons/7060786766c9c840eb3019e725d2b358.png", position: 0, props: { style } });
+            }
+
+            // 11. SERVER BOOST (Right after Early Supporter on image 2)
+            if (hasBoostFake) {
+                badgeList.push({ id: "boost", description: `Server Booster — ${BOOST_LABELS[bm]}`, iconSrc: BOOST_ICONS[bm], position: 0, props: { style, title: `Server Booster — ${BOOST_LABELS[bm]}` } });
+            }
+
+            // 12. Active Developer
+            if (storedData.badgeFlags && (storedData.badgeFlags & FLAG.ACTIVE_DEVELOPER)) {
+                badgeList.push({ id: "activedeveloper", description: t("Active Developer"), iconSrc: "https://cdn.discordapp.com/badge-icons/6bdc42827a38498929a4920da12695d9.png", position: 0, props: { style } });
+            }
+
+            // 13. Old Name (Ancien nom d'utilisateur)
+            if (storedData.customBadgeIds?.includes("oldname")) {
+                const oldNameText = storedData.oldName ? `Old username\u00a0: ${storedData.oldName}` : "Old username";
+                badgeList.push({ id: "oldname", description: oldNameText, iconSrc: OLD_NAME_BADGE_ICON, position: 0, props: { style, title: oldNameText } });
+            }
+
+            // 14. Completed Quest (Quêtes)
+            if (storedData.customBadgeIds?.includes("quest")) {
+                badgeList.push({ id: "quest", description: "Completed a quest", iconSrc: "https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png", position: 0, props: { style } });
+            }
+
+            // 15. Orbs
+            if (storedData.customBadgeIds?.includes("orbs")) {
+                badgeList.push({ id: "orbs", description: "Orbs — Apprentice", iconSrc: "https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png", position: 0, props: { style } });
+            }
+
+            // 16. April Fools 2026 - Level 4
+            if (storedData.customBadgeIds?.includes("aprilfools2026")) {
+                badgeList.push({ id: "aprilfools2026", description: "April Fools 2026 - Level 4", iconSrc: "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", position: 0, props: { style } });
+            }
+
+            // 17. Gifting Patron
+            if (storedData.customBadgeIds?.includes("giftingpatron")) {
+                badgeList.push({ id: "giftingpatron", description: "Gifting Patron", iconSrc: "https://cdn.discordapp.com/assets/content/5b6468c40307207971f787cfbefa7ad294919a525998fbd10216d9600638341c.png", position: 0, props: { style } });
+            }
+
+            // 18. Gifting Icon
+            if (storedData.customBadgeIds?.includes("giftingicon")) {
+                badgeList.push({ id: "giftingicon", description: "Gifting Icon", iconSrc: "https://cdn.discordapp.com/assets/content/ec769381117e0ad3bcd72f568545e5f7df9bf0fa5e41fc8e0b93be6830fe2249.png", position: 0, props: { style } });
+            }
+            // swapped these two since legend is above icon
+            // 19. Gifting Legend
+            if (storedData.customBadgeIds?.includes("gifting")) {
+                badgeList.push({ id: "gifting", description: "Gifting Legend", iconSrc: "https://cdn.discordapp.com/assets/content/d3890ee50e6d2284b7dda50e8c66605487c2400fd4b6b9a595feedb9e1b140a0.png", position: 0, props: { style } });
+            }
+
+            badges.push(...badgeList);
+            return badges;
+        }
+    } as ProfileBadge,
 
     stop() {
         removeHeaderBarButton("custom-profile-btn");

@@ -6,6 +6,13 @@
 
 doiksub is a fork of [Vencord](https://github.com/Vendicated/Vencord) with a curated plugin set, custom feature packs, and plugins ported from Equicord.
 
+### requirements to install
+
+- pnpm
+- node.js
+
+(or run `RunOnWindows.bat`)
+
 ## structure
 
 - `src/plugins/` — all plugins and feature packs
@@ -69,24 +76,42 @@ pnpm new-plugin myPluginName
 | fakeProfileThemes | have two colored profiles like nitro, others with this plugin can see |
 | fakeSystemMessage | sends system messages like boosts, community updates, joins, etc |
 | fakeTyping | appear as though you're constantly typing in a channel via sending heartbeats |
-| ImTooTiredToKeepTyping | I'llAddMoreLater |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
-| placeholder | placeholder |
+| favGifSearch | lets you search through your favorited gifs, useful for named-file gifs |
+| fixImagesQuality | loads higher quality images if available |
+| fixSpotifyEmbeds.desktop | lets you modify embedded spotify songs volume |
+| fixYoutubeEmbeds.desktop | fixes youtube videos being blocked |
+| iLoveSpam | don't hide dms from potential scammers |
+| impersonate | /impersonate command that's basically a better fakeDM, works in servers too |
+| injectAs | right click version, used for places you can't type |
+| messageLogger | exactly what it says |
+| mimic | sends the same message someone else did in the same channel that they did |
+| noF1 | removes the f1 help bind |
+| noNitroUpsell | tricks the client into thinking you have nitro, differs from fakeNitro |
+| noOnboardingDelay | skips animations during onboarding (servers) |
+| noTypingAnimation | removes the typing animation |
+| pauseInvitesForever | lets you pause invites from working indefinitely instead of the max limit discord set |
+| permissionFreeWill | don't get warnings about stuff that can mess with permissions (i think i lwk forgot) |
+| pinDms | pin dms to the top of the list |
+| platformIndicators | shows what platforms people are on. can be inaccurate if it's spoofed (see below) |
+| platformSpoofer | changes what discord thinks youre using |
+| previewMessage | preview a message before sending via a chat button |
+| quickReply | keyboard shutcut to reply to latest message |
+| readAllNotificationsButton | places a button below the discord logo to read all servers, not dms |
+| replyHistory | W.I.P., it shows all replies on one message instead of just one (good for screenshots) |
+| reverseImageSearch | come on now |
+| serverInfo | shows various info abt a server |
+| shikiCodeblocks.desktop | makes codeblocks look like shiki's (colored syntax) |
+| showHiddenThings | view channels and stuff you normally wouldn't have accesss to; can't view stuff though |
+| silentTyping | stop typing heartbeats so people don't get notified |
+| spotifyCrack | listen along with no ads |
+| spotifyShareCommands | adds a couple cmds that make it easier to share songs or artists |
+| stickyVoiceChannel | locks you to a voice channel, can help when people try messing with you and moving |
+| userVoiceShow | show if a user is in a vc in a mutual server |
+| validReply | use REST api to show a message that might not have loaded |
+| validUser | same thing, just for pings instead of replies |
+| viewIcons | makes pfps and server icons clickable |
+| voiceDownload | download vms |
+| youtubeAdblock.desktop | use the youtube activity with no ads |
 
 ## license
 
