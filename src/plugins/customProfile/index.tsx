@@ -1106,7 +1106,7 @@ function CustomProfileModal({ rootProps }: { rootProps: any; }) {
                         </button>
                     ))}
                 </div>
-                <div className="cp-hint">{t("Persistent between restarts. Email \"killkillkill@atomicmail.io\"")}</div>
+                <div className="cp-hint">{t("Persistent between restarts. Email \"plunt@atomicmail.io\" if bugs pop up, use temp mail if you want, makes zero difference to me.")}</div>
             </ModalContentAny>
             <ModalFooterAny className="cp-footer">
                 <button className="cp-btn cp-btn-ghost" onClick={rootProps.onClose}>{t("Cancel")}</button>
@@ -1118,7 +1118,7 @@ function CustomProfileModal({ rootProps }: { rootProps: any; }) {
 }
 
 function CustomProfileButton() {
-    return <HeaderBarButton icon={() => <EditIcon size={18} />} tooltip="Custom Profile" onClick={() => openModal(props => <CustomProfileModal rootProps={props} />)} />;
+    return <HeaderBarButton icon={<EditIcon size={18} />} tooltip="Custom Profile" onClick={() => openModal(props => <CustomProfileModal rootProps={props} />)} />;
 }
 
 
