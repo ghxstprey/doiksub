@@ -249,6 +249,7 @@ export const startPlugin = traceFunction("startPlugin", function startPlugin(p: 
     if (managedStyle) enableStyle(managedStyle);
 
     if (userProfileBadge) addProfileBadge(userProfileBadge);
+    if (p.userProfileBadges) for (const b of p.userProfileBadges) addProfileBadge(b);
 
     if (onBeforeMessageEdit) addMessagePreEditListener(onBeforeMessageEdit);
     if (onBeforeMessageSend) addMessagePreSendListener(onBeforeMessageSend);
@@ -310,6 +311,7 @@ export const stopPlugin = traceFunction("stopPlugin", function stopPlugin(p: Plu
     if (managedStyle) disableStyle(managedStyle);
 
     if (userProfileBadge) removeProfileBadge(userProfileBadge);
+    if (p.userProfileBadges) for (const b of p.userProfileBadges) removeProfileBadge(b);
 
     if (onBeforeMessageEdit) removeMessagePreEditListener(onBeforeMessageEdit);
     if (onBeforeMessageSend) removeMessagePreSendListener(onBeforeMessageSend);
@@ -365,7 +367,7 @@ export const initPluginManager = onlyOnce(function init() {
         if (p.renderMessageAccessory) neededApiPlugins.add("MessageAccessoriesAPI");
         if (p.renderMessageDecoration) neededApiPlugins.add("MessageDecorationsAPI");
         if (p.messagePopoverButton) neededApiPlugins.add("MessagePopoverAPI");
-        if (p.userProfileBadge) neededApiPlugins.add("BadgeAPI");
+        if (p.userProfileBadge || p.userProfileBadges) neededApiPlugins.add("BadgeAPI");
 
         for (const key of pluginKeysToBind) {
             p[key] &&= p[key].bind(p) as any;

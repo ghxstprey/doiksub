@@ -1,5 +1,5 @@
 /*
- * deadcord, a Vencord fork
+ * doiksub, a Vencord fork
  * Copyright (c) 2026 ghxst and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -20,18 +20,18 @@ const dir = join("src", "plugins", name);
 mkdirSync(dir, { recursive: true });
 
 const template = `/*
- * deadcord, a Vencord fork
+ * doiksub, a Vencord fork
  * Copyright (c) 2026 ghxst and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { DeadcordDevs } from "@utils/constants";
+import { doiksubDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 
 export default definePlugin({
     name: "${name}",
     description: "TODO: describe your plugin",
-    authors: [DeadcordDevs.ghxst],
+    authors: [doiksubDevs.ghxst],
 
     // Webpack module patches
     patches: [],

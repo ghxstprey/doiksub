@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm@11.9.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build doiksub
+        run: pnpm build
+
+      - name: Package plugin list
+        run: pnpm generatePluginJson
+
+      - name: Create release archive
+        run: |
+          mkdir -p release
+          tar -czf release/doiksub.tar.gz \
+            dist \
+            package.json \
+            pnpm-lock.yaml \
+            src \
+            scripts \
+            README.md \
+            LICENSE
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: release/doiksub.tar.gz
+          generate_release_notes: true

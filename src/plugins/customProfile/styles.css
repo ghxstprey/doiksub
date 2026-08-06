@@ -435,3 +435,135 @@
 .cp-btn-primary:hover:not(:disabled) {
     background: #4752c4;
 }
+
+/* ── Presets ── */
+.cp-presets-wrapper {
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cp-presets-bar {
+    padding: 8px 0;
+}
+
+.cp-presets-bar--empty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+}
+
+.cp-presets-hint {
+    flex: 1;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.cp-presets-scroll {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+}
+
+.cp-presets-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.cp-preset-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px 4px 8px;
+    border-radius: 99px;
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    user-select: none;
+}
+
+.cp-preset-chip:hover {
+    background: rgba(88, 101, 242, 0.18);
+    border-color: #5865f2;
+    color: #fff;
+}
+
+.cp-preset-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cp-preset-del {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    padding: 0;
+    margin-left: 2px;
+    line-height: 0;
+    border-radius: 3px;
+    transition: color 0.1s;
+}
+
+.cp-preset-del:hover {
+    color: #ed4245;
+}
+
+.cp-preset-add {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    border: 1.5px dashed rgba(255, 255, 255, 0.15);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color 0.12s, color 0.12s, background 0.12s;
+}
+
+.cp-preset-add:hover {
+    border-color: rgba(88, 101, 242, 0.6);
+    color: #5865f2;
+    background: rgba(88, 101, 242, 0.08);
+}
+
+.cp-preset-naming {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.cp-preset-name-input {
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    height: 28px;
+    width: 140px !important;
+    border-radius: 99px !important;
+}
+
+.cp-preset-confirm {
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    height: 28px;
+    border-radius: 99px !important;
+}

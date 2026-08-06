@@ -49,15 +49,15 @@ export const IS_STANDALONE = process.argv.includes("--standalone");
 export const IS_UPDATER_DISABLED = process.argv.includes("--disable-updater");
 export const gitHash = (() => {
     try {
-        return process.env.DEADCORD_HASH || process.env.VENCORD_HASH || execSync("git rev-parse --short HEAD", { encoding: "utf-8" }).trim();
+        return process.env.DOIKSUB_HASH || process.env.VENCORD_HASH || execSync("git rev-parse --short HEAD", { encoding: "utf-8" }).trim();
     } catch {
-        return "deadcord";
+        return "doiksub";
     }
 })();
 
 export const banner = {
     js: `
-// deadcord ${gitHash}
+// doiksub ${gitHash}
 // Standalone: ${IS_STANDALONE}
 // Platform: ${IS_STANDALONE === false ? process.platform : "Universal"}
 // Updater Disabled: ${IS_UPDATER_DISABLED}
@@ -231,7 +231,7 @@ export const gitRemotePlugin = {
             namespace: "git-remote", path: args.path
         }));
         build.onLoad({ filter, namespace: "git-remote" }, async () => {
-            let remote = process.env.DEADCORD_REMOTE || process.env.VENCORD_REMOTE;
+            let remote = process.env.DOIKSUB_REMOTE || process.env.VENCORD_REMOTE;
             if (!remote) {
                 try {
                     const res = await promisify(exec)("git remote get-url origin", { encoding: "utf-8" });
@@ -240,7 +240,7 @@ export const gitRemotePlugin = {
                         .replace("git@github.com:", "")
                         .replace(/.git$/, "");
                 } catch {
-                    remote = "deadcord/deadcord";
+                    remote = "doiksub/doiksub";
                 }
             }
 

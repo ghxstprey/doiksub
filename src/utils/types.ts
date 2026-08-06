@@ -207,6 +207,12 @@ export interface PluginDef {
     managedStyle?: string;
 
     userProfileBadge?: ProfileBadge;
+    /**
+     * Modern array form (Vencord convention). Each entry may be a static
+     * badge or a badge exposing `getBadges(args)` to dynamically return
+     * multiple badges. Backwards compatible with `userProfileBadge`.
+     */
+    userProfileBadges?: ProfileBadge[];
 
     messagePopoverButton?: MessagePopoverButtonData;
     chatBarButton?: ChatBarButtonData;

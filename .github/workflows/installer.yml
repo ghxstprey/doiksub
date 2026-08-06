@@ -1,0 +1,99 @@
+name: Build Installer
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: linux-amd64
+            flags: "static cli"
+            out: DoiksubInstallerCli-linux
+          - os: ubuntu-latest
+            target: linux-arm64
+            flags: "static cli"
+            out: DoiksubInstallerCli-linux-arm64
+          - os: macos-latest
+            target: macos-amd64
+            flags: static
+            out: DoiksubInstaller
+          - os: macos-latest
+            target: macos-arm64
+            flags: static
+            out: DoiksubInstaller-arm64
+          - os: windows-latest
+            target: windows-amd64
+            flags: "static cli"
+            out: DoiksubInstallerCli.exe
+          - os: windows-latest
+            target: windows-arm64
+            flags: "static cli"
+            out: DoiksubInstallerCli-arm64.exe
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout ziggyzag
+        uses: actions/checkout@v3
+        with:
+          repository: ghxstprey/ziggyzag
+          path: ziggyzag
+
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.20"
+
+      - name: Build installer
+        working-directory: ziggyzag
+        run: |
+          GOOS=${{ matrix.target == 'linux-arm64' && 'linux' || matrix.target == 'macos-arm64' && 'darwin' || 'windows' }}
+          GOARCH=${{ matrix.target == 'linux-arm64' && 'arm64' || matrix.target == 'macos-arm64' && 'arm64' || 'amd64' }}
+          CGO_ENABLED=0 go build -v -tags "${{ matrix.flags }}" -ldflags "-s -w -X 'doiksubinstaller/buildinfo.InstallerGitHash=${{ github.sha }}' -X 'doiksubinstaller/buildinfo.InstallerTag=${{ github.ref_name }}'" -o ${{ matrix.out }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.target }}
+          path: ziggyzag/${{ matrix.out }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+
+      - name: Create release archive
+        run: |
+          mkdir -p release
+          tar -czf release/doiksub.tar.gz \
+            dist \
+            package.json \
+            pnpm-lock.yaml \
+            src \
+            scripts \
+            README.md \
+            LICENSE
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            release/doiksub.tar.gz
+            artifacts/**/*
+          generate_release_notes: true

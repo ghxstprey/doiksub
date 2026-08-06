@@ -45,73 +45,79 @@ pnpm new-plugin myPluginName
 
 | name | desc |
 | --- | --- |
-| accountPanelServerProfile | makes it automatically open server profile instead of main when viewing a guild |
-| anonymiseFileNames | does what it says, replaces all uploaded file names with random strings |
-| autoReact | automatically reacts to messages with a emoji, custom supported (if nitro) |
-| autoTranslateNightcord | provides translations for certain plugins, however this will eventually be phased out and unused/deleted |
-| betterSessions | enhances the devices/session menu |
-| biggerStreamPreview | allows you to make the stream preview bigger than normally allowed |
-| callTimer | what do u think |
-| clearURLs | removes tracking links and data from sent links |
-| clientTheme | lets you set custom themes |
-| copyEmojiMarkdown | optionally gets emoji markdown when right clicking an emoji |
-| copyFileContents | lets you copy uploaded files contents |
-| copyStickerLinks | exactly as it says |
-| copyUserURLs | copies a link to a discord user's profile |
-| crashHandler | says no to crashes and attempts to recover |
-| customProfile | lets you set custom profile, such as pronouns, usernames, acc creation date, badges, etc |
-| customRPC | sets a custom rich presence, fully customizable |
-| decor | popular pfp decoration plugin, others can see this |
-| devCompanion.dev | developer tools |
-| disableCallIdle | doesn't kick you after five minutes alone |
-| doiksubToolbox | dependancy for other plugins, button that sits in the nav bar for other plugins to utilize |
-| experiments | use hidden discord stuff |
-| expressionCloner | steal emojis n stickers |
-| fakeAccount | add someone's account to your acc switcher (obv cosmetic only) |
-| fakeDM | spoof dms |
-| fakeEdit | right click to add a invisible char at the end of a msg, making it say edited but nothing change |
-| fakeFriends | spoof friends and requests, works on singular and guilds |
-| fakeGhost | appear muted or deafened but not actually be either |
-| fakeNitro | spoofs nitro |
-| fakeProfileThemes | have two colored profiles like nitro, others with this plugin can see |
-| fakeSystemMessage | sends system messages like boosts, community updates, joins, etc |
-| fakeTyping | appear as though you're constantly typing in a channel via sending heartbeats |
-| favGifSearch | lets you search through your favorited gifs, useful for named-file gifs |
-| fixImagesQuality | loads higher quality images if available |
-| fixSpotifyEmbeds.desktop | lets you modify embedded spotify songs volume |
-| fixYoutubeEmbeds.desktop | fixes youtube videos being blocked |
-| iLoveSpam | don't hide dms from potential scammers |
-| impersonate | /impersonate command that's basically a better fakeDM, works in servers too |
-| injectAs | right click version, used for places you can't type |
-| messageLogger | exactly what it says |
-| mimic | sends the same message someone else did in the same channel that they did |
-| noF1 | removes the f1 help bind |
-| noNitroUpsell | tricks the client into thinking you have nitro, differs from fakeNitro |
-| noOnboardingDelay | skips animations during onboarding (servers) |
-| noTypingAnimation | removes the typing animation |
-| pauseInvitesForever | lets you pause invites from working indefinitely instead of the max limit discord set |
-| permissionFreeWill | don't get warnings about stuff that can mess with permissions (i think i lwk forgot) |
-| pinDms | pin dms to the top of the list |
-| platformIndicators | shows what platforms people are on. can be inaccurate if it's spoofed (see below) |
-| platformSpoofer | changes what discord thinks youre using |
-| previewMessage | preview a message before sending via a chat button |
-| quickReply | keyboard shutcut to reply to latest message |
-| readAllNotificationsButton | places a button below the discord logo to read all servers, not dms |
-| replyHistory | W.I.P., it shows all replies on one message instead of just one (good for screenshots) |
-| reverseImageSearch | come on now |
-| serverInfo | shows various info abt a server |
-| shikiCodeblocks.desktop | makes codeblocks look like shiki's (colored syntax) |
-| showHiddenThings | view channels and stuff you normally wouldn't have accesss to; can't view stuff though |
-| silentTyping | stop typing heartbeats so people don't get notified |
-| spotifyCrack | listen along with no ads |
-| spotifyShareCommands | adds a couple cmds that make it easier to share songs or artists |
-| stickyVoiceChannel | locks you to a voice channel, can help when people try messing with you and moving |
-| userVoiceShow | show if a user is in a vc in a mutual server |
-| validReply | use REST api to show a message that might not have loaded |
-| validUser | same thing, just for pings instead of replies |
-| viewIcons | makes pfps and server icons clickable |
-| voiceDownload | download vms |
-| youtubeAdblock.desktop | use the youtube activity with no ads |
+| accountPanelServerProfile | right click your account panel in the bottom left to view your profile in the current server |
+| anonymiseFileNames | anonymise uploaded file names |
+| autoReact | automatically reacts with emojis to messages from specific users. configure multiple user:emoji pairs |
+| autoTranslateNightcord | automatic translation for nightcord |
+| avatarGrabber | /avatar grabs the full-resolution avatar of any user (or yourself) |
+| betterSessions | check for new sessions in the background, and display notifications when they are detected |
+| biggerStreamPreview | allows you to enlarge stream previews |
+| calculator | /calc does quick maths right in the chat box |
+| callTimer | adds a timer to vcs |
+| clearURLs | automatically removes tracking elements from URLs you send |
+| clientTheme | recreation of the old client theme experiment. add a color to your discord client theme |
+| copyEmojiMarkdown | copy the raw unicode character instead of :name: for default emojis (👽) |
+| copyFileContents | adds a button to text file attachments to copy their contents |
+| copyStickerLinks | adds the ability to copy & open sticker links |
+| copyUserURLs | adds a 'copy user URL' option to the user context menu |
+| crashHandler | utility plugin for handling and possibly recovering from crashes without a restart |
+| customProfile | entirely change what your profile looks like, only you until i figure out how to make it server-sided |
+| customRPC | add a fully customisable rich presence (game status) to your discord profile |
+| decor | create and use your own custom avatar decorations, or pick your favorite from the presets |
+| devCompanion.dev | dev companion plugin |
+| disableCallIdle | disables automatically getting kicked from a DM voice call after 3 minutes and being moved to an AFK voice channel |
+| doiksubToolbox | adds a button to the titlebar that houses doiksub quick actions, built off vencord's |
+| experiments | changes the help (?) toolbar button (top right in chat) to discord's developer menu |
+| expressionCloner | allows you to clone emotes & stickers to your own server (right click them) |
+| fakeAccount | right-click → add a user to the switcher. click in the switcher → your profile takes their appearance locally |
+| fakeDM | injects fake local messages into a DM or group DM. button in the text bar. persists across restarts |
+| fakeEdit | fake edit messages by adding a zero-width space |
+| fakeFriends | locally simulates discord friends and requests. persistent between reloads |
+| fakeGhost | appear muted or deaf |
+| fakeNitro | allows you to send fake emojis/stickers, use nitro themes, and stream in nitro quality |
+| fakeProfileThemes | allows profile theming by hiding the colors in your bio thanks to invisible 3y3 encoding |
+| fakeSystemMessage | inject fake system messages into channels. only visible to you, useful for mockups. use /fakesysmsg |
+| fakeTag | show the fake tag next to your name |
+| fakeTyping | simulate infinite typing in channels. use /infinitype |
+| favGifSearch | adds a search bar to favorite gifs |
+| fixImagesQuality | improves quality of images by loading them at their original resolution |
+| fixSpotifyEmbeds.desktop | fixes spotify embeds being incredibly loud by letting you customise the volume |
+| fixYoutubeEmbeds.desktop | bypasses youtube videos being blocked from display on discord (for example by UMG) |
+| iLoveSpam | do not hide messages from 'likely spammers' |
+| impersonate | locally simulates a message sent by any user via the /impersonate command. only visible to you |
+| injectAs | right-click any message to inject a fake local reply as that user. used in cases such as discord where you can't type in chat |
+| messageLogger | temporarily logs deleted and edited messages. merges vencord's logger with equicord's (enhanced) logger |
+| mimic | automatically sends messages that a specified user sends. currently doesnt work as well and i do not care enough to patch |
+| noF1 | disables F1 help bind |
+| noNitroUpsell | removes all of discord's nitro upsells by tricking the client into thinking you have nitro |
+| noOnboardingDelay | skips the slow and annoying onboarding delay |
+| noRPC | disables discord's RPC server |
+| noTypingAnimation | disables the CPU-intensive typing dots animation |
+| pauseInvitesForever | brings back the option to pause invites indefinitely that stupit discord removed |
+| permissionFreeWill | disables the client-side restrictions for channel permission management |
+| pinDms | allows you to pin private channels to the top of your DM list. to pin/unpin or re-order pins, right click DMs |
+| platformIndicators | adds platform indicators (desktop, mobile, web...) to users |
+| platformSpoofer | spoof what platform or device you're on (default: mobile) |
+| previewMessage | lets you preview your message before sending it |
+| quickReply | reply to (ctrl + up/down) and edit (ctrl + shift + up/down) messages via keybinds |
+| readAllNotificationsButton | read all server notifications with a single button click |
+| replyHistory | shows the full chain of reply history above a message, useful for screenshots or context. bugged out rn, fix it later xx |
+| reverseImageSearch | adds imagesearch to image context menus |
+| serverInfo | allows you to view info about a server |
+| shikiCodeblocks.desktop | brings vscode-style codeblocks into discord, powered by shiki |
+| showHiddenThings | displays various hidden & moderator-only things regardless of permissions |
+| silentTyping | hide that you are typing |
+| spotifyCrack | free listen along, no auto-pausing in voice chat, and allows activity to continue playing when idling |
+| spotifyShareCommands | share your current spotify track, album or artist via slash command (/track, /album, /artist) |
+| stickyVoiceChannel | lock yourself to a voice channel and automatically reconnect if moved or disconnected |
+| userVoiceShow | shows an indicator when a user is in a voice channel |
+| validReply | fixes "message could not be loaded" upon hovering over the reply |
+| validUser | fix mentions for unknown users showing up as '@unknown-user' (hover over a mention to fix it) |
+| viewIcons | makes avatars and banners in user profiles clickable, adds view icon/banner entries in the user, server and group channel context menu |
+| viewRaw | copy and view the raw content/data of any message, channel or guild |
+| voiceDownload | adds a download to voice messages (opens a new browser tab) |
+| voiceMessages | allows you to send voice messages like on mobile. to do so, right click the upload button and click send voice message |
+| youtubeAdblock.desktop | block ads in youtube embeds and the WatchTogether activity via adguard |
 
 ## license
 
