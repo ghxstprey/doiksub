@@ -64,13 +64,13 @@ const OLD_NAME_BADGE_ICON = "https://cdn.discordapp.com/badge-icons/6de6d3465076
 const NITRO_LEVELS = [
     { label: t("Nitro (0 months)"), icon: "https://cdn.discordapp.com/badge-icons/2ba85e8026a8614b640c2837bcdfe21b.png" },
     { label: t("Bronze (1 month)"), icon: "https://cdn.discordapp.com/badge-icons/4f33c4a9c64ce221936bd256c356f91f.png" },
-    { label: t("Silver (2 months)"), icon: "https://cdn.discordapp.com/badge-icons/4514fab914bdbfb4ad2fa23df76121a6.png" },
-    { label: t("Gold (3 months)"), icon: "https://cdn.discordapp.com/badge-icons/2895086c18d5531d499862e41d1155a6.png" },
-    { label: t("Platinum (6 months)"), icon: "https://cdn.discordapp.com/badge-icons/0334688279c8359120922938dcb1d6f8.png" },
-    { label: t("Diamond (12 months)"), icon: "https://cdn.discordapp.com/badge-icons/0d61871f72bb9a33a7ae568c1fb4f20a.png" },
-    { label: t("Emerald (24 months)"), icon: "https://cdn.discordapp.com/badge-icons/11e2d339068b55d3a506cff34d3780f3.png" },
-    { label: t("Ruby (36 months)"), icon: "https://cdn.discordapp.com/badge-icons/cd5e2cfd9d7f27a8cdcd3e8a8d5dc9f4.png" },
-    { label: t("Opal (72 months)"), icon: "https://cdn.discordapp.com/badge-icons/5b154df19c53dce2af92c9b61e6be5e2.png" },
+    { label: t("Silver (3 months)"), icon: "https://cdn.discordapp.com/badge-icons/4514fab914bdbfb4ad2fa23df76121a6.png" },
+    { label: t("Gold (6 months)"), icon: "https://cdn.discordapp.com/badge-icons/2895086c18d5531d499862e41d1155a6.png" },
+    { label: t("Platinum (12 months)"), icon: "https://cdn.discordapp.com/badge-icons/0334688279c8359120922938dcb1d6f8.png" },
+    { label: t("Diamond (24 months)"), icon: "https://cdn.discordapp.com/badge-icons/0d61871f72bb9a33a7ae568c1fb4f20a.png" },
+    { label: t("Emerald (36 months)"), icon: "https://cdn.discordapp.com/badge-icons/11e2d339068b55d3a506cff34d3780f3.png" },
+    { label: t("Ruby (60 months)"), icon: "https://cdn.discordapp.com/badge-icons/cd5e2cfd9d7f27a8cdcd3e8a8d5dc9f4.png" },
+    { label: t("Opal (72+ months)"), icon: "https://cdn.discordapp.com/badge-icons/5b154df19c53dce2af92c9b61e6be5e2.png" },
 ];
 
 const BOOST_LABELS_RAW = [
@@ -211,7 +211,7 @@ const AVATAR_DECORATIONS: AvatarDecoration[] = [
     { id: "1516559585601786028", label: "Damned Souls", passthrough: true },
     { id: "1516559674776752290", label: "Straight Teeth", passthrough: true },
     { id: "1385050947855716503", label: "Bubblely", passthrough: true },
-	{ id: "1432427447093039205", label: "Atakhan's Aura of Malice", passthrough: true},
+    { id: "1432427447093039205", label: "Atakhan's Aura of Malice", passthrough: true },
 
 ];
 
@@ -996,22 +996,22 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
                 <BadgeBtn label={t("April Fools 2026 - Level 4")} icon="https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png"
                     active={customIds.includes("aprilfools2026")}
                     onClick={() => onCustomIds(customIds.includes("aprilfools2026") ? customIds.filter(x => x !== "aprilfools2026") : [...customIds, "aprilfools2026"])} />
-                <BadgeBtn label={t("Gifting Patron")} icon="https://i.imgur.com/tI4GCxR.png"
+                <BadgeBtn label={t("Gifting Patron")} icon="https://github.com/mezotv/discord-badges/raw/main/assets/gifting/patron.png"
                     active={customIds.includes("giftingpatron")}
                     onClick={() => onCustomIds(customIds.includes("giftingpatron") ? customIds.filter(x => x !== "giftingpatron") : [...customIds, "giftingpatron"])} />
-                <BadgeBtn label={t("Gifting Champion")} icon="https://i.imgur.com/Jynm4dV.png"
+                <BadgeBtn label={t("Gifting Champion")} icon="https://github.com/mezotv/discord-badges/raw/main/assets/gifting/champion.png"
                     active={customIds.includes("giftingchampion")}
                     onClick={() => onCustomIds(customIds.includes("giftingchampion") ? customIds.filter(x => x !== "giftingchampion") : [...customIds, "giftingchampion"])} />
-                <BadgeBtn label={t("Gifting Luminary")} icon="https://i.imgur.com/3GRyXIR.png"
+                <BadgeBtn label={t("Gifting Luminary")} icon="https://github.com/mezotv/discord-badges/raw/main/assets/gifting/luminary.png"
                     active={customIds.includes("giftingluminary")}
                     onClick={() => onCustomIds(customIds.includes("giftingluminary") ? customIds.filter(x => x !== "giftingluminary") : [...customIds, "giftingluminary"])} />
-                <BadgeBtn label={t("Gifting Icon")} icon="https://i.imgur.com/chM1tvZ.png"
+                <BadgeBtn label={t("Gifting Icon")} icon="https://github.com/mezotv/discord-badges/raw/main/assets/gifting/icon.png"
                     active={customIds.includes("giftingicon")}
                     onClick={() => onCustomIds(customIds.includes("giftingicon") ? customIds.filter(x => x !== "giftingicon") : [...customIds, "giftingicon"])} />
-                <BadgeBtn label={t("Gifting Hero")} icon="https://i.imgur.com/7bJJJWl.png"
+                <BadgeBtn label={t("Gifting Hero")} icon="https://github.com/mezotv/discord-badges/raw/main/assets/gifting/hero.png"
                     active={customIds.includes("giftinghero")}
                     onClick={() => onCustomIds(customIds.includes("giftinghero") ? customIds.filter(x => x !== "giftinghero") : [...customIds, "giftinghero"])} />
-                <BadgeBtn label={t("Gifting Legendary")} icon="https://i.imgur.com/gQg96nV.png"
+                <BadgeBtn label={t("Gifting Legendary")} icon="https://github.com/mezotv/discord-badges/raw/main/assets/gifting/legend.png"
                     active={customIds.includes("gifting")}
                     onClick={() => onCustomIds(customIds.includes("gifting") ? customIds.filter(x => x !== "gifting") : [...customIds, "gifting"])} />
             </div>
@@ -1317,7 +1317,7 @@ function CustomProfileModal({ rootProps }: { rootProps: any; }) {
                     title={t("Re-applies your profile without deleting settings")}
                 >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 14.93V15a1 1 0 0 0-2 0v1.93A8.001 8.001 0 0 1 4.07 13H6a1 1 0 0 0 0-2H4.07A8.001 8.001 0 0 1 11 4.07V6a1 1 0 0 0 2 0V4.07A8.001 8.001 0 0 1 19.93 11H18a1 1 0 0 0 0 2h1.93A8.001 8.001 0 0 1 13 16.93z"/>
+                        <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 14.93V15a1 1 0 0 0-2 0v1.93A8.001 8.001 0 0 1 4.07 13H6a1 1 0 0 0 0-2H4.07A8.001 8.001 0 0 1 11 4.07V6a1 1 0 0 0 2 0V4.07A8.001 8.001 0 0 1 19.93 11H18a1 1 0 0 0 0 2h1.93A8.001 8.001 0 0 1 13 16.93z" />
                     </svg>
                     <span>{t("Repair")}</span>
                 </button>
@@ -2007,19 +2007,24 @@ export default definePlugin({
 
                 const cids = pd.customBadgeIds ?? [];
                 if (cids.includes("oldname")) badgeList.push(mkBadge("cp-oldname", "Legacy Username", OLD_NAME_BADGE_ICON, undefined, pd.oldName || "OldUser#0000"));
+                if (cids.includes("staff")) badgeList.push(mkBadge("cp-staff-internal", "Internal Employee", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/internal_dev.png"));
+                if (cids.includes("automod")) badgeList.push(mkBadge("cp-automod", "Automod", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/automod.png"));
+                if (cids.includes("has_commands")) badgeList.push(mkBadge("cp-has-commands", "Has Commands", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/has_commands.png"));
                 if (cids.includes("quest")) badgeList.push(mkBadge("cp-quest", "Quests", "https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png"));
                 if (cids.includes("orbs")) badgeList.push(mkBadge("cp-orbs", "Orbs Apprentice", "https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png"));
                 if (cids.includes("aprilfools2026")) badgeList.push(mkBadge("cp-april", "April Fools 2026 - Level 4", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "RARE", "Level 4 Reached"));
                 if (cids.includes("meadow")) badgeList.push(mkBadge("cp-meadow", "Last Meadow", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "RARE", "Level 100 Reached"));
+                if (cids.includes("clown")) badgeList.push(mkBadge("cp-clown", "A Clown", "https://raw.githubusercontent.com/ghxstprey/doiksub/assets/a_clown.png"));
+                if (cids.includes("premiumbot")) badgeList.push(mkBadge("cp-premiumbot", "Premium Bot", "https://raw.githubusercontent.com/PandaDevOfficial/badges-discord/5eba6290f524185e5e141fc3262295ad1a4f521f/assets/premiumbot.png"));
 
                 const giftStyle: React.CSSProperties = { width: "24px", height: "24px", objectFit: "contain", mixBlendMode: "screen" as any, borderRadius: 0 };
                 const mkGift = (id: string, name: string, icon: string): ProfileBadge => ({ id, description: name, iconSrc: icon, position: BadgePosition.START, props: { style: giftStyle } });
-                if (cids.includes("giftingpatron")) badgeList.push(mkGift("cp-g-patron", "Gifting Patron", "https://i.imgur.com/tI4GCxR.png"));
-                if (cids.includes("giftingchampion")) badgeList.push(mkGift("cp-g-champion", "Gifting Champion", "https://i.imgur.com/Jynm4dV.png"));
-                if (cids.includes("giftingluminary")) badgeList.push(mkGift("cp-g-luminary", "Gifting Luminary", "https://i.imgur.com/3GRyXIR.png"));
-                if (cids.includes("giftingicon")) badgeList.push(mkGift("cp-g-icon", "Gifting Icon", "https://i.imgur.com/chM1tvZ.png"));
-                if (cids.includes("giftinghero")) badgeList.push(mkGift("cp-g-hero", "Gifting Hero", "https://i.imgur.com/7bJJJWl.png"));
-                if (cids.includes("gifting")) badgeList.push(mkGift("cp-g-legend", "Gifting Legend", "https://i.imgur.com/gQg96nV.png"));
+                if (cids.includes("giftingpatron")) badgeList.push(mkGift("cp-g-patron", "Gifting Patron", "https://github.com/mezotv/discord-badges/raw/main/assets/gifting/patron.png"));
+                if (cids.includes("giftingchampion")) badgeList.push(mkGift("cp-g-champion", "Gifting Champion", "https://github.com/mezotv/discord-badges/raw/main/assets/gifting/champion.png"));
+                if (cids.includes("giftingluminary")) badgeList.push(mkGift("cp-g-luminary", "Gifting Luminary", "https://github.com/mezotv/discord-badges/raw/main/assets/gifting/luminary.png"));
+                if (cids.includes("giftingicon")) badgeList.push(mkGift("cp-g-icon", "Gifting Icon", "https://github.com/mezotv/discord-badges/raw/main/assets/gifting/icon.png"));
+                if (cids.includes("giftinghero")) badgeList.push(mkGift("cp-g-hero", "Gifting Hero", "https://github.com/mezotv/discord-badges/raw/main/assets/gifting/hero.png"));
+                if (cids.includes("gifting")) badgeList.push(mkGift("cp-g-legend", "Gifting Legend", "https://github.com/mezotv/discord-badges/raw/main/assets/gifting/legend.png"));
 
                 badges.push(...badgeList);
                 return badges;
