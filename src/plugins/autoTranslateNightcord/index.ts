@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import { doiksubDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 
 export type TranslationMap = Record<string, { en: string; es: string; ru: string; zh: string; }>;
@@ -392,7 +393,7 @@ export default definePlugin({
     enabledByDefault: true,
     description: "Automatic translation for Nightcord.",
     tags: ["Sigil"],
-    authors: [{ name: "Trigger", id: 0n }],
+    authors: [doiksubDevs.god],
     options: {
         autoTranslate: {
             description: "Automatically translate strings",

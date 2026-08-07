@@ -1,0 +1,15 @@
+/*
+ * doiksub, a Discord client mod
+ * Copyright (c) 2026 ghxst and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+/* Hide profile badge containers as a CSS fallback */
+[class*="profile"] [class*="badges"] {
+    display: none !important;
+}
+
+/* Also hide badge containers that use the "tags" structure */
+[class*="profile"] [class*="tags"] [class*="container"] {
+    display: none !important;
+}

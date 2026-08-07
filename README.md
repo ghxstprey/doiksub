@@ -56,7 +56,7 @@ pnpm new-plugin myPluginName
 | callTimer | adds a timer to vcs |
 | clearURLs | automatically removes tracking elements from URLs you send |
 | clientTheme | recreation of the old client theme experiment. add a color to your discord client theme |
-| copyEmojiMarkdown | copy the raw unicode character instead of :name: for default emojis (👽) |
+| copyEmojiMarkdown | copy the raw unicode character instead of :name: for default emojis |
 | copyFileContents | adds a button to text file attachments to copy their contents |
 | copyStickerLinks | adds the ability to copy & open sticker links |
 | copyUserURLs | adds a 'copy user URL' option to the user context menu |
@@ -88,6 +88,7 @@ pnpm new-plugin myPluginName
 | injectAs | right-click any message to inject a fake local reply as that user. used in cases such as discord where you can't type in chat |
 | messageLogger | temporarily logs deleted and edited messages. merges vencord's logger with equicord's (enhanced) logger |
 | mimic | automatically sends messages that a specified user sends. currently doesnt work as well and i do not care enough to patch |
+| noBadges| plugin that's supposed to remove badges from users, but it doesnt work lol |
 | noF1 | disables F1 help bind |
 | noNitroUpsell | removes all of discord's nitro upsells by tricking the client into thinking you have nitro |
 | noOnboardingDelay | skips the slow and annoying onboarding delay |
