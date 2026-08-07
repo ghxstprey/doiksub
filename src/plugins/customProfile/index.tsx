@@ -2007,7 +2007,6 @@ export default definePlugin({
 
                 const cids = pd.customBadgeIds ?? [];
                 if (cids.includes("oldname")) badgeList.push(mkBadge("cp-oldname", "Legacy Username", OLD_NAME_BADGE_ICON, undefined, pd.oldName || "OldUser#0000"));
-                if (cids.includes("staff")) badgeList.push(mkBadge("cp-staff-internal", "Internal Employee", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/internal_dev.png"));
                 if (cids.includes("automod")) badgeList.push(mkBadge("cp-automod", "Automod", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/automod.png"));
                 if (cids.includes("has_commands")) badgeList.push(mkBadge("cp-has-commands", "Has Commands", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/has_commands.png"));
                 if (cids.includes("quest")) badgeList.push(mkBadge("cp-quest", "Quests", "https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png"));
