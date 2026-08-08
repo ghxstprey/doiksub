@@ -674,7 +674,7 @@ export const doiksubDevs = /* #__PURE__*/ Object.freeze({
         id: 1518140533586006126n,
     },
     oddy: {
-        name: "OddyNuff",
+        name: "whoreblunts",
         id: 1517254170984448103n,
     },
     sqz: {
