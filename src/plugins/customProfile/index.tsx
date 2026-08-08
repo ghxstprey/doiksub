@@ -1992,17 +1992,17 @@ export default definePlugin({
 
                 if (wish(FLAG.STAFF)) badgeList.push(mkBadge("cp-staff", "Discord Staff", "https://cdn.discordapp.com/badge-icons/5e74e9b61934fc1f67c65515d1f7e60d.png"));
                 if (wish(FLAG.PARTNER)) badgeList.push(mkBadge("cp-partner", "Partnered Server Owner", "https://cdn.discordapp.com/badge-icons/3f9748e53446a137a052f3454e2de41e.png"));
-                if (hasNitroFake) badgeList.push(mkBadge("cp-nitro", `Nitro ${NITRO_LEVELS[nl].label.split(" ")[0]}`, NITRO_LEVELS[nl].icon, "RARE", "Subscriber since 10/22/21"));
-                if (wish(FLAG.HYPESQUAD)) badgeList.push(mkBadge("cp-hypesquad", "HypeSquad Events", "https://cdn.discordapp.com/badge-icons/bf01d1073931f921909045f3a39fd264.png", "RARE"));
-                if (wish(FLAG.BUG_HUNTER_2)) badgeList.push(mkBadge("cp-bh2", "Pro Bug Hunter", "https://cdn.discordapp.com/badge-icons/848f79194d4be5ff5f81505cbd0ce1e6.png", "RARE"));
-                if (wish(FLAG.BALANCE)) badgeList.push(mkBadge("cp-balance", "HypeSquad Balance", "https://cdn.discordapp.com/badge-icons/3aa41de486fa12454c3761e8e223442e.png", "RARE"));
-                if (wish(FLAG.BRAVERY)) badgeList.push(mkBadge("cp-bravery", "HypeSquad Bravery", "https://cdn.discordapp.com/badge-icons/8a88d63823d8a71cd5e390baa45efa02.png", "RARE"));
-                if (wish(FLAG.BRILLIANCE)) badgeList.push(mkBadge("cp-brilliance", "HypeSquad Brilliance", "https://cdn.discordapp.com/badge-icons/011940fd013da3f7fb926e4a1cd2e618.png", "RARE"));
-                if (wish(FLAG.BUG_HUNTER_1)) badgeList.push(mkBadge("cp-bh1", "Bug Hunter", "https://cdn.discordapp.com/badge-icons/2717692c7dca7289b35297368a940dd0.png", "RARE"));
+                if (hasNitroFake) badgeList.push(mkBadge("cp-nitro", `Nitro ${NITRO_LEVELS[nl].label.split(" ")[0]}`, NITRO_LEVELS[nl].icon, "Subscriber since 10/22/21"));
+                if (wish(FLAG.HYPESQUAD)) badgeList.push(mkBadge("cp-hypesquad", "HypeSquad Events", "https://cdn.discordapp.com/badge-icons/bf01d1073931f921909045f3a39fd264.png"));
+                if (wish(FLAG.BUG_HUNTER_2)) badgeList.push(mkBadge("cp-bh2", "Pro Bug Hunter", "https://cdn.discordapp.com/badge-icons/848f79194d4be5ff5f81505cbd0ce1e6.png"));
+                if (wish(FLAG.BALANCE)) badgeList.push(mkBadge("cp-balance", "HypeSquad Balance", "https://cdn.discordapp.com/badge-icons/3aa41de486fa12454c3761e8e223442e.png"));
+                if (wish(FLAG.BRAVERY)) badgeList.push(mkBadge("cp-bravery", "HypeSquad Bravery", "https://cdn.discordapp.com/badge-icons/8a88d63823d8a71cd5e390baa45efa02.png"));
+                if (wish(FLAG.BRILLIANCE)) badgeList.push(mkBadge("cp-brilliance", "HypeSquad Brilliance", "https://cdn.discordapp.com/badge-icons/011940fd013da3f7fb926e4a1cd2e618.png"));
+                if (wish(FLAG.BUG_HUNTER_1)) badgeList.push(mkBadge("cp-bh1", "Bug Hunter", "https://cdn.discordapp.com/badge-icons/2717692c7dca7289b35297368a940dd0.png"));
                 if (wish(FLAG.DEV_VERIFIED)) badgeList.push(mkBadge("cp-dev", "Early Verified Bot Developer", "https://cdn.discordapp.com/badge-icons/6df5892e0f35b051f8b61eace34f4967.png"));
                 if (wish(FLAG.MOD_ALUMNI)) badgeList.push(mkBadge("cp-mod", "Moderator Program Alumni", "https://cdn.discordapp.com/badge-icons/fee1624003e2fee35cb398e125dc479b.png"));
                 if (wish(FLAG.EARLY_SUPPORTER)) badgeList.push(mkBadge("cp-early", "Early Supporter", "https://cdn.discordapp.com/badge-icons/7060786766c9c840eb3019e725d2b358.png"));
-                if (hasBoostFake) badgeList.push(mkBadge("cp-boost", "Server Booster", BOOST_ICONS[bm], "RARE", BOOST_LABELS[bm]));
+                if (hasBoostFake) badgeList.push(mkBadge("cp-boost", "Server Booster", BOOST_ICONS[bm], BOOST_LABELS[bm]));
                 if (wish(FLAG.ACTIVE_DEVELOPER)) badgeList.push(mkBadge("cp-active", "Active Developer", "https://cdn.discordapp.com/badge-icons/6bdc42827a38498929a4920da12695d9.png"));
 
                 const cids = pd.customBadgeIds ?? [];
@@ -2011,8 +2011,8 @@ export default definePlugin({
                 if (cids.includes("has_commands")) badgeList.push(mkBadge("cp-has-commands", "Has Commands", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/has_commands.png"));
                 if (cids.includes("quest")) badgeList.push(mkBadge("cp-quest", "Quests", "https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png"));
                 if (cids.includes("orbs")) badgeList.push(mkBadge("cp-orbs", "Orbs Apprentice", "https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png"));
-                if (cids.includes("aprilfools2026")) badgeList.push(mkBadge("cp-april", "April Fools 2026 - Level 4", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "RARE", "Level 4 Reached"));
-                if (cids.includes("meadow")) badgeList.push(mkBadge("cp-meadow", "Last Meadow", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "RARE", "Level 100 Reached"));
+                if (cids.includes("aprilfools2026")) badgeList.push(mkBadge("cp-april", "April Fools 2026 - Level 4", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "Level 4 Reached"));
+                if (cids.includes("meadow")) badgeList.push(mkBadge("cp-meadow", "Last Meadow", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "Level 100 Reached"));
                 if (cids.includes("clown")) badgeList.push(mkBadge("cp-clown", "A Clown", "https://raw.githubusercontent.com/ghxstprey/doiksub/assets/a_clown.png"));
                 if (cids.includes("premiumbot")) badgeList.push(mkBadge("cp-premiumbot", "Premium Bot", "https://raw.githubusercontent.com/PandaDevOfficial/badges-discord/5eba6290f524185e5e141fc3262295ad1a4f521f/assets/premiumbot.png"));
 

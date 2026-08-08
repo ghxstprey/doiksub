@@ -13,11 +13,9 @@ doiksub is a fork of [Vencord](https://github.com/Vendicated/Vencord) with a cur
 
 (or run `RunOnWindows.bat`)
 
-## structure
+## too lazy to build or don't have a discord app?
 
-- `src/plugins/` — all plugins and feature packs
-- `src/utils/constants.ts` — `doiksubDevs` for developer identities
-- `scripts/` — build tools, plugin generator
+it also generates a userscript and extensions so you can use it on the web. view the [docs](https://millyrack.pages.dev/getting-started#web) to see in depth of how to.
 
 ## schizo devs (one guy)
 
