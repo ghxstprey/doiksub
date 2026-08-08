@@ -172,45 +172,45 @@ export default definePlugin({
             buildEntry({
                 key: "vencord_main",
                 title: "doiksub",
-                panelTitle: "doiksub Settings",
+                panelTitle: "doiksub settings",
                 Component: VencordTab,
                 Icon: MainSettingsIcon
             }),
             buildEntry({
                 key: "vencord_plugins",
-                title: "Plugins",
+                title: "plugins",
                 Component: PluginsTab,
                 Icon: PluginsIcon
             }),
             buildEntry({
                 key: "vencord_themes",
-                title: "Themes",
+                title: "themes",
                 Component: ThemesTab,
                 Icon: PaintbrushIcon
             }),
             !IS_UPDATER_DISABLED && UpdaterTab && buildEntry({
                 key: "vencord_updater",
-                title: "Updater",
-                panelTitle: "doiksub Updater",
+                title: "updater",
+                panelTitle: "doiksub updater",
                 Component: UpdaterTab,
                 Icon: UpdaterIcon
             }),
             buildEntry({
                 key: "vencord_cloud",
-                title: "Cloud",
-                panelTitle: "doiksub Cloud",
+                title: "cloud*",
+                panelTitle: "doiksub cloud",
                 Component: CloudTab,
                 Icon: CloudIcon
             }),
             buildEntry({
                 key: "vencord_backup_restore",
-                title: "Backup & Restore",
+                title: "backup & restore",
                 Component: BackupAndRestoreTab,
                 Icon: BackupRestoreIcon
             }),
             !IS_STANDALONE && PatchHelperTab && buildEntry({
                 key: "vencord_patch_helper",
-                title: "Patch Helper",
+                title: "patch helper",
                 Component: PatchHelperTab,
                 Icon: PatchHelperIcon
             }),

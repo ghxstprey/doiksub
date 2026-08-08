@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 echo.
 
-echo [1/4] checking for Node.js...
+echo [1/5] checking for Node.js...
 where node >nul 2>nul
 if %errorlevel% neq 0 (
     echo ERROR: Node.js is not installed or not in PATH.
@@ -27,7 +27,7 @@ if !NODE_MAJOR! lss 22 (
 echo Node.js version OK.
 echo.
 
-echo [2/4] checking for pnpm...
+echo [2/5] checking for pnpm...
 where pnpm >nul 2>nul
 if %errorlevel% neq 0 (
     echo       pnpm not found. installing pnpm globally...
@@ -43,7 +43,7 @@ if %errorlevel% neq 0 (
 )
 echo.
 
-echo [3/4] checking dependencies...
+echo [3/5] checking dependencies...
 if not exist "node_modules" (
     echo       node_modules not found. Installing dependencies...
     echo      this may take a few minutes on first run.
@@ -59,7 +59,15 @@ if not exist "node_modules" (
 )
 echo.
 
-echo [4/4] building and injecting doiksub...
+echo [4/5] building web extensions of doiksub...
+call pnpm buildWeb
+if %errorlevel% neq 0 (
+    echo ERROR: build failed.
+    pause
+    exit /b 1
+)
+
+echo [5/5] building and injecting doiksub...
 call pnpm build
 if %errorlevel% neq 0 (
     echo ERROR: build failed.

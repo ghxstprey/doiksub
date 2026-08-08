@@ -32,18 +32,13 @@ import { IS_WINDOWS } from "@utils/constants";
 import { Margins } from "@utils/margins";
 import { isPluginDev } from "@utils/misc";
 import { relaunch } from "@utils/native";
-import { ConfirmModal, Forms, openModal, React, useMemo, UserStore } from "@webpack/common";
+import { Button, ConfirmModal, Forms, openModal, React, UserStore } from "@webpack/common";
 
-import { DonateButtonComponent, isDonor } from "./DonateButton";
 import { MacOSVibrancySettings } from "./MacVibrancySettings";
 import { NotificationSection } from "./NotificationSettings";
 import { WindowsMaterialSettings } from "./WindowsMaterialSettings";
 
-const DEFAULT_DONATE_IMAGE = "https://cdn.discordapp.com/emojis/1026533090627174460.png";
-const SHIGGY_DONATE_IMAGE = "https://media.discordapp.net/stickers/1039992459209490513.png";
-const VENNIE_DONATOR_IMAGE = "https://cdn.discordapp.com/emojis/1238120638020063377.png";
 const COZY_CONTRIB_IMAGE = "https://cdn.discordapp.com/emojis/1026533070955872337.png";
-const DONOR_BACKGROUND_IMAGE = "https://media.discordapp.net/stickers/1311070116305436712.png?size=2048";
 const CONTRIB_BACKGROUND_IMAGE = "https://media.discordapp.net/stickers/1311070166481895484.png?size=2048";
 
 type KeysOfType<Object, Type> = {
@@ -131,40 +126,34 @@ function Switches() {
 }
 
 function VencordSettings() {
-    const donateImage = useMemo(() =>
-        Math.random() > 0.5 ? DEFAULT_DONATE_IMAGE : SHIGGY_DONATE_IMAGE,
-        []
-    );
-
     const user = UserStore?.getCurrentUser();
 
     return (
         <SettingsTab>
-            {isDonor(user?.id)
-                ? (
-                    <SpecialCard
-                        title="Donations"
-                        subtitle="Thank you for donating!"
-                        description="You can manage your perks at any time by messaging @vending.machine."
-                        cardImage={VENNIE_DONATOR_IMAGE}
-                        backgroundImage={DONOR_BACKGROUND_IMAGE}
-                        backgroundColor="#ED87A9"
+            <SpecialCard
+                title="Support doiksub"
+                description="free n forever. a star on github is appreciated, and if u really wanna throw money at someone, donate to vencord instead - we're literally built on their work."
+                backgroundColor="#9c85ef"
+            >
+                <div className={Margins.top8} style={{ display: "flex", gap: "0.5em", flexWrap: "wrap" }}>
+                    <Button
+                        size={Button.Sizes.SMALL}
+                        look={Button.Looks.FILLED}
+                        color={Button.Colors.BRAND}
+                        onClick={() => VencordNative.native.openExternal("https://github.com/ghxstprey/doiksub")}
                     >
-                        <DonateButtonComponent />
-                    </SpecialCard>
-                )
-                : (
-                    <SpecialCard
-                        title="Support the Project"
-                        description="Please consider supporting the development of Vencord by donating!"
-                        cardImage={donateImage}
-                        backgroundImage={DONOR_BACKGROUND_IMAGE}
-                        backgroundColor="#c3a3ce"
+                        Star us on GitHub
+                    </Button>
+                    <Button
+                        size={Button.Sizes.SMALL}
+                        look={Button.Looks.OUTLINED}
+                        color={Button.Colors.WHITE}
+                        onClick={() => VencordNative.native.openExternal("https://vencord.dev")}
                     >
-                        <DonateButtonComponent />
-                    </SpecialCard>
-                )
-            }
+                        Donate to Vencord
+                    </Button>
+                </div>
+            </SpecialCard>
 
             {isPluginDev(user?.id) && (
                 <SpecialCard
@@ -173,7 +162,7 @@ function VencordSettings() {
                     description="Since you've contributed to Vencord you now have a cool new badge!"
                     cardImage={COZY_CONTRIB_IMAGE}
                     backgroundImage={CONTRIB_BACKGROUND_IMAGE}
-                    backgroundColor="#EDCC87"
+                    backgroundColor="#5554519a"
                     buttonTitle="See what you've contributed to"
                     buttonOnClick={() => openContributorModal(user)}
                 />

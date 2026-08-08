@@ -34,7 +34,7 @@ import { SettingsTab, wrapTab } from "@components/settings/tabs/BaseTab";
 import { Margins } from "@utils/margins";
 import { classes } from "@utils/misc";
 import { IconComponent } from "@utils/types";
-import { ConfirmModal,openModal, Select, Tooltip, useState } from "@webpack/common";
+import { ConfirmModal, openModal, Select, Tooltip, useState } from "@webpack/common";
 
 function validateUrl(url: string) {
     try {
@@ -73,10 +73,7 @@ function CloudSetupSection() {
             <SectionHeading text="Cloud Integrations" />
 
             <Paragraph size="md" className={Margins.bottom20}>
-                Vencord comes with a cloud integration that adds goodies like settings sync across devices.
-                It <Link href="https://vencord.dev/cloud/privacy">respects your privacy</Link>, and
-                the <Link href="https://github.com/Vencord/Backend">source code</Link> is AGPL 3.0 licensed so you
-                can host it yourself.
+                vencord comes with a cloud integration that lets you sync settings across devices. they provide the code to host it myself, but not only am i a little too dumb to figure it out currently, i also don't have a server to host it on. requires a discord bot too, so that'd have to be running 24/7, again something i can't cover. it MIGHT work with their bot (as in syncing) but i'm honestly just guessing.
             </Paragraph>
             <FormSwitch
                 key="backend"

@@ -31,14 +31,14 @@ function startTypingLoop() {
 
 export default definePlugin({
     name: "FakeTyping",
-    description: "Simulate infinite typing in channels. Use /infinitype.",
+    description: "Simulate infinite typing in channels. Use /faketype.",
     authors: [doiksubDevs.sqz, doiksubDevs.god],
     tags: ["Sigil"],
     dependencies: ["CommandsAPI"],
 
     commands: [
         {
-            name: "infinitype", //infitity type, ty, infitype whatever u get it
+            name: "faketype",
             description: "Toggle infinite typing in this channel.",
             inputType: ApplicationCommandInputType.BUILT_IN,
             options: [

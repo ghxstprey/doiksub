@@ -7,8 +7,10 @@
 import "./checkNodeVersion.js";
 
 import { execFileSync, execSync } from "child_process";
-import { existsSync, mkdirSync } from "fs";
+import { createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
+import { Readable } from "stream";
+import { finished } from "stream/promises";
 import { fileURLToPath } from "url";
 
 const BASE_DIR = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -29,19 +31,103 @@ function getLocalInstallerPath() {
     }
 }
 
-async function ensureBinary() {
-    const outputFile = getLocalInstallerPath();
+// --- Fallback to Vencord's public installer ---
+// We ship a small Go installer called "ziggyzag", but only we (the devs) have the
+// compiled binary lying around. Everyone else that clones doiksub won't have it,
+// so when the local binary is missing we grab Vencord's official prebuilt installer
+// and run it in dev-install mode against our own dist/. This works because doiksub
+// is a Vencord fork and keeps Vencord's dist layout (patcher.js, preload.js, etc).
+const VENCORD_INSTALLER_BASE_URL = "https://github.com/Vencord/Installer/releases/latest/download/";
+const VENCORD_INSTALLER_DARWIN_INNER = "VencordInstaller.app/Contents/MacOS/VencordInstaller";
+const INSTALLER_DL_DIR = join(BASE_DIR, "dist", "Installer");
+const ETAG_FILE = join(INSTALLER_DL_DIR, "etag.txt");
 
-    if (!existsSync(outputFile)) {
-        console.log("Installer binary not found at " + outputFile);
-        console.log("Please build the ziggyzag installer first:");
-        console.log("  cd " + ZIGGYZAG_DIR);
-        console.log("  go build --tags cli   # or just `go build` for GUI");
-        throw new Error("Installer binary not found");
+function getVencordInstallerFilename() {
+    switch (process.platform) {
+        case "win32":
+            return "VencordInstallerCli.exe";
+        case "darwin":
+            return "VencordInstaller.MacOS.zip";
+        case "linux":
+            return "VencordInstallerCli-linux";
+        default:
+            throw new Error("Unsupported platform: " + process.platform);
+    }
+}
+
+async function downloadVencordInstaller() {
+    const filename = getVencordInstallerFilename();
+    console.log("Downloading Vencord's installer (" + filename + ") ...");
+
+    mkdirSync(INSTALLER_DL_DIR, { recursive: true });
+
+    const downloadName = join(INSTALLER_DL_DIR, filename);
+    const outputFile = process.platform === "darwin"
+        ? join(INSTALLER_DL_DIR, "VencordInstaller")
+        : downloadName;
+
+    const etag = existsSync(outputFile) && existsSync(ETAG_FILE)
+        ? readFileSync(ETAG_FILE, "utf-8")
+        : null;
+
+    const res = await fetch(VENCORD_INSTALLER_BASE_URL + filename, {
+        headers: {
+            "User-Agent": "doiksub (https://github.com/ghxstprey/doiksub)",
+            "If-None-Match": etag
+        }
+    });
+
+    if (res.status === 304) {
+        console.log("Up to date, not redownloading!");
+        return outputFile;
+    }
+    if (!res.ok)
+        throw new Error(`Failed to download installer: ${res.status} ${res.statusText}`);
+
+    writeFileSync(ETAG_FILE, res.headers.get("etag"));
+
+    if (process.platform === "darwin") {
+        console.log("Unzipping...");
+        const zip = new Uint8Array(await res.arrayBuffer());
+
+        const ff = await import("fflate");
+        const bytes = ff.unzipSync(zip, {
+            filter: f => f.name === VENCORD_INSTALLER_DARWIN_INNER
+        })[VENCORD_INSTALLER_DARWIN_INNER];
+
+        writeFileSync(outputFile, bytes, { mode: 0o755 });
+
+        console.log("Overriding security policy for installer binary (required to run it)");
+        const logAndRun = cmd => {
+            console.log("Running", cmd);
+            try { execSync(cmd); } catch { }
+        };
+        logAndRun(`sudo spctl --add '${outputFile}' --label "Vencord Installer"`);
+        logAndRun(`sudo xattr -d com.apple.quarantine '${outputFile}'`);
+    } else {
+        const body = Readable.fromWeb(res.body);
+        await finished(body.pipe(createWriteStream(outputFile, {
+            mode: 0o755,
+            autoClose: true
+        })));
     }
 
-    console.log("Using local installer: " + outputFile);
+    console.log("Finished downloading!");
     return outputFile;
+}
+
+async function ensureBinary() {
+    const localPath = getLocalInstallerPath();
+
+    if (existsSync(localPath)) {
+        console.log("Using local installer: " + localPath);
+        return localPath;
+    }
+
+    console.log("Local installer not found at " + localPath);
+    console.log("(if u're a dev, you can build ziggyzag: cd " + ZIGGYZAG_DIR + " && go build --tags cli)");
+    console.log("Falling back to Vencord's public installer (dev install, uses our local dist)...");
+    return await downloadVencordInstaller();
 }
 
 /**
@@ -157,8 +243,12 @@ try {
         stdio: "inherit",
         env: {
             ...process.env,
+            // ziggyzag reads the DOIKSUB_* vars, Vencord's installer reads VENCORD_*.
+            // setting both means whichever binary we ended up with just works.
             DOIKSUB_USER_DATA_DIR: BASE_DIR,
-            DOIKSUB_DEV_INSTALL: "1"
+            DOIKSUB_DEV_INSTALL: "1",
+            VENCORD_USER_DATA_DIR: BASE_DIR,
+            VENCORD_DEV_INSTALL: "1"
         }
     });
 } catch (e) {
