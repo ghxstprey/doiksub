@@ -483,7 +483,6 @@ let handler: ((data: { message: { author: { id: string; }; channel_id: string; i
 
 export default definePlugin({
     name: "AutoReact",
-    enabledByDefault: true,
     description: "Automatically reacts with emojis to messages from specific users. Configure multiple user:emoji pairs.",
     authors: [doiksubDevs.god],
     tags: ["Sigil"],

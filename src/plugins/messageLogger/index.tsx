@@ -215,6 +215,7 @@ export function parseEditContent(content: string, message: Message) {
 export default definePlugin({
     name: "MessageLogger",
     description: "Temporarily logs deleted and edited messages. Merges Vencord's logger with Equicord's (enhanced) logger.",
+    enabledByDefault: true,
     tags: ["Chat", "Utility"],
     authors: [Devs.rushii, Devs.Ven, Devs.AutumnVN, Devs.Nickyux, Devs.Kyuuhachi, Devs.sadan],
     dependencies: ["MessageUpdaterAPI"],

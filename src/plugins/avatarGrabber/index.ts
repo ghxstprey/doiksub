@@ -14,6 +14,7 @@ export default definePlugin({
     description: "/avatar grabs the full-resolution avatar of any user (or yourself). Sends as a public message.",
     authors: [doiksubDevs.god],
     tags: ["Sigil"],
+    enabledByDefault: true,
     dependencies: ["CommandsAPI"],
     commands: [
         {

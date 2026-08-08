@@ -34,6 +34,7 @@ export default definePlugin({
     name: "ValidReply",
     description: 'Fixes "Message could not be loaded" upon hovering over the reply',
     tags: ["Chat", "Utility"],
+    enabledByDefault: true,
     authors: [Devs.newwares],
     patches: [
         {

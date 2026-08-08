@@ -31,7 +31,7 @@ function startTypingLoop() {
 
 export default definePlugin({
     name: "FakeTyping",
-    description: "Simulate infinite typing in channels. Use /faketype.",
+    description: "Simulate infinite typing in channels. Use /faketype. Doesn't work if you have silent typing on.",
     authors: [doiksubDevs.sqz, doiksubDevs.god],
     tags: ["Sigil"],
     dependencies: ["CommandsAPI"],

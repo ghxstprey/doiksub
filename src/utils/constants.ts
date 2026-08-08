@@ -670,8 +670,8 @@ export const DevsById = /* #__PURE__*/ (() =>
  */
 export const doiksubDevs = /* #__PURE__*/ Object.freeze({
     ghxst: {
-        name: "ghxstprey",
-        id: 1518140533586006126n,
+        name: "ghxstprey (996ghxst)",
+        id: 1472632945209512152n,
     },
     oddy: {
         name: "whoreblunts",

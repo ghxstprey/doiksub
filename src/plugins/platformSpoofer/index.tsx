@@ -42,6 +42,7 @@ export default definePlugin({
     description: "Spoof what platform or device you're on (default: mobile)",
     tags: ["Utility", "Sigil"],
     authors: [{ name: "dragalt_", id: 1189903210564038697n }, { name: "neoarz", id: 218675193592283137n }, doiksubDevs.ghxst],
+    enabledByDefault: true,
     settings: settings,
     patches: [
         {

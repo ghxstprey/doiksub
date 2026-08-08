@@ -20,6 +20,7 @@ import { Devs } from "@utils/constants";
 import definePlugin from "@utils/types";
 
 export default definePlugin({
+    enabledByDefault: true,
     name: "NoF1",
     description: "Disables F1 help bind.",
     tags: ["Utility"],

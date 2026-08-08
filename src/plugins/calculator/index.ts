@@ -10,6 +10,7 @@ import definePlugin from "@utils/types";
 
 export default definePlugin({
     name: "Calculator",
+    enabledByDefault: true,
     tags: ["Sigil"],
     description: "/calc does quick maths right in the chat box.",
     authors: [doiksubDevs.god],
