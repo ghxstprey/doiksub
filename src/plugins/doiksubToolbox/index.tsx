@@ -81,6 +81,7 @@ export default definePlugin({
     name: "doiksub Toolbox",
     description: "Adds a button to the titlebar that houses doiksub quick actions, built off vencord's",
     tags: ["Utility", "Developers", "Sigil"],
+    enabledByDefault: true,
     authors: [Devs.Ven, Devs.AutumnVN, doiksubDevs.oddy, doiksubDevs.god],
 
     settings,

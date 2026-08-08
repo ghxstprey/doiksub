@@ -53,6 +53,8 @@ export * from "./UserSettingsProtoStore";
 export * from "./UserStore";
 export * from "./VoiceStateStore";
 export * from "./WindowStore";
+export * from "./AuthorizedAppsStore";
+export * from "./QuestStore";
 
 /**
  * React hook that returns stateful data for one or more stores
