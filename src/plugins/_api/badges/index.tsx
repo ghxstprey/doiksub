@@ -229,17 +229,12 @@ export default definePlugin({
                                 </Flex>
                                 <div style={{ padding: "1em" }}>
                                     <Forms.FormText>
-                                        Custom badges is exclusive to doiksub developers / friends
+                                        custom badges is exclusive to doiksub developers / friends.
                                     </Forms.FormText>
                                     <Forms.FormText className={Margins.top20}>
-                                        The chance of you getting one isn't zero, but it's not high either. if you already have a image on hand, you can send it on discord and i'll add it if i don't forget.
+                                        the chance of you getting one isn't zero, but it's not high either. if you already have a image on hand, you can send it on discord and i'll add it if i don't forget.
                                     </Forms.FormText>
                                 </div>
-                            </div>
-                            <div>
-                                <Flex justifyContent="center" style={{ width: "100%" }}>
-                                    <DonateButton />
-                                </Flex>
                             </div>
                         </Modal>
                     </ErrorBoundary>
