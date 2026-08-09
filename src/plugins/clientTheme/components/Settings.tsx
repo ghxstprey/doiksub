@@ -5,8 +5,9 @@
  */
 
 import { ErrorCard } from "@components/ErrorCard";
+import { FormSwitch } from "@components/FormSwitch";
 import { relativeLuminance } from "@plugins/clientTheme/utils/colorUtils";
-import { createOrUpdateThemeColorVars } from "@plugins/clientTheme/utils/styleUtils";
+import { createOrUpdateThemeColorVars, startGradient, stopGradient } from "@plugins/clientTheme/utils/styleUtils";
 import { classNameFactory } from "@utils/css";
 import { Margins } from "@utils/margins";
 import { findByCodeLazy, findStoreLazy } from "@webpack";
@@ -31,6 +32,19 @@ function onPickColor(color: number) {
 
     settings.store.color = hexColor;
     createOrUpdateThemeColorVars(hexColor);
+
+    // Restart the gradient from the newly picked color if it's enabled.
+    if (settings.store.gradient) startGradient();
+}
+
+function onToggleGradient(enabled: boolean) {
+    settings.store.gradient = enabled;
+    if (enabled) {
+        startGradient();
+    } else {
+        stopGradient();
+        createOrUpdateThemeColorVars(settings.store.color);
+    }
 }
 
 function setDiscordTheme(theme: string) {
@@ -75,6 +89,12 @@ export function ThemeSettingsComponent() {
                     onChange={onPickColor}
                     showEyeDropper={false}
                     suggestedColors={colorPresets}
+                />
+                <FormSwitch
+                    title="Animated Gradient"
+                    description="Continuously shift the theme color through an animated gradient (uses the color picked above as its base)."
+                    value={settings.store.gradient}
+                    onChange={onToggleGradient}
                 />
             </div>
             {(contrastWarning || nitroThemeEnabled) && (<>

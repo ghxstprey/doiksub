@@ -131,7 +131,7 @@ export const startAllPlugins = traceFunction("startAllPlugins", function startAl
 });
 
 export function startDependenciesRecursive(p: Plugin) {
-    if (!p) return;
+    if (!p) return { restartNeeded: false, failures: [] };
     const settings = Settings.plugins;
     let restartNeeded = false;
     const failures: string[] = [];

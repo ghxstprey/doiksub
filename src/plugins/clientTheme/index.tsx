@@ -21,6 +21,13 @@ export const settings = definePluginSettings({
         default: "313338",
         component: ThemeSettingsComponent
     },
+    gradient: {
+        type: OptionType.BOOLEAN,
+        description: "Animate the theme color through a shifting gradient",
+        default: false,
+        restartNeeded: false,
+        hidden: true
+    },
     resetColor: {
         type: OptionType.COMPONENT,
         component: ResetThemeColorComponent
@@ -35,6 +42,6 @@ export default definePlugin({
     settings,
 
     startAt: StartAt.DOMContentLoaded,
-    start: () => startClientTheme(settings.store.color),
+    start: () => startClientTheme(settings.store.color, settings.store.gradient),
     stop: disableClientTheme
 });
