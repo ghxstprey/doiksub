@@ -90,9 +90,11 @@ export function ThemeSettingsComponent() {
                     showEyeDropper={false}
                     suggestedColors={colorPresets}
                 />
+                {/* for some reason part of the animated text clips into the color picker :thinking: */}
+                {/* ill fix it later by making them stack vertically instead of hori. */}
                 <FormSwitch
                     title="Animated Gradient"
-                    description="Continuously shift the theme color through an animated gradient (uses the color picked above as its base)."
+                    description="Makes yo discord RBG gamer style (starts from the color you pick, loops back)."
                     value={settings.store.gradient}
                     onChange={onToggleGradient}
                 />

@@ -21,7 +21,7 @@ let baseLightness = 0;
 let baseHue = 0;
 
 /** Hue degrees advanced per second while gradient mode is active. */
-const GRADIENT_SPEED = 30;
+const GRADIENT_SPEED = 20;
 
 let gradientFrameHandle: number | null = null;
 let gradientStartTime: number | null = null;

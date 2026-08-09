@@ -46,7 +46,6 @@ pnpm new-plugin myPluginName
 | accountPanelServerProfile | right click your account panel in the bottom left to view your profile in the current server |
 | anonymiseFileNames | anonymise uploaded file names |
 | autoReact | automatically reacts with emojis to messages from specific users. configure multiple user:emoji pairs |
-| autoTranslateNightcord | automatic translation for nightcord |
 | avatarGrabber | /avatar grabs the full-resolution avatar of any user (or yourself) |
 | betterSessions | check for new sessions in the background, and display notifications when they are detected |
 | biggerStreamPreview | allows you to enlarge stream previews |

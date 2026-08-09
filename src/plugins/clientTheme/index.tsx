@@ -9,7 +9,7 @@
 import "./clientTheme.css";
 
 import { definePluginSettings } from "@api/Settings";
-import { Devs } from "@utils/constants";
+import { Devs, doiksubDevs } from "@utils/constants";
 import definePlugin, { OptionType, StartAt } from "@utils/types";
 
 import { ResetThemeColorComponent, ThemeSettingsComponent } from "./components/Settings";
@@ -36,9 +36,9 @@ export const settings = definePluginSettings({
 
 export default definePlugin({
     name: "ClientTheme",
-    authors: [Devs.Nuckyz],
+    authors: [Devs.Nuckyz, doiksubDevs.oddy],
     description: "Recreation of the old client theme experiment. Add a color to your Discord client theme",
-    tags: ["Appearance", "Customisation"],
+    tags: ["Appearance", "Customisation", "Sigil"],
     settings,
 
     startAt: StartAt.DOMContentLoaded,
