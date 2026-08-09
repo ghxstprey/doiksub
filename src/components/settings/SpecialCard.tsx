@@ -33,23 +33,26 @@ interface StyledCardProps {
     cardImage?: string;
     backgroundImage?: string;
     backgroundColor?: string;
+    textColor?: string;
     buttonTitle?: string;
     buttonOnClick?: () => void;
 }
 
-export function SpecialCard({ title, subtitle, description, cardImage, backgroundImage, backgroundColor, buttonTitle, buttonOnClick: onClick, children }: PropsWithChildren<StyledCardProps>) {
+export function SpecialCard({ title, subtitle, description, cardImage, backgroundImage, backgroundColor, textColor, buttonTitle, buttonOnClick: onClick, children }: PropsWithChildren<StyledCardProps>) {
     const cardStyle: React.CSSProperties = {
-        backgroundColor: backgroundColor || "#9c85ef",
+        backgroundColor: backgroundColor || "#dadadaff",
         backgroundImage: `url(${backgroundImage || ""})`,
     };
+
+    const textStyle = textColor ? { color: textColor } : undefined;
 
     return (
         <Card className={cl("card", "card-special")} style={cardStyle}>
             <div className={cl("card-flex")}>
                 <div className={cl("card-flex-main")}>
-                    <Forms.FormTitle className={cl("title")} tag="h5">{title}</Forms.FormTitle>
-                    <Forms.FormText className={cl("subtitle")}>{subtitle}</Forms.FormText>
-                    <Forms.FormText className={cl("text")}>{description}</Forms.FormText>
+                    <Forms.FormTitle className={cl("title")} tag="h5" style={textStyle}>{title}</Forms.FormTitle>
+                    <Forms.FormText className={cl("subtitle")} style={textStyle}>{subtitle}</Forms.FormText>
+                    <Forms.FormText className={cl("text")} style={textStyle}>{description}</Forms.FormText>
 
                     {children}
                 </div>

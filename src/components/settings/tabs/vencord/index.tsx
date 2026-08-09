@@ -24,13 +24,11 @@ import { FolderIcon, GithubIcon, LogIcon, PaintbrushIcon, RestartIcon } from "@c
 import { QuickAction, QuickActionCard } from "@components/settings/QuickAction";
 import { SpecialCard } from "@components/settings/SpecialCard";
 import { SettingsTab, wrapTab } from "@components/settings/tabs/BaseTab";
-import { openContributorModal } from "@components/settings/tabs/plugins/ContributorModal";
 import { openPluginModal } from "@components/settings/tabs/plugins/PluginModal";
 import SettingsPlugin from "@plugins/_core/settings";
 import { gitRemote } from "@shared/vencordUserAgent";
 import { IS_WINDOWS } from "@utils/constants";
 import { Margins } from "@utils/margins";
-import { isPluginDev } from "@utils/misc";
 import { relaunch } from "@utils/native";
 import { Button, ConfirmModal, Forms, openModal, React, UserStore } from "@webpack/common";
 
@@ -38,8 +36,8 @@ import { MacOSVibrancySettings } from "./MacVibrancySettings";
 import { NotificationSection } from "./NotificationSettings";
 import { WindowsMaterialSettings } from "./WindowsMaterialSettings";
 
-const COZY_CONTRIB_IMAGE = "https://cdn.discordapp.com/emojis/1026533070955872337.png";
-const CONTRIB_BACKGROUND_IMAGE = "https://media.discordapp.net/stickers/1311070166481895484.png?size=2048";
+const COZY_CONTRIB_IMAGE = "https://cdn.discordapp.com/emojis/1535580884151967776.webp?size=96&animated=true";
+const CONTRIB_BACKGROUND_IMAGE = "https://github.com/ghxstprey/doiksub/assets/other/support_bg.png"; // wont work until i push update
 
 type KeysOfType<Object, Type> = {
     [K in keyof Object]: Object[K] extends Type ? K : never;
@@ -132,8 +130,12 @@ function VencordSettings() {
         <SettingsTab>
             <SpecialCard
                 title="Support doiksub"
-                description="free n forever. a star on github is appreciated, and if u really wanna throw money at someone, donate to vencord instead - we're literally built on their work."
-                backgroundColor="#9c85ef"
+                description="free n forever. a star on github is appreciated if you wanna support. if u really wanna throw money at someone, donate to vencord instead - doiksub is literally built on their work."
+                // card image is black and white, overlay white text instead so it can read (im gonna dim the card image so text stands out more asw)
+                textColor="#fff"
+                cardImage={COZY_CONTRIB_IMAGE}
+                backgroundImage={CONTRIB_BACKGROUND_IMAGE}
+
             >
                 <div className={Margins.top8} style={{ display: "flex", gap: "0.5em", flexWrap: "wrap" }}>
                     <Button
@@ -147,7 +149,8 @@ function VencordSettings() {
                     <Button
                         size={Button.Sizes.SMALL}
                         look={Button.Looks.OUTLINED}
-                        color={Button.Colors.WHITE}
+                        color={Button.Colors.CUSTOM}
+                        style={{ color: "#696969ff" }}
                         onClick={() => VencordNative.native.openExternal("https://vencord.dev")}
                     >
                         Donate to Vencord
@@ -155,7 +158,7 @@ function VencordSettings() {
                 </div>
             </SpecialCard>
 
-            {isPluginDev(user?.id) && (
+            {/* {isPluginDev(user?.id) && (
                 <SpecialCard
                     title="Contributions"
                     subtitle="Thank you for contributing!"
@@ -166,7 +169,7 @@ function VencordSettings() {
                     buttonTitle="See what you've contributed to"
                     buttonOnClick={() => openContributorModal(user)}
                 />
-            )}
+            )} */}
 
             <section>
                 <Forms.FormTitle tag="h5">Quick Actions</Forms.FormTitle>
