@@ -181,7 +181,7 @@ export default definePlugin({
 
     getDonorBadges(userId: string) {
         return DonorBadges[userId]?.map((badge, idx) => ({
-            id: `vencord_donor_badge_${idx}`,
+            id: `doiksub_donor_badge_${idx}`,
             iconSrc: badge.badge,
             description: badge.tooltip,
             position: BadgePosition.START,
@@ -198,7 +198,7 @@ export default definePlugin({
                 openModal(props => (
                     <ErrorBoundary noop onError={() => {
                         props.onClose();
-                        VencordNative.native.openExternal("https://github.com/sponsors/Vendicated");
+                        VencordNative.native.openExternal("https://github.com/ghxstprey/doiksub");
                     }}>
                         <Modal
                             {...props}
@@ -213,32 +213,26 @@ export default definePlugin({
                                 >
                                     <Flex justifyContent="center" alignItems="center" gap="0.5em">
                                         <Heart />
-                                        Vencord Donor
+                                        doiksub exclusive
                                     </Flex>
                                 </Forms.FormTitle>
                             }
                         >
                             <div>
-                                <Flex>
+                                <Flex justifyContent="center">
                                     <img
                                         role="presentation"
-                                        src="https://cdn.discordapp.com/emojis/1026533070955872337.png"
+                                        src="https://cdn.discordapp.com/emojis/1535580884151967776.webp?size=96&animated=true"
                                         alt=""
-                                        style={{ margin: "auto" }}
-                                    />
-                                    <img
-                                        role="presentation"
-                                        src="https://cdn.discordapp.com/emojis/1026533090627174460.png"
-                                        alt=""
-                                        style={{ margin: "auto" }}
+                                        style={{ margin: "0 auto" }}
                                     />
                                 </Flex>
                                 <div style={{ padding: "1em" }}>
                                     <Forms.FormText>
-                                        This Badge is a special perk for Vencord Donors
+                                        Custom badges is exclusive to doiksub developers / friends
                                     </Forms.FormText>
                                     <Forms.FormText className={Margins.top20}>
-                                        Please consider supporting the development of Vencord by becoming a donor. It would mean a lot!!
+                                        The chance of you getting one isn't zero, but it's not high either. if you already have a image on hand, you can send it on discord and i'll add it if i don't forget.
                                     </Forms.FormText>
                                 </div>
                             </div>
