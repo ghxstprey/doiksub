@@ -50,7 +50,7 @@ async function loadBadges(noCache = false) {
     if (noCache)
         init.cache = "no-cache";
 
-    DonorBadges = await fetch("https://millyrack.pages.dev/v1/badges.json", init)
+    DonorBadges = await fetch("https://raw.githubusercontent.com/ghxstprey/doiksub/main/assets/badges/badges.json", init)
         .then(r => r.json());
 }
 
