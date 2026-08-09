@@ -37,7 +37,7 @@ import { NotificationSection } from "./NotificationSettings";
 import { WindowsMaterialSettings } from "./WindowsMaterialSettings";
 
 const COZY_CONTRIB_IMAGE = "https://cdn.discordapp.com/emojis/1535580884151967776.webp?size=96&animated=true";
-const CONTRIB_BACKGROUND_IMAGE = "https://github.com/ghxstprey/doiksub/assets/other/support_bg.png"; // wont work until i push update
+const CONTRIB_BACKGROUND_IMAGE = "https://github.com/ghxstprey/doiksub/blob/main/assets/other/support_bg.png?raw=true"; // wont work until i push update - wont work if i dont get the right fucking url LMFAOOO
 
 type KeysOfType<Object, Type> = {
     [K in keyof Object]: Object[K] extends Type ? K : never;

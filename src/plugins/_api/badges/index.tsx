@@ -32,11 +32,11 @@ import { shouldShowContributorBadge } from "@utils/misc";
 import definePlugin from "@utils/types";
 import { ContextMenuApi, Forms, Menu, Modal, openModal, Toasts, UserStore } from "@webpack/common";
 
-const CONTRIBUTOR_BADGE = "https://cdn.discordapp.com/emojis/1092089799109775453.png?size=64";
+const CONTRIBUTOR_BADGE = "https://cdn.discordapp.com/emojis/1535849888489938954.png?size=64";
 
 const ContributorBadge: ProfileBadge = {
-    id: "vencord_contributor_badge",
-    description: "Vencord Contributor",
+    id: "doiksub_contributor_badge",
+    description: "Doiksub Contributor",
     iconSrc: CONTRIBUTOR_BADGE,
     position: BadgePosition.START,
     shouldShow: ({ userId }) => shouldShowContributorBadge(userId),
