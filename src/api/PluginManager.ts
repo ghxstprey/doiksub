@@ -356,7 +356,7 @@ export const initPluginManager = onlyOnce(function init() {
                 return;
             }
 
-            settings[d].enabled = true;
+            settings[d] && (settings[d].enabled = true);
             dep.isDependency = true;
         });
 
