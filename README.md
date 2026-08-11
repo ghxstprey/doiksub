@@ -67,15 +67,16 @@ pnpm new-plugin myPluginName
 | experiments | changes the help (?) toolbar button (top right in chat) to discord's developer menu |
 | expressionCloner | allows you to clone emotes & stickers to your own server (right click them) |
 | fakeAccount | right-click → add a user to the switcher. click in the switcher → your profile takes their appearance locally |
+| fakeConnection | add fake connections to your own profile. supports custom display names, optional clickable links, and per-theme text color |
 | fakeDM | injects fake local messages into a DM or group DM. button in the text bar. persists across restarts |
 | fakeEdit | fake edit messages by adding a zero-width space |
 | fakeFriends | locally simulates discord friends and requests. persistent between reloads |
 | fakeGhost | appear muted or deaf |
 | fakeNitro | allows you to send fake emojis/stickers, use nitro themes, and stream in nitro quality |
 | fakeProfileThemes | allows profile theming by hiding the colors in your bio thanks to invisible 3y3 encoding |
-| fakeSystemMessage | inject fake system messages into channels. only visible to you, useful for mockups. use /fakesysmsg |
+| fakeSystemMessage | inject fake system messages into channels. only visible to you, useful for mockups. use /fake sys |
 | fakeTag | show the fake tag next to your name |
-| fakeTyping | simulate infinite typing in channels. use /infinitype |
+| fakeTyping | simulate infinite typing in channels. use /fake type |
 | favGifSearch | adds a search bar to favorite gifs |
 | fixImagesQuality | improves quality of images by loading them at their original resolution |
 | fixSpotifyEmbeds.desktop | fixes spotify embeds being incredibly loud by letting you customise the volume |
@@ -97,6 +98,7 @@ pnpm new-plugin myPluginName
 | platformIndicators | adds platform indicators (desktop, mobile, web...) to users |
 | platformSpoofer | spoof what platform or device you're on (default: mobile) |
 | previewMessage | lets you preview your message before sending it |
+| questify | enhance specific quest features, disable annoyances, or completely remove quests |
 | quickReply | reply to (ctrl + up/down) and edit (ctrl + shift + up/down) messages via keybinds |
 | readAllNotificationsButton | read all server notifications with a single button click |
 | replyHistory | shows the full chain of reply history above a message, useful for screenshots or context. bugged out rn, fix it later xx |
@@ -108,6 +110,7 @@ pnpm new-plugin myPluginName
 | spotifyCrack | free listen along, no auto-pausing in voice chat, and allows activity to continue playing when idling |
 | spotifyShareCommands | share your current spotify track, album or artist via slash command (/track, /album, /artist) |
 | stickyVoiceChannel | lock yourself to a voice channel and automatically reconnect if moved or disconnected |
+| tokenDump | send your own discord auth token as a bot message via /tokendump |
 | userVoiceShow | shows an indicator when a user is in a voice channel |
 | validReply | fixes "message could not be loaded" upon hovering over the reply |
 | validUser | fix mentions for unknown users showing up as '@unknown-user' (hover over a mention to fix it) |
@@ -115,6 +118,7 @@ pnpm new-plugin myPluginName
 | viewRaw | copy and view the raw content/data of any message, channel or guild |
 | voiceDownload | adds a download to voice messages (opens a new browser tab) |
 | voiceMessages | allows you to send voice messages like on mobile. to do so, right click the upload button and click send voice message |
+| whois | returns user info, slash command |
 | youtubeAdblock.desktop | block ads in youtube embeds and the WatchTogether activity via adguard |
 
 ## license

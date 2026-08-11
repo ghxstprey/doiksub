@@ -21,16 +21,22 @@ export default definePlugin({
             name: "avatar",
             description: "Get a user's full-size avatar",
             options: [
-                { name: "user", description: "Whose avatar (defaults to you)", type: ApplicationCommandOptionType.USER }
+                { name: "user", description: "Whose avatar (defaults to you)", type: ApplicationCommandOptionType.USER },
+                { name: "system", description: "Send as a Clyde/system message instead of command response", type: ApplicationCommandOptionType.BOOLEAN }
             ],
             execute: (opts, ctx) => {
                 const userId = findOption<string>(opts, "user") ?? UserStore.getCurrentUser()?.id;
+                const asSystem = findOption<boolean>(opts, "system", false);
                 const user = userId ? UserStore.getUser(userId) : null;
                 if (!user) {
                     sendBotMessage(ctx.channel.id, { content: "Couldn't find that user." });
                     return;
                 }
                 const url = IconUtils.getUserAvatarURL(user, true, 1024);
+                if (asSystem) {
+                    sendBotMessage(ctx.channel.id, { content: url });
+                    return;
+                }
                 return { content: url };
             }
         }

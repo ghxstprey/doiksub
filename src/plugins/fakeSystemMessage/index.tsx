@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { ApplicationCommandInputType, ApplicationCommandOptionType, findOption } from "@api/Commands";
+import { findOption } from "@api/Commands";
+import { CommandArgument, CommandContext } from "@vencord/discord-types";
 import definePlugin from "@utils/types";
 import { doiksubDevs } from "@utils/constants";
 import { FluxDispatcher, UserStore } from "@webpack/common";
@@ -31,7 +32,7 @@ function buildAuthor(user: any) {
     };
 }
 
-const SYSTEM_MESSAGE_TYPES = [
+export const SYSTEM_MESSAGE_TYPES = [
     { name: "User Join", value: 7 },
     { name: "Guild Boost", value: 8 },
     { name: "Guild Boost Tier 1", value: 9 },
@@ -56,75 +57,55 @@ const SYSTEM_MESSAGE_TYPES = [
 
 // lwk just like almost all of these dont work. most do tho so fix that later
 
+export async function executeSystemMessage(args: CommandArgument[], ctx: CommandContext) {
+    const content = findOption<string>(args, "content", "");
+    const type = findOption<number>(args, "type", 7);
+    const userArg = args.find(a => a.name === "user");
+    const user = userArg ? UserStore.getUser(userArg.value) : UserStore.getCurrentUser();
+
+    if (!user) return;
+
+    const id = makeSnowflake();
+    FluxDispatcher.dispatch({
+        type: "MESSAGE_CREATE",
+        channelId: ctx.channel.id,
+        message: {
+            attachments: [],
+            components: [],
+            embeds: [],
+            mention_roles: [],
+            mentions: [],
+            author: buildAuthor(user),
+            channel_id: ctx.channel.id,
+            content,
+            edited_timestamp: null,
+            flags: 0,
+            id,
+            mention_everyone: false,
+            nonce: id,
+            pinned: false,
+            timestamp: new Date().toISOString(),
+            tts: false,
+            type,
+        },
+        optimistic: false,
+        isPushNotification: false,
+    });
+}
+
 export default definePlugin({
     name: "FakeSystemMessage",
     enabledByDefault: true,
-    description: "Inject fake system messages into channels. Only visible to you, useful for mockups. Use /fakesysmsg.",
+    description: "Inject fake system messages into channels. Only visible to you, useful for mockups. Use /fake sys.",
     authors: [doiksubDevs.sqz],
     tags: ["Sigil"],
-    dependencies: ["CommandsAPI"],
+    dependencies: ["Fake", "CommandsAPI"],
 
-    commands: [
-        {
-            name: "fakesysmsg",
-            description: "Inject a fake system message into the current channel.",
-            inputType: ApplicationCommandInputType.BUILT_IN,
-            options: [
-                {
-                    type: ApplicationCommandOptionType.STRING,
-                    name: "content",
-                    description: "The message content (leave empty for default system text).",
-                    required: false,
-                },
-                {
-                    type: ApplicationCommandOptionType.INTEGER,
-                    name: "type",
-                    description: "System message type (default: 7 = User Join).",
-                    required: false,
-                    choices: SYSTEM_MESSAGE_TYPES.map(t => ({ name: t.name, value: t.value })),
-                },
-                {
-                    type: ApplicationCommandOptionType.USER,
-                    name: "user",
-                    description: "User to attribute the system message to (default: yourself).",
-                    required: false,
-                },
-            ],
-            execute(args, ctx) {
-                const content = findOption<string>(args, "content", "");
-                const type = findOption<number>(args, "type", 7);
-                const userArg = args.find(a => a.name === "user");
-                const user = userArg ? UserStore.getUser(userArg.value) : UserStore.getCurrentUser();
+    start() {
+        // No-op, command is handled by Fake
+    },
 
-                if (!user) return;
-
-                const id = makeSnowflake();
-                FluxDispatcher.dispatch({
-                    type: "MESSAGE_CREATE",
-                    channelId: ctx.channel.id,
-                    message: {
-                        attachments: [],
-                        components: [],
-                        embeds: [],
-                        mention_roles: [],
-                        mentions: [],
-                        author: buildAuthor(user),
-                        channel_id: ctx.channel.id,
-                        content,
-                        edited_timestamp: null,
-                        flags: 0,
-                        id,
-                        mention_everyone: false,
-                        nonce: id,
-                        pinned: false,
-                        timestamp: new Date().toISOString(),
-                        tts: false,
-                        type,
-                    },
-                    optimistic: false,
-                    isPushNotification: false,
-                });
-            },
-        },
-    ],
+    stop() {
+        // No-op
+    },
 });

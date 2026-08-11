@@ -681,10 +681,6 @@ export const doiksubDevs = /* #__PURE__*/ Object.freeze({
         name: "sqzass",
         id: 1527236156310425651n,
     },
-    etorix: {
-        name: "Etorix",
-        id: 94597845868355584n,
-    },
     god: {
         name: "yungpharaoh",
         id: 1136337246631497849n,

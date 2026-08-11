@@ -1,26 +1,28 @@
 /*
- * Endcord, a Discord client mod
- * Copyright (c) 2026 Vendicated and contributors
+ * doiksub, a Discord client mod
+ * Copyright (c) 2026 ghxst and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 import { get as dsGet, set as dsSet } from "@api/DataStore";
+import { addProfileBadge, BadgePosition, removeProfileBadge } from "@api/Badges";
 import { definePluginSettings } from "@api/Settings";
 import { doiksubDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
-import { FluxDispatcher, React, UserStore } from "@webpack/common";
+import { FluxDispatcher, UserStore } from "@webpack/common";
 
-const DS_BADGE_KEY = "FakeTag_badgeEmojiId";
+const DS_BADGE_KEY = "FakeTag_badgeUrl";
 
 let originalGetCurrentUser: (() => ReturnType<typeof UserStore.getCurrentUser>) | null = null;
 let originalGetUser: ((id: string) => ReturnType<typeof UserStore.getUser>) | null = null;
-let cachedBadgeEmojiId: string = "";
-let cachedBadgeDataUrl: string = "";
+let cachedBadgeUrl: string = "";
+let blobUrl: string | null = null;
+let registeredBadge: ReturnType<typeof buildBadge> | null = null;
 
 const settings = definePluginSettings({
     enabled: {
         type: OptionType.BOOLEAN,
-        description: "Show the fake tag next to your name.",
+        description: "Show the fake tag and badge next to your name.",
         default: false,
         onChange(v: boolean) {
             if (v) applyPatch(); else removePatch();
@@ -34,78 +36,76 @@ const settings = definePluginSettings({
             if (settings.store.enabled) notifyUpdate();
         },
     },
-    _badgeUrlInput: {
-        type: OptionType.COMPONENT,
-        description: "",
-        component: BadgeUrlInput,
+    badgeUrl: {
+        type: OptionType.STRING,
+        description: "Badge image URL (emoji CDN, direct link, etc.).",
+        default: "",
+        onChange() {
+            if (settings.store.enabled) refreshBadge();
+        },
     },
 });
 
 async function loadBadge() {
-    const stored = await dsGet<string>(DS_BADGE_KEY);
-    cachedBadgeEmojiId = stored ?? "";
-    if (cachedBadgeEmojiId) {
-        cachedBadgeDataUrl = await fetchEmojiAsDataUrl(cachedBadgeEmojiId);
-    }
+    cachedBadgeUrl = (await dsGet<string>(DS_BADGE_KEY)) ?? "";
 }
 
-async function saveBadge(emojiId: string) {
-    cachedBadgeEmojiId = emojiId;
-    await dsSet(DS_BADGE_KEY, emojiId);
-    if (emojiId) {
-        cachedBadgeDataUrl = await fetchEmojiAsDataUrl(emojiId);
-    } else {
-        cachedBadgeDataUrl = "";
-    }
+async function saveBadge(url: string) {
+    cachedBadgeUrl = url;
+    await dsSet(DS_BADGE_KEY, url);
 }
 
-async function fetchEmojiAsDataUrl(emojiId: string): Promise<string> {
+async function resolveBlob(url: string): Promise<string | null> {
+    if (!url.trim()) return null;
     try {
-        const response = await fetch(`https://cdn.discordapp.com/emojis/${emojiId}.png?size=128`);
-        const blob = await response.blob();
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result as string);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-        });
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const blob = await res.blob();
+        if (blobUrl) URL.revokeObjectURL(blobUrl);
+        blobUrl = URL.createObjectURL(blob);
+        return blobUrl;
     } catch {
-        return "";
+        return null;
     }
 }
 
-function buildFakePrimaryGuild() {
+async function refreshBlob() {
+    const iconSrc = blobUrl ?? await resolveBlob(cachedBadgeUrl);
+    if (!iconSrc) return;
+    if (!settings.store.enabled) return;
+    removePatch();
+    applyPatch(iconSrc);
+    notifyUpdate();
+}
+
+function buildBadge(iconSrc: string) {
     const { tag } = settings.store;
     if (!tag.trim()) return null;
-    const badge = cachedBadgeDataUrl || null;
+
     return {
-        tag: tag.trim().slice(0, 5).toUpperCase(),
-        badge,
-        identityEnabled: true,
-        identityGuildId: "0",
+        id: "doiksub_faketag_badge",
+        iconSrc,
+        description: tag.trim().slice(0, 5).toUpperCase(),
+        position: BadgePosition.END,
+        shouldShow: ({ userId }) => {
+            const myId = originalGetCurrentUser?.()?.id ?? UserStore.getCurrentUser()?.id;
+            return userId === myId;
+        },
     };
 }
 
-function wrapUser(user: any) {
-    const fake = buildFakePrimaryGuild();
-    if (!fake) return user;
-    const wrapped = Object.create(Object.getPrototypeOf(user));
-    for (const key of Object.getOwnPropertyNames(user)) {
-        const desc = Object.getOwnPropertyDescriptor(user, key);
-        if (desc) Object.defineProperty(wrapped, key, desc);
-    }
-    wrapped.primaryGuild = fake;
-    return wrapped;
-}
-
-function getMyId() {
-    return originalGetCurrentUser?.()?.id ?? UserStore.getCurrentUser()?.id;
-}
-
-function applyPatch() {
+function applyPatch(iconSrc?: string) {
     if (originalGetCurrentUser) return;
+
     originalGetCurrentUser = UserStore.getCurrentUser.bind(UserStore);
     originalGetUser = (UserStore as any).getUser.bind(UserStore);
+
+    const src = iconSrc ?? blobUrl;
+    const badge = src ? buildBadge(src) : null;
+    if (badge) {
+        registeredBadge = badge;
+        addProfileBadge(badge);
+    }
 
     (UserStore as any).getCurrentUser = function () {
         const user = originalGetCurrentUser!();
@@ -124,11 +124,38 @@ function applyPatch() {
 
 function removePatch() {
     if (!originalGetCurrentUser) return;
+
+    if (registeredBadge) {
+        removeProfileBadge(registeredBadge);
+        registeredBadge = null;
+    }
+
     (UserStore as any).getCurrentUser = originalGetCurrentUser;
     (UserStore as any).getUser = originalGetUser;
     originalGetCurrentUser = null;
     originalGetUser = null;
     notifyUpdate();
+}
+
+function wrapUser(user: any) {
+    const { tag } = settings.store;
+    if (!tag.trim()) return user;
+    const wrapped = Object.create(Object.getPrototypeOf(user));
+    for (const key of Object.getOwnPropertyNames(user)) {
+        const desc = Object.getOwnPropertyDescriptor(user, key);
+        if (desc) Object.defineProperty(wrapped, key, desc);
+    }
+    wrapped.primaryGuild = {
+        tag: tag.trim().slice(0, 5).toUpperCase(),
+        badge: null,
+        identityEnabled: true,
+        identityGuildId: "0",
+    };
+    return wrapped;
+}
+
+function getMyId() {
+    return originalGetCurrentUser?.()?.id ?? UserStore.getCurrentUser()?.id;
 }
 
 function notifyUpdate() {
@@ -138,75 +165,27 @@ function notifyUpdate() {
     } catch { }
 }
 
-function BadgeUrlInput() {
-    const [inputValue, setInputValue] = React.useState<string>(cachedBadgeEmojiId || "");
-    const [previewDataUrl, setPreviewDataUrl] = React.useState<string>(cachedBadgeDataUrl);
-
-    async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const value = e.target.value.trim();
-        setInputValue(value);
-        await saveBadge(value);
-        if (value) {
-            const dataUrl = await fetchEmojiAsDataUrl(value);
-            setPreviewDataUrl(dataUrl);
-        } else {
-            setPreviewDataUrl("");
-        }
-        if (settings.store.enabled) notifyUpdate();
-    }
-
-    return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ fontSize: 12, color: "var(--header-secondary)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                Badge Emoji ID
-            </div>
-            <input
-                type="text"
-                value={inputValue}
-                onChange={handleChange}
-                placeholder="Enter emoji ID (e.g. ea76d37bcd6f1b0543efcce6c32fe999)"
-                style={{
-                    padding: "8px 12px",
-                    borderRadius: 4,
-                    border: "1px solid var(--background-modifier-accent)",
-                    background: "var(--background-secondary)",
-                    color: "var(--text-normal)",
-                    fontSize: 13,
-                    width: "100%",
-                    boxSizing: "border-box",
-                }}
-            />
-            {previewDataUrl && (
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <img
-                        src={previewDataUrl}
-                        alt="badge preview"
-                        width={24}
-                        height={24}
-                        style={{ borderRadius: 2 }}
-                    />
-                    <span style={{ fontSize: 11, color: "var(--text-muted)" }}>
-                        Preview
-                    </span>
-                </div>
-            )}
-        </div>
-    );
+async function refreshBadge() {
+    await refreshBlob();
 }
 
 export default definePlugin({
     name: "FakeTag",
-    description: "Adds a fake clan tag and badge emoji next to your username. The emoji's are lwk broken rn sorry.",
+    description: "Adds a fake clan tag and custom badge next to your username.",
     tags: ["Sigil"],
     authors: [doiksubDevs.ghxst],
     settings,
 
     async start() {
         await loadBadge();
-        if (settings.store.enabled) applyPatch();
+        await refreshBlob();
     },
 
     stop() {
         removePatch();
+        if (blobUrl) {
+            URL.revokeObjectURL(blobUrl);
+            blobUrl = null;
+        }
     },
 });

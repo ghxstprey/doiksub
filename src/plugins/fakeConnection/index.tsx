@@ -319,7 +319,6 @@ export default definePlugin({
     description: "Add fake connections to your own profile. Supports custom display names, optional clickable links, and per-theme text color.",
     authors: [doiksubDevs.ghxst],
     tags: ["Sigil"],
-    dependencies: ["ProfileSectionsAPI"],
     settings,
 
     renderProfileSection: {

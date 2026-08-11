@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { ApplicationCommandInputType, ApplicationCommandOptionType, findOption, sendBotMessage } from "@api/Commands";
+import { CommandArgument, CommandContext } from "@vencord/discord-types";
+import { findOption, sendBotMessage } from "@api/Commands";
 import { doiksubDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { findByPropsLazy } from "@webpack";
@@ -29,45 +30,30 @@ function startTypingLoop() {
     }, 1000); // 4000 was too slow, and 2 is probably gonna get me flagged. 500 seems good, but ill keep upping until im comfy
 }
 
+export async function executeTyping(args: CommandArgument[], ctx: CommandContext) {
+    const channelId = ctx.channel.id;
+    const toggle = findOption(args, "toggle", !typingChannels.has(channelId));
+
+    if (toggle) {
+        typingChannels.add(channelId);
+        TypingActions.startTyping(channelId);
+        startTypingLoop();
+        sendBotMessage(channelId, { content: "Infinite typing enabled in this channel." });
+    } else {
+        typingChannels.delete(channelId);
+        sendBotMessage(channelId, { content: "Infinite typing disabled in this channel." });
+    }
+}
+
 export default definePlugin({
     name: "FakeTyping",
-    description: "Simulate infinite typing in channels. Use /faketype. Doesn't work if you have silent typing on.",
+    description: "Simulate infinite typing in channels. Use /fake type. Doesn't work if you have silent typing on.",
     authors: [doiksubDevs.sqz, doiksubDevs.god],
     tags: ["Sigil"],
-    dependencies: ["CommandsAPI"],
-
-    commands: [
-        {
-            name: "faketype",
-            description: "Toggle infinite typing in this channel.",
-            inputType: ApplicationCommandInputType.BUILT_IN,
-            options: [
-                {
-                    name: "toggle",
-                    description: "Whether to enable or disable infinite typing.",
-                    type: ApplicationCommandOptionType.BOOLEAN,
-                    required: false,
-                }
-            ],
-            execute: async (args, ctx) => {
-                const channelId = ctx.channel.id;
-                const toggle = findOption(args, "toggle", !typingChannels.has(channelId));
-
-                if (toggle) {
-                    typingChannels.add(channelId);
-                    TypingActions.startTyping(channelId);
-                    startTypingLoop();
-                    sendBotMessage(channelId, { content: "Infinite typing enabled in this channel." });
-                } else {
-                    typingChannels.delete(channelId);
-                    sendBotMessage(channelId, { content: "Infinite typing disabled in this channel." });
-                }
-            },
-        }
-    ],
+    dependencies: ["Fake", "CommandsAPI"],
 
     start() {
-        // No-op, command handles it
+        // No-op, command is handled by Fake
     },
 
     stop() {
