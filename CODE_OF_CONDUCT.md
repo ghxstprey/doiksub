@@ -13,9 +13,6 @@ DON'T
 - use offensive or derogatory language
 - troll or spam
 - personally attack or harass others
+- single out or ignore someone based on identity
 
-Repetitive violations of these guidelines might get your access to the repository restricted.
-
-If you feel like a user is violating these guidelines or feel treated unfairly, please refrain from vigilantism
-and instead report the issue to a moderator! The best way is joining our [official Discord community](https://vencord.dev/discord)
-and opening a modmail ticket.
+We're here to just have fun and add features Discord should have by default, not be dicks to one another.

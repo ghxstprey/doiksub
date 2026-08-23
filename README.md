@@ -11,13 +11,13 @@ doiksub is a fork of [Vencord](https://github.com/Vendicated/Vencord) with a cur
 - pnpm
 - node.js
 
-(or run `RunOnWindows.bat`)
+(or run `RunOnWindows.bat` if you're on windows. if you're on linux, do `chmod +x RunOnLinux.sh`, then `./RunOnLinux.sh`.)
 
 ## too lazy to build or don't have a discord app?
 
-it also generates a userscript and extensions so you can use it on the web. view the [docs](https://millyrack.pages.dev/getting-started#web) to see in depth of how to.
+it also generates a userscript and extensions so you can use it on the web. view the [docs](https://millyrack.pages.dev/getting-started#web) to see in depth of how to. the generated userscript and extensions (firefox+chrome) are auto-dumped in the [assets](assets/releases/) folder.
 
-## schizo devs (one guy)
+## schizo devs
 
 | Short | Author | Focus |
 |------|-------------|-------|
@@ -120,6 +120,10 @@ pnpm new-plugin myPluginName
 | voiceMessages | allows you to send voice messages like on mobile. to do so, right click the upload button and click send voice message |
 | whois | returns user info, slash command |
 | youtubeAdblock.desktop | block ads in youtube embeds and the WatchTogether activity via adguard |
+
+## other
+
+mainly deved on windows (hence the heavy references and 'RunOnWindows'), but also somewhat tested on 'Ubuntu'. specifically, Pop!_OS, and Zorin (core, since we're all too broke to buy the actual thing). Pop let me clone, build, and inject flawlessly.
 
 ## license
 

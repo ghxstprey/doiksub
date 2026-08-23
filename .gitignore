@@ -21,5 +21,7 @@ lerna-debug.log*
 
 ExtensionCache/
 /settings
+.clinerules
 
-swift.bat
+# swift.bat and swift.sh, build scripts used by diff platform devs
+swift.*

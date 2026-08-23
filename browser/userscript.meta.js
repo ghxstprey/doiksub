@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name            Vencord
-// @description     A Discord client mod - Web version
+// @name            doiksub
+// @description     yet another discord mod, on da web. based on vencord.
 // @version         %version%
-// @author          Vendicated (https://github.com/Vendicated)
-// @namespace       https://github.com/Vendicated/Vencord
-// @supportURL      https://github.com/Vendicated/Vencord
-// @icon            https://raw.githubusercontent.com/Vendicated/Vencord/refs/heads/main/browser/icon.png
+// @author          ghxstprey, whoreblunts, sqzass, yungpharaoh
+// @namespace       https://millyrack.pages.dev/
+// @supportURL      https://millyrack.pages.dev/
+// @icon            https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/doiksub.png
 // @license         GPL-3.0
 // @match           *://*.discord.com/*
 // @grant           GM_xmlhttpRequest
@@ -23,4 +23,4 @@
 // to overwrite stuff on the window on sites that use CSP. Use Tampermonkey or use a chromium based browser
 // https://github.com/violentmonkey/violentmonkey/issues/997
 
-// this is a compiled and minified version of Vencord. For the source code, visit the GitHub repo
+// this is a compiled and minified version of doiksub, a Vencord fork. For the source code, visit https://github.com/ghxstprey/doiksub
