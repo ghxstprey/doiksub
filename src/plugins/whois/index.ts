@@ -23,7 +23,7 @@ function fmtDate(ts: number): string {
 
 function buildWhois(user: any): string {
     const avatarUrl = (() => {
-        try { return IconUtils.getUserAvatarURL(user, 256, true, "webp"); } catch { return undefined; }
+        try { return IconUtils.getUserAvatarURL(user, true, 256, "webp"); } catch { return undefined; }
     })();
 
     const lines = [

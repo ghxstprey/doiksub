@@ -11,12 +11,18 @@ import type { ReactNode } from "react";
 
 import { addIgnoredQuest, questIsIgnored, removeIgnoredQuest } from "../settings/ignoredQuests";
 import { rerenderQuests } from "../settings/rerender";
-import { canAutoCompleteQuest, getQuestAutoCompleteEntry, processQuestForAutoComplete, stopQuestAutoComplete } from "../utils/completion";
+import { canAutoCompleteQuest, getQuestAutoCompleteEntry, processQuestForAutoComplete, stopQuestAutoComplete, type QuestButtonAnalyticsArgs } from "../utils/completion";
 import { q } from "../utils/ui";
 
 export function QuestTileContextMenu(
     children: ReactNode[],
-    props: { quest?: Quest; },
+    props: {
+        quest?: Quest;
+        analyticsCtxQuestContent?: unknown;
+        analyticsCtxSourceQuestContent?: unknown;
+        analyticsCtxQuestContentPosition?: unknown;
+        analyticsCtxQuestContentRowIndex?: unknown;
+    },
     isClaimedMenu: boolean = false,
 ): void {
     const { quest } = props;
@@ -26,9 +32,20 @@ export function QuestTileContextMenu(
     }
 
     const isIgnored = questIsIgnored(quest.id);
-    const isEnrolled = Boolean(quest.userStatus?.enrolledAt);
     const isAutoCompleting = getQuestAutoCompleteEntry(quest) != null;
-    const canStartAutoComplete = !isClaimedMenu && isEnrolled && canAutoCompleteQuest(quest);
+    // Enrollment no longer needs to happen first: the auto-complete runners enroll unenrolled Quests themselves.
+    const canStartAutoComplete = !isClaimedMenu && canAutoCompleteQuest(quest);
+    // Only pass the analytics context through if the menu actually received one,
+    // otherwise the runner falls back to synthesizing a Quests page context itself.
+    const analyticsArgs: QuestButtonAnalyticsArgs | undefined =
+        [props.analyticsCtxQuestContent, props.analyticsCtxSourceQuestContent, props.analyticsCtxQuestContentPosition, props.analyticsCtxQuestContentRowIndex].some(value => value != null)
+            ? {
+                analyticsCtxQuestContent: props.analyticsCtxQuestContent,
+                analyticsCtxSourceQuestContent: props.analyticsCtxSourceQuestContent,
+                analyticsCtxQuestContentPosition: props.analyticsCtxQuestContentPosition,
+                analyticsCtxQuestContentRowIndex: props.analyticsCtxQuestContentRowIndex,
+            }
+            : undefined;
 
     children.unshift((
         <Menu.MenuGroup>
@@ -66,6 +83,7 @@ export function QuestTileContextMenu(
                         processQuestForAutoComplete(quest, {
                             force: true,
                             source: "manual",
+                            analyticsArgs,
                         });
                         rerenderQuests();
                     }}

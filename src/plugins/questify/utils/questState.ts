@@ -202,17 +202,28 @@ function getAutoCompleteShowcaseQuest(): Quest | null {
 }
 
 function getMostRecentlyCompletedUnclaimedQuest(): Quest | null {
-    return Array.from(QuestStore.quests.values())
-        .filter(quest => (
-            Boolean(quest.userStatus?.completedAt)
-            && getQuestStatus(quest, getCurrentIgnoredQuestIds()) === QuestStatus.Unclaimed
-        ))
-        .sort((a, b) => {
-            const aTime = new Date(a.userStatus?.completedAt ?? 0).getTime();
-            const bTime = new Date(b.userStatus?.completedAt ?? 0).getTime();
+    const currentIgnoredQuestIds = getCurrentIgnoredQuestIds();
+    let latestQuest: Quest | null = null;
+    let latestTime = -Infinity;
 
-            return bTime - aTime;
-        })[0] ?? null;
+    for (const quest of QuestStore.quests.values()) {
+        if (!quest.userStatus?.completedAt) {
+            continue;
+        }
+
+        if (getQuestStatus(quest, currentIgnoredQuestIds) !== QuestStatus.Unclaimed) {
+            continue;
+        }
+
+        const completedTime = new Date(quest.userStatus.completedAt).getTime();
+
+        if (completedTime > latestTime) {
+            latestTime = completedTime;
+            latestQuest = quest;
+        }
+    }
+
+    return latestQuest;
 }
 
 export function getQuestPanelOverride(quest: Quest | null): Quest | null {
@@ -313,11 +324,8 @@ export function getQuestStatus(
         return QuestStatus.Unclaimed;
     }
 
-    if (expiredQuest) {
-        return QuestStatus.Expired;
-    }
-
-    return QuestStatus.Unknown;
+    // expiredQuest is guaranteed to be true at this point, so the Quest is expired.
+    return QuestStatus.Expired;
 }
 
 export function countIncludedUnclaimedQuests(

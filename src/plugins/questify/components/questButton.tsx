@@ -13,7 +13,7 @@ import type { CSSProperties, JSX, MouseEvent } from "react";
 import { getQuestifySettings, useQuestifySettings } from "../settings/access";
 import type { QuestButtonAction, QuestButtonDisplayMode, QuestButtonIndicatorMode } from "../settings/def";
 import { getIgnoredQuestIDs, ignoreAllQuests, resetIgnoredQuests } from "../settings/ignoredQuests";
-import { initialQuestDataFetched } from "../state";
+import { getInitialQuestDataFetched } from "../state";
 import { fetchAndAlertQuests } from "../utils/fetching";
 import { decimalToRGB, formatLowerBadge, isDarkish, leftClick, middleClick, q, QUEST_PAGE, rightClick } from "../utils/ui";
 import { openQuestifySettingsModal } from "./settingsModal";
@@ -243,7 +243,7 @@ export function QuestButton(): JSX.Element {
         "questButtonIndicator",
     ]);
 
-    const staleData = !initialQuestDataFetched;
+    const staleData = !getInitialQuestDataFetched();
     const badgeColor = questButtonBadgeColor;
     const badgeCount = staleData ? 0 : questButtonBadgeCount;
     const onQuestsPage = staleData ? false : isOnQuestsPage;

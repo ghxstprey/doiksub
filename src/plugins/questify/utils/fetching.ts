@@ -10,7 +10,7 @@ import { sleep } from "@utils/misc";
 import type { PluginNative } from "@utils/types";
 import type { Quest } from "@vencord/discord-types";
 import { findByCodeLazy } from "@webpack";
-import { QuestStore, RestAPI } from "@webpack/common";
+import { FluxDispatcher, QuestStore, RestAPI } from "@webpack/common";
 import { NavigationRouter } from "@webpack/common/utils";
 
 import { getQuestifySettings } from "../settings/access";
@@ -77,6 +77,35 @@ async function fetchExcludedQuestConfigs(questIds: string[]): Promise<Quest[]> {
     }
 
     return quests;
+}
+
+let didCompleteInitialQuestFetch = false;
+
+export function resetFetchTracking(): void {
+    didCompleteInitialQuestFetch = false;
+}
+
+function waitForQuestFetch(timeoutMs: number = 5000): Promise<void> {
+    return new Promise(resolve => {
+        const fetchSuccessEvent = "QUESTS_FETCH_CURRENT_QUESTS_SUCCESS";
+
+        function onFetchSuccess(): void {
+            cleanup();
+            resolve();
+        }
+
+        function cleanup(): void {
+            clearTimeout(timeoutId);
+            FluxDispatcher.unsubscribe(fetchSuccessEvent, onFetchSuccess);
+        }
+
+        const timeoutId = setTimeout(() => {
+            cleanup();
+            resolve();
+        }, timeoutMs);
+
+        FluxDispatcher.subscribe(fetchSuccessEvent, onFetchSuccess);
+    });
 }
 
 export function canOpenDevToolsWindow(): boolean {
@@ -148,11 +177,17 @@ export async function fetchAndAlertQuests(source: string): Promise<Quest[] | nul
     const includedTypes = settings.questButtonIncludedTypes as QuestIncludedTypes;
 
     await fetchAndDispatchQuests();
-    await sleep(1000);
+    await waitForQuestFetch();
 
     const nextQuests = Array.from(QuestStore.quests.values());
 
-    if (!nextQuests || currentQuests.length === 0) {
+    // The very first fetch after startup populates the store from empty, which is not "new" Quests.
+    // Later 0 -> N transitions still notify, so accounts starting with zero Quests are not permanently muted.
+    const isInitialPopulation = currentQuests.length === 0 && !didCompleteInitialQuestFetch;
+
+    didCompleteInitialQuestFetch = true;
+
+    if (isInitialPopulation) {
         return nextQuests;
     }
 

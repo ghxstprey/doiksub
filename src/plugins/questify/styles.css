@@ -76,7 +76,7 @@
 }
 
 .questify-setting-description-multi-paragraph {
-    line-height: 0.2em;
+    line-height: 1.2;
 }
 
 [class*="clickTrapContainer"] > div > .questify-settings-tooltip {
@@ -107,7 +107,7 @@
     margin: 12px 0;
     padding: 12px;
     border-radius: 4px;
-    line-height: 0.2em;
+    line-height: 1.2;
 }
 
 .questify-notice-card-red {

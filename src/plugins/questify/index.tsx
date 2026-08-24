@@ -23,19 +23,20 @@ import { validateIgnoredQuests } from "./settings/ignoredQuests";
 import { rerenderQuests, useQuestRerender } from "./settings/rerender";
 import { disposeRestartTracking, initializeRestartTracking, promptToRestartIfDirty, setRestartDirty } from "./settings/restartTracking";
 import { settings } from "./settings/store";
-import { getSettingsModalOpen, initialQuestDataFetched, setInitialQuestDataFetched, setSettingsModalOpen } from "./state";
+import { getInitialQuestDataFetched, getSettingsModalOpen, setInitialQuestDataFetched, setSettingsModalOpen } from "./state";
 import managedStyle from "./styles.css?managed";
-import { canAutoCompleteQuest, getActiveAutoCompletes, getQuestAutoCompleteProgress, getQuestButtonProps, getQuestPanelSubtitleText, hasEnabledAutoCompleteQuestTypes, processQuestForAutoComplete, resumeInterruptedAutoCompletes, setHeartbeatStackTracePatchSucceeded, setVideoProgressStackTracePatchSucceeded, stopAllAutoCompletes, stopAutoCompletesForRunningGames, stopQuestAutoComplete } from "./utils/completion";
-import { canOpenDevToolsWindow, fetchAndDispatchQuests, openDevToolsWindow, snakeToCamel } from "./utils/fetching";
+import { canAutoCompleteQuest, getActiveAutoCompletes, getQuestAutoCompleteProgress, getQuestButtonProps, getQuestPanelSubtitleText, hasEnabledAutoCompleteQuestTypes, processQuestForAutoComplete, resetManuallyStoppedQuests, resumeInterruptedAutoCompletes, setHeartbeatStackTracePatchSucceeded, setVideoProgressStackTracePatchSucceeded, stopAllAutoCompletes, stopAutoCompletesForRunningGames, stopQuestAutoComplete } from "./utils/completion";
+import { canOpenDevToolsWindow, fetchAndDispatchQuests, openDevToolsWindow, resetFetchTracking, snakeToCamel } from "./utils/fetching";
 import { normalizeQuestName } from "./utils/filtering";
 import { notifyQuestCompletion, QL } from "./utils/logging";
 import { getQuestEmbedProgress, getQuestPanelOverride, getQuestPanelPercentComplete, shouldForceQuestPanelVisible } from "./utils/questState";
-import { getLastFilterChoices, getLastSortChoice, getQuestTileClasses, getQuestTileStyle, setLastFilterChoices, setLastSortChoice, shouldPreloadQuestAssets, sortQuests } from "./utils/questTiles";
+import { applyDesktopVideoQuestCompatibility, getLastFilterChoices, getLastSortChoice, getQuestTileClasses, getQuestTileStyle, setLastFilterChoices, setLastSortChoice, shouldPreloadQuestAssets, sortQuests } from "./utils/questTiles";
 import { formatLowerBadge, QUEST_PAGE } from "./utils/ui";
 
 let isSwitchingAccount = false;
 let didAttemptAutoCompleteResume = false;
 const notifiedCompletedQuests = new Set<string>();
+const previouslyCompletedQuests = new Map<string, string>();
 export const enabledOnStartup = PlainSettings.plugins.Questify?.enabled;
 
 function setOnQuestsPage(force?: boolean): void {
@@ -48,24 +49,28 @@ function startPerAccountTasks(source: string): void {
     setOnQuestsPage();
     startAutoFetchingQuests();
     resumeAutoCompletesIfReady();
-    fetchAndDispatchQuests();
+    void Promise.resolve()
+        .then(fetchAndDispatchQuests)
+        .catch((error: unknown) => QL.error("FETCH_AND_DISPATCH_QUESTS_FAILED", { source, error }));
 
     QL.info(`START_TASKS-${source.toUpperCase()}`, { startedAt });
 }
 
-function stopPerAccountTasks(source: string, preserveResume: boolean = true): void {
+function stopPerAccountTasks(source: string, preserveResume: boolean = true, terminalHeartbeat: boolean = true): void {
     const stoppedAt = Date.now();
 
     setOnQuestsPage();
     stopAutoFetchingQuests();
+    resetFetchTracking();
+    resetManuallyStoppedQuests();
     notifiedCompletedQuests.clear();
-    stopAllAutoCompletes({ manual: false, preserveResume, terminalHeartbeat: true });
+    stopAllAutoCompletes({ manual: false, preserveResume, terminalHeartbeat });
 
     QL.info(`STOP_TASKS-${source.toUpperCase()}`, { stoppedAt });
 }
 
 function resumeAutoCompletesIfReady(): void {
-    if (didAttemptAutoCompleteResume || !initialQuestDataFetched) {
+    if (didAttemptAutoCompleteResume || !getInitialQuestDataFetched()) {
         return;
     }
 
@@ -75,7 +80,9 @@ function resumeAutoCompletesIfReady(): void {
 
 const Button = findComponentByCodeLazy("BUTTON_LOADING_STARTED_LABEL)),");
 
-function enrolledIncompleteButton(args: { quest: Quest, size: string; }): JSX.Element | null {
+type QuestifyButtonSize = "xs" | "sm" | "md" | "lg";
+
+function enrolledIncompleteButton(args: { quest: Quest, size: QuestifyButtonSize; }): JSX.Element | null {
     const props = getQuestButtonProps({ quest: args.quest });
 
     if (!props) {
@@ -551,6 +558,7 @@ export default definePlugin({
         QUESTS_FETCH_CURRENT_QUESTS_SUCCESS(data: { quests: Quest[]; }): void {
             setInitialQuestDataFetched(true);
             QL.log("QUESTS_FETCH_CURRENT_QUESTS_SUCCESS", data);
+            applyDesktopVideoQuestCompatibility();
             validateIgnoredQuests(data.quests);
             resumeAutoCompletesIfReady();
         },
@@ -568,19 +576,31 @@ export default definePlugin({
         QUESTS_USER_STATUS_UPDATE(data: any): void {
             QL.log("QUESTS_USER_STATUS_UPDATE", data);
 
-            const userStatus = snakeToCamel(data).userStatus as QuestUserStatus | undefined;
+            const userStatus = snakeToCamel(data)?.userStatus as QuestUserStatus | undefined;
+            const questId: string | undefined = userStatus?.questId;
             const claimedAt = !!userStatus?.claimedAt;
-            const completedRecently = userStatus?.completedAt
-                ? Date.now() - new Date(userStatus.completedAt).getTime() <= 5000
-                : false;
+
+            // Tracks the last seen completedAt per Quest instead of comparing against the local clock,
+            // so clock skew cannot cause missed or duplicate completion notifications.
+            const completedAt = typeof userStatus?.completedAt === "string" ? userStatus.completedAt : null;
+            const knownCompletedAt = questId ? previouslyCompletedQuests.get(questId) : undefined;
+            const newlyCompleted = Boolean(completedAt) && completedAt !== knownCompletedAt;
+
+            if (questId) {
+                if (completedAt) {
+                    previouslyCompletedQuests.set(questId, completedAt);
+                } else {
+                    previouslyCompletedQuests.delete(questId);
+                }
+            }
 
             validateIgnoredQuests();
 
-            if (completedRecently && !claimedAt && !notifiedCompletedQuests.has(userStatus!.questId)) {
-                notifiedCompletedQuests.add(userStatus!.questId);
+            if (newlyCompleted && !claimedAt && questId && !notifiedCompletedQuests.has(questId)) {
+                notifiedCompletedQuests.add(questId);
 
                 if (getQuestifySettings().notifyOnQuestComplete) {
-                    notifyQuestCompletion(QuestStore.getQuest(userStatus!.questId));
+                    notifyQuestCompletion(QuestStore.getQuest(questId));
                 }
 
                 if (getQuestifySettings().questCompletedAlertSound) {
@@ -621,7 +641,8 @@ export default definePlugin({
             }
 
             setInitialQuestDataFetched(false);
-            stopPerAccountTasks("LOGOUT");
+            // The account is being torn down, so terminal heartbeats would only fail noisily.
+            stopPerAccountTasks("LOGOUT", true, false);
         },
 
         RUNNING_GAMES_CHANGE(data: { games: { id: string; }[]; }): void {

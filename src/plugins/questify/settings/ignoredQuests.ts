@@ -13,14 +13,24 @@ import { getQuestifySettings } from "./access";
 import { ignoredQuestIDsKey } from "./def";
 import { rerenderQuests } from "./rerender";
 
-function validateQuestBadgeCount(): void {
+function areSameStringArrays(a: readonly string[], b: readonly string[]): boolean {
+    return a.length === b.length && a.every((id, index) => id === b[index]);
+}
+
+function validateQuestBadgeCount(): boolean {
     const settings = getQuestifySettings();
     const questButtonIncludedTypes = settings.questButtonIncludedTypes as QuestIncludedTypes;
     const quests = Array.from(QuestStore.quests.values());
     const ignoredQuestIds = getIgnoredQuestIDs();
     const count = countIncludedUnclaimedQuests(quests, ignoredQuestIds, questButtonIncludedTypes);
 
+    if (settings.questButtonBadgeCount === count) {
+        return false;
+    }
+
     settings.questButtonBadgeCount = count;
+
+    return true;
 }
 
 export function getIgnoredQuestIDs(): string[] {
@@ -39,24 +49,35 @@ export function validateIgnoredQuests(qs?: Quest[]): void {
     const excludedQuests = Array.from(QuestStore.excludedQuests.values());
     const validIgnored = Array.from(new Set<string>(currentlyIgnoredQuests.filter(id => quests.some(quest => quest.id === id) || excludedQuests.some(quest => quest.id === id))));
 
-    setIgnoredQuestIDs(validIgnored);
-    validateQuestBadgeCount();
-    rerenderQuests();
+    const ignoredChanged = !areSameStringArrays(validIgnored, currentlyIgnoredQuests);
+    const badgeChanged = validateQuestBadgeCount();
+
+    if (ignoredChanged) {
+        setIgnoredQuestIDs(validIgnored);
+    }
+
+    // Avoids rewriting persisted settings and triggering rerenders on every Flux event when nothing changed.
+    if (ignoredChanged || badgeChanged) {
+        rerenderQuests();
+    }
 }
 
 export function resetIgnoredQuests(): void {
     setIgnoredQuestIDs([]);
     validateIgnoredQuests();
+    rerenderQuests();
 }
 
 export function addIgnoredQuest(questId: string): void {
     setIgnoredQuestIDs(Array.from(new Set([...getIgnoredQuestIDs(), questId])));
     validateIgnoredQuests();
+    rerenderQuests();
 }
 
 export function removeIgnoredQuest(questId: string): void {
     setIgnoredQuestIDs(getIgnoredQuestIDs().filter(id => id !== questId));
     validateIgnoredQuests();
+    rerenderQuests();
 }
 
 export function questIsIgnored(questId: string): boolean {
@@ -84,4 +105,5 @@ export function ignoreAllQuests(): void {
 
     setIgnoredQuestIDs(Array.from(ignoredQuests));
     validateIgnoredQuests();
+    rerenderQuests();
 }

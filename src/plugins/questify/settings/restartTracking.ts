@@ -61,8 +61,11 @@ export function promptToRestartIfDirty(): boolean {
         title: "Restart Required",
         body: "A change you've made to Questify's settings requires a restart.",
         confirmText: "Restart",
-        cancelText: "Later",
+        cancelText: "Don't Remind Again",
         onConfirm: () => location.reload(),
+        // Dismissing the prompt clears the dirty flag so it is not shown again on
+        // every settings modal close; the flag is set anew by the next relevant change.
+        onCancel: () => { restartDirty = false; },
     });
 
     return true;

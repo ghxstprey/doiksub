@@ -284,7 +284,8 @@ export default definePlugin({
                 attachments.push(oldAttachment);
             }
         }
-        return attachments;
+        // keep attachments that were added by the edit, otherwise they vanish from the logged message
+        return attachments.concat(newMessage.attachments.filter(a => !oldMessage.attachments.some(o => o.id === a.id)));
     },
 
     handleDelete(cache: any, data: { ids: string[], id: string; mlDeleted?: boolean; }, isBulk: boolean) {

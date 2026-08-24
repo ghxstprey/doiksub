@@ -6,10 +6,12 @@
 
 import type { Quest, QuestTaskWatchVideo, QuestTaskWatchVideoOnMobile } from "@vencord/discord-types";
 import { QuestTaskType } from "@vencord/discord-types/enums";
+import { QuestStore } from "@webpack/common";
 
 import { getQuestifySettings, useQuestifySettings } from "../settings/access";
 import { defaultClaimedSubsort, defaultExpiredSubsort, defaultIgnoredSubsort, defaultQuestOrder, defaultUnclaimedSubsort, type QuestOrderStatus, type QuestSubsort, type QuestTileColorSetting, type QuestTileGradient } from "../settings/def";
 import { getIgnoredQuestIDs } from "../settings/ignoredQuests";
+import { QL } from "./logging";
 import { getQuestStatus, QuestStatus } from "./questState";
 import { adjustRGB, decimalToRGB, isDarkish, q, type RGB } from "./ui";
 
@@ -210,6 +212,8 @@ function getValidQuestOrder(value: unknown): QuestOrderStatus[] {
 }
 
 function injectDesktopVideoQuestTasks(quests: Quest[]): void {
+    const injectedQuestIds: string[] = [];
+
     for (const quest of quests) {
         const tasks = quest.config.taskConfigV2?.tasks;
         const mobileVideoTask = tasks?.[QuestTaskType.WATCH_VIDEO_ON_MOBILE] as QuestTaskWatchVideoOnMobile | undefined;
@@ -235,7 +239,24 @@ function injectDesktopVideoQuestTasks(quests: Quest[]): void {
 
         quest.config.taskConfigV2.tasks = reorderedTasks;
         desktopVideoCompatibilityQuestIds.add(quest.id);
+        injectedQuestIds.push(quest.id);
     }
+
+    if (injectedQuestIds.length > 0) {
+        QL.info("DESKTOP_VIDEO_TASKS_INJECTED", { questIDs: injectedQuestIds });
+    }
+}
+
+export function applyDesktopVideoQuestCompatibility(): void {
+    const settings = getQuestifySettings();
+
+    // Runs once per fetch instead of inside the sort/render path, so Discord's store
+    // objects are only mutated at a well-defined point right after the store updates.
+    if (settings.disableQuestsEverything || !(settings.makeMobileVideoQuestsDesktopCompatible || !!settings.autoCompleteQuestTypes.WATCH_VIDEO_ON_MOBILE)) {
+        return;
+    }
+
+    injectDesktopVideoQuestTasks(Array.from(QuestStore.quests.values()));
 }
 
 export function hasInjectedDesktopVideoCompatibility(quest?: Quest | string | null): boolean {
@@ -246,22 +267,16 @@ export function sortQuests(quests: Quest[], skip?: boolean): Quest[] {
     const questSorting = useQuestifySettings([
         "disableQuestsEverything",
         "ignoredQuestIDs",
-        "makeMobileVideoQuestsDesktopCompatible",
         "completeVideoQuestsQuicker",
         "questOrder",
         "unclaimedSubsort",
         "claimedSubsort",
         "ignoredSubsort",
         "expiredSubsort",
-        "autoCompleteQuestTypes",
     ]);
 
     if (questSorting.disableQuestsEverything) {
         return quests;
-    }
-
-    if (questSorting.makeMobileVideoQuestsDesktopCompatible || !!questSorting.autoCompleteQuestTypes.WATCH_VIDEO_ON_MOBILE) {
-        injectDesktopVideoQuestTasks(quests);
     }
 
     if (skip) {
@@ -344,7 +359,7 @@ export function getLastFilterChoices(): { group: string, filter: string; }[] | n
     const { rememberQuestPageFilters, lastQuestPageFilters } = getQuestifySettings();
 
     return rememberQuestPageFilters
-        ? Object.values(lastQuestPageFilters).map(item => JSON.parse(JSON.stringify(item)))
+        ? Object.values(lastQuestPageFilters).map(item => structuredClone(item) as { group: string, filter: string; })
         : null;
 }
 
@@ -359,7 +374,7 @@ export function setLastFilterChoices(filters: { group: string, filter: string; }
         return;
     }
 
-    getQuestifySettings().lastQuestPageFilters = JSON.parse(JSON.stringify(filters)).reduce((acc, item) => {
+    getQuestifySettings().lastQuestPageFilters = structuredClone(filters).reduce((acc, item) => {
         acc[getFilterChoiceKey(item)] = item;
 
         return acc;

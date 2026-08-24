@@ -6,7 +6,7 @@
 
 import type { PluginNative } from "@utils/types";
 import type { Quest, User } from "@vencord/discord-types";
-import { QuestTaskType } from "@vencord/discord-types/enums";
+import { QuestLocation, QuestTaskType } from "@vencord/discord-types/enums";
 import { findByCodeLazy, findLazy } from "@webpack";
 import { AuthorizedAppsStore, FluxDispatcher, QuestStore, RestAPI, showToast, Toasts, UserStore } from "@webpack/common";
 
@@ -31,8 +31,8 @@ interface QuestEnrollmentMetadata {
     questContentCTA?: unknown;
     sourceQuestContent: unknown;
     sourceQuestContentCTA?: unknown;
-    questContentPosition: unknown;
-    questContentRowIndex: unknown;
+    questContentPosition?: unknown;
+    questContentRowIndex?: unknown;
 }
 
 interface QuestCTAConstants {
@@ -40,7 +40,7 @@ interface QuestCTAConstants {
     ACCEPT_QUEST: string;
 }
 
-interface QuestButtonAnalyticsArgs {
+export interface QuestButtonAnalyticsArgs {
     taskType?: QuestTaskType;
     analyticsCtxQuestContent?: QuestEnrollmentMetadata["questContent"];
     analyticsCtxSourceQuestContent?: QuestEnrollmentMetadata["sourceQuestContent"];
@@ -126,6 +126,23 @@ export function makeEnrollmentData(args: QuestButtonAnalyticsArgs): QuestEnrollm
     };
 }
 
+// Discord's enroll action creator maps the analytics context onto a numeric location for
+// the API, so only metadata captured from a real UI surface is known-good. Successful
+// enrollments are cached per task type and reused for surfaces lacking context.
+const knownEnrollmentMetadata = new Map<QuestTaskType, QuestEnrollmentMetadata>();
+
+function rememberEnrollmentMetadata(taskType: QuestTaskType | undefined, data: QuestEnrollmentMetadata): void {
+    if (!taskType) {
+        return;
+    }
+
+    knownEnrollmentMetadata.set(taskType, data);
+}
+
+function getRememberedEnrollmentMetadata(taskType: QuestTaskType): QuestEnrollmentMetadata | undefined {
+    return knownEnrollmentMetadata.get(taskType);
+}
+
 const QuestifyNative = VencordNative?.pluginHelpers?.Questify as PluginNative<typeof import("../native")> | undefined;
 
 const videoQuestLeeway = 24;
@@ -144,11 +161,14 @@ export interface AutoCompleteEntry {
     abortController: AbortController;
     progressInterval: ReturnType<typeof setInterval> | null;
     rerenderInterval: ReturnType<typeof setInterval> | null;
+    enrollmentMetadata?: QuestEnrollmentMetadata;
 }
 
 export interface AutoCompleteStartOptions {
     force?: boolean;
     source?: AutoCompleteStartSource;
+    /** Analytics context captured from the UI surface that started the auto-complete, used for enrollment. */
+    analyticsArgs?: QuestButtonAnalyticsArgs;
 }
 
 export interface AutoCompleteStopOptions {
@@ -265,6 +285,10 @@ export function getQuestAutoCompleteEntry(questOrId: Quest | string): Readonly<A
     return activeAutoCompletes.get(questId) ?? null;
 }
 
+export function resetManuallyStoppedQuests(): void {
+    manuallyStoppedQuestIds.clear();
+}
+
 export function getAutoCompleteQuestTarget(task: QuestTask): AutoCompleteQuestTarget {
     const raw = task.target;
 
@@ -362,6 +386,7 @@ function createAutoCompleteEntry(
     quest: Quest,
     task: QuestTask,
     kind: AutoCompleteQuestKind,
+    enrollmentMetadata?: QuestEnrollmentMetadata,
 ): AutoCompleteEntry {
     return {
         questId: quest.id,
@@ -373,6 +398,7 @@ function createAutoCompleteEntry(
         abortController: new AbortController(),
         progressInterval: null,
         rerenderInterval: null,
+        enrollmentMetadata,
     };
 }
 
@@ -494,10 +520,12 @@ export function getQuestButtonProps(args: QuestButtonPropsArgs): QuestButtonPatc
         onClick: async () => {
             if (completionState === QuestCompletionState.Unenrolled) {
                 args.preClickCallback?.();
-                const enrollment = await enrollInQuest(args.quest.id, makeEnrollmentData(args));
+                const enrollmentData = makeEnrollmentData(args);
+                const enrollment = await enrollInQuest(args.quest.id, enrollmentData);
 
                 if (["success", "previous_in_flight_request"].includes(enrollment.type)) {
-                    processQuestForAutoComplete(args.quest, { force: true, source: "manual" });
+                    rememberEnrollmentMetadata(args.taskType, enrollmentData);
+                    processQuestForAutoComplete(args.quest, { force: true, source: "manual", analyticsArgs: args });
                     rerenderQuests();
                 } else {
                     showToast(`Enrollment in ${normalizeQuestName(args.quest)} Quest failed.`, Toasts.Type.FAILURE);
@@ -509,7 +537,7 @@ export function getQuestButtonProps(args: QuestButtonPropsArgs): QuestButtonPatc
                 stopQuestAutoComplete(args.quest, { manual: true, preserveResume: false, terminalHeartbeat: true });
                 rerenderQuests();
             } else if (completionState === QuestCompletionState.Accepted) {
-                processQuestForAutoComplete(args.quest, { force: true, source: "manual" });
+                processQuestForAutoComplete(args.quest, { force: true, source: "manual", analyticsArgs: args });
                 rerenderQuests();
             }
         }
@@ -765,8 +793,80 @@ function startRerenderInterval(entry: AutoCompleteEntry): void {
     }, 1000);
 }
 
+function getFallbackEnrollmentMetadata(entry: AutoCompleteEntry): QuestEnrollmentMetadata {
+    // Discord's enroll endpoint expects the analytics context of the surface that started
+    // the enrollment; sending a bare payload gets rejected with unknown_error. When no UI
+    // context was captured (resume/auto starts), mimic an enrollment from the Quests page.
+    const cta = resolveQuestCTA(entry.task.type);
+
+    return {
+        questContent: QuestLocation.QUEST_HOME_DESKTOP,
+        questContentCTA: cta,
+        sourceQuestContent: QuestLocation.QUEST_HOME_DESKTOP,
+        sourceQuestContentCTA: cta,
+    };
+}
+
+type EnrollmentStrategy = "captured" | "remembered" | "fallback";
+
+// Repeated failed enroll POSTs look like automated activity and can trip Discord's
+// risk systems, so failures enforce a cooldown before the same Quest may retry.
+const enrollFailureCooldownMs = 10 * 60 * 1000;
+const enrollFailureCooldowns = new Map<string, number>();
+
+export function getQuestEnrollCooldownRemainingMs(questId: string): number {
+    return Math.max(0, (enrollFailureCooldowns.get(questId) ?? 0) - Date.now());
+}
+
+async function ensureQuestEnrollment(quest: Quest, entry: AutoCompleteEntry): Promise<Quest | null> {
+    quest = refreshQuest(quest);
+
+    if (quest.userStatus?.completedAt) {
+        return null;
+    }
+
+    if (!quest.userStatus?.enrolledAt) {
+        const cooldownRemainingMs = getQuestEnrollCooldownRemainingMs(quest.id);
+
+        if (cooldownRemainingMs > 0) {
+            QL.warn("AUTO_COMPLETE_ENROLL_COOLDOWN", { questId: quest.id, questName: entry.questName, remainingSeconds: Math.ceil(cooldownRemainingMs / 1000) });
+            showToast(`Enrollment for ${entry.questName} is cooling down. Try again in ${Math.ceil(cooldownRemainingMs / 1000)}s.`, Toasts.Type.FAILURE);
+            return null;
+        }
+
+        const captured = entry.enrollmentMetadata;
+        const remembered = getRememberedEnrollmentMetadata(entry.task.type);
+        const strategy: EnrollmentStrategy = captured ? "captured" : remembered ? "remembered" : "fallback";
+        const enrollmentData = captured ?? remembered ?? getFallbackEnrollmentMetadata(entry);
+
+        QL.info("AUTO_COMPLETE_ENROLL_ATTEMPT", { questId: quest.id, questName: entry.questName, strategy, payload: enrollmentData });
+
+        try {
+            const enrollment = await enrollInQuest(quest.id, enrollmentData);
+
+            if (!["success", "previous_in_flight_request"].includes(enrollment.type)) {
+                enrollFailureCooldowns.set(quest.id, Date.now() + enrollFailureCooldownMs);
+                QL.warn("AUTO_COMPLETE_ENROLL_FAILED", { questId: quest.id, questName: entry.questName, result: enrollment.type, strategy, payload: enrollmentData });
+                showToast(`Enrollment in ${entry.questName} Quest failed.`, Toasts.Type.FAILURE);
+                return null;
+            }
+
+            rememberEnrollmentMetadata(entry.task.type, enrollmentData);
+            enrollFailureCooldowns.delete(quest.id);
+            QL.info("AUTO_COMPLETE_ENROLLED", { questId: quest.id, questName: entry.questName, result: enrollment.type, strategy });
+        } catch (error) {
+            enrollFailureCooldowns.set(quest.id, Date.now() + enrollFailureCooldownMs);
+            QL.error("AUTO_COMPLETE_ENROLL_ERROR", { questId: quest.id, questName: entry.questName, strategy, payload: enrollmentData, error });
+            showToast(`Enrollment in ${entry.questName} Quest failed.`, Toasts.Type.FAILURE);
+            return null;
+        }
+    }
+
+    return waitUntilEnrolled(quest, entry);
+}
+
 async function runVideoQuest(quest: Quest, entry: AutoCompleteEntry, target: AutoCompleteQuestTarget): Promise<boolean> {
-    quest = await waitUntilEnrolled(quest, entry, 60000, 500) ?? quest;
+    quest = await ensureQuestEnrollment(quest, entry) ?? quest;
 
     if (!isEntryActive(entry) || !quest.userStatus?.enrolledAt) {
         return false;
@@ -839,7 +939,7 @@ async function runVideoQuest(quest: Quest, entry: AutoCompleteEntry, target: Aut
 }
 
 async function runPlayQuest(quest: Quest, entry: AutoCompleteEntry, target: AutoCompleteQuestTarget): Promise<boolean> {
-    quest = await waitUntilEnrolled(quest, entry, 60000, 500) ?? quest;
+    quest = await ensureQuestEnrollment(quest, entry) ?? quest;
 
     if (!isEntryActive(entry) || !quest.userStatus?.enrolledAt) {
         return false;
@@ -888,7 +988,7 @@ async function runPlayQuest(quest: Quest, entry: AutoCompleteEntry, target: Auto
 }
 
 async function runAchievementQuest(quest: Quest, entry: AutoCompleteEntry, target: AutoCompleteQuestTarget): Promise<boolean> {
-    quest = await waitUntilEnrolled(quest, entry, 60000, 500) ?? quest;
+    quest = await ensureQuestEnrollment(quest, entry) ?? quest;
 
     if (!isEntryActive(entry) || !quest.userStatus?.enrolledAt) {
         return false;
@@ -928,7 +1028,19 @@ async function runAchievementQuest(quest: Quest, entry: AutoCompleteEntry, targe
         return false;
     }
 
+    if (!isEntryActive(entry)) {
+        return false;
+    }
+
     const result = await QuestifyNative.complete(appId, authCode, target.adjusted, quest.id, await getActivityReferrer(appId));
+
+    // The native request itself cannot be cancelled mid-flight, but stopping must prevent any
+    // further progress tracking or state updates from a completion that lands after the stop.
+    if (!isEntryActive(entry)) {
+        QL.warn("AUTO_COMPLETE_STOPPED_DURING_ACHIEVEMENT_COMPLETION", { questId: entry.questId, questName: entry.questName });
+        return false;
+    }
+
     const success = result.success === true;
 
     setQuestAutoCompleteProgress(quest, success ? target.adjusted : 0);
@@ -1069,7 +1181,10 @@ export function processQuestForAutoComplete(quest: Quest, options: AutoCompleteS
         return false;
     }
 
-    const entry = createAutoCompleteEntry(quest, resolvedQuest.task, resolvedQuest.kind);
+    const enrollmentMetadata = options.analyticsArgs
+        ? makeEnrollmentData({ ...options.analyticsArgs, taskType: resolvedQuest.task.type })
+        : undefined;
+    const entry = createAutoCompleteEntry(quest, resolvedQuest.task, resolvedQuest.kind, enrollmentMetadata);
 
     activeAutoCompletes.set(quest.id, entry);
 
