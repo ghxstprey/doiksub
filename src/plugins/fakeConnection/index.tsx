@@ -1,6 +1,6 @@
 /*
- * doiksub, a Discord client mod
- * Copyright (c) 2026 Vendicated and contributors
+ * doiksub, a Vencord fork
+ * Copyright (c) 2026 (Vendicated|ghxst) and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -9,16 +9,37 @@ import "./styles.css";
 import { get as dsGet, set as dsSet } from "@api/DataStore";
 import { definePluginSettings } from "@api/Settings";
 import { Button } from "@components/Button";
-import ErrorBoundary from "@components/ErrorBoundary";
 import { doiksubDevs } from "@utils/constants";
+import { Logger } from "@utils/Logger";
 import definePlugin, { OptionType } from "@utils/types";
-import { findByCodeLazy, findByPropsLazy, findComponentByCodeLazy } from "@webpack";
-import { React, SearchableSelect, showToast, TextInput, Toasts, UserStore } from "@webpack/common";
+import { FluxDispatcher,React, SearchableSelect, showToast, TextInput, Toasts, UserStore } from "@webpack/common";
 
-const useLegacyPlatformType: (t: string) => string = findByCodeLazy(".TWITTER_LEGACY:");
-const platforms: { get(t: string): { icon: { lightSVG: string; darkSVG: string; }; }; } = findByPropsLazy("isSupported", "getByUrl");
-const getProfileThemeProps = findByCodeLazy(".getPreviewThemeColors", "primaryColor:");
-const Section = findComponentByCodeLazy("headingVariant:", '"section"', "headingIcon:");
+const logger = new Logger("FakeConnections");
+
+// patch for discord ptb, MIGHT break on other vers
+function onDispatch(action: any) {
+    if (action.type !== "USER_PROFILE_FETCH_SUCCESS") return;
+
+    const prof = action.userProfile ?? action.profile;
+    const myId = UserStore.getCurrentUser()?.id;
+    const profileId = prof?.userId ?? prof?.id ?? action.userId;
+    if (!prof || !myId || profileId !== myId || !_cache.length) return;
+
+    const fakes = _cache.map(c => ({
+        type: c.type,
+        id: c.uid,
+        name: c.name,
+    }));
+
+    const existing = prof.connectedAccounts ?? [];
+    if (!existing.some((a: any) => String(a.id).startsWith("fc-"))) {
+        prof.connectedAccounts = [...existing, ...fakes];
+    }
+
+    if (Array.isArray(prof.connections) && !prof.connections.some((a: any) => String(a.id).startsWith("fc-"))) {
+        prof.connections = [...prof.connections, ...fakes];
+    }
+}
 
 interface FakeConnection {
     uid: string;
@@ -67,100 +88,34 @@ const PLATFORM_OPTIONS = [
     { label: "Domain", value: "domain" },
 ];
 
+const PLATFORM_COLORS: Record<string, string> = {
+    youtube: "#FF0000",
+    twitch: "#9146FF",
+    twitter: "#1D9BF0",
+    github: "#57606A",
+    steam: "#66C0F4",
+    spotify: "#1DB954",
+    reddit: "#FF4500",
+    tiktok: "#FE2C55",
+    instagram: "#E1306C",
+    roblox: "#00A2FF",
+    facebook: "#1877F2",
+    xbox: "#107C10",
+    playstation: "#0070D1",
+    epicgames: "#313131",
+    battlenet: "#1487C8",
+    leagueoflegends: "#C89B3C",
+    riotgames: "#D13639",
+    soundcloud: "#FF5500",
+    bluesky: "#1185FE",
+    mastodon: "#6364FF",
+    crunchyroll: "#F47521",
+    domain: "#5865F2",
+};
+
 function getPlatformLabel(type: string) {
     return PLATFORM_OPTIONS.find(o => o.value === type)?.label ?? type;
 }
-
-function getPlatformIcon(type: string, theme: string): string | null {
-    try {
-        const p = platforms.get(useLegacyPlatformType(type));
-        if (!p) return null;
-        return theme === "light" ? p.icon.lightSVG : p.icon.darkSVG;
-    } catch { return null; }
-}
-
-function ConnectionRow({ connection, theme }: { connection: FakeConnection; theme: string; }) {
-    const iconSrc = getPlatformIcon(connection.type, theme);
-    const textColor = settings.store.textColor === "black" ? "rgba(0,0,0,0.85)" : "#ffffff";
-    const hasLink = connection.url.trim().length > 0;
-
-    const inner = (
-        <div className="vc-fc-account-name">
-            <span className="vc-fc-name" style={{ color: textColor }}>
-                {connection.name}
-            </span>
-            <svg
-                className="vc-fc-arrow"
-                style={{ color: textColor }}
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16" height="16"
-                fill="none" viewBox="0 0 24 24"
-            >
-                <path fill="currentColor" d="M8 5a1 1 0 0 0 0 2h7.59L5.29 17.3a1 1 0 1 0 1.42 1.4L17 8.42V16a1 1 0 1 0 2 0V6a1 1 0 0 0-1-1H8Z" />
-            </svg>
-        </div>
-    );
-
-    return (
-        <div className="vc-fc-row">
-            <div className="vc-fc-icon-box">
-                {iconSrc
-                    ? <img className="vc-fc-icon" src={iconSrc} alt="" aria-hidden="true" />
-                    : <div className="vc-fc-icon-letter" style={{ color: textColor }}>
-                        {getPlatformLabel(connection.type)[0]}
-                    </div>
-                }
-            </div>
-
-            {hasLink
-                ? <a
-                    className="vc-fc-link"
-                    href={connection.url}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    style={{ textDecoration: "none", cursor: "pointer", flex: 1, minWidth: 0 }}
-                >
-                    {inner}
-                </a>
-                : <div style={{ flex: 1, minWidth: 0, cursor: "default" }}>
-                    {inner}
-                </div>
-            }
-        </div>
-    );
-}
-
-const ConnectionsSection = ErrorBoundary.wrap(
-    ({ userId, isSideBar }: { userId: string; isSideBar: boolean; }) => {
-        const myId = UserStore.getCurrentUser()?.id;
-        const [connections, setConnections] = React.useState<FakeConnection[]>(() => _cache);
-        const [theme, setTheme] = React.useState("dark");
-
-        React.useEffect(() => {
-            if (!_cacheLoaded) loadConnections().then(setConnections);
-            else setConnections([..._cache]);
-            try { setTheme(getProfileThemeProps({})?.theme ?? "dark"); } catch { }
-        }, [userId]);
-
-        if (!myId || userId !== myId || !connections.length) return null;
-
-        return (
-            <Section
-                heading="Connections"
-                headingVariant={isSideBar ? "text-xs/semibold" : "text-xs/medium"}
-                headingColor={isSideBar ? "text-strong" : "text-default"}
-            >
-                <div className="vc-fc-list">
-                    {connections.map(c => (
-                        <ConnectionRow key={c.uid} connection={c} theme={theme} />
-                    ))}
-                </div>
-            </Section>
-        );
-    },
-    { noop: true }
-);
 
 function FakeConnectionsPanel() {
     const [list, setList] = React.useState<FakeConnection[]>([]);
@@ -190,13 +145,12 @@ function FakeConnectionsPanel() {
         <div className="vc-fc-settings">
 
             <div className="vc-fc-note">
-                💾 Saved in Discord's own database — nothing leaves your device.<br />
-                <code style={{ fontSize: 11, opacity: 0.6 }}>%APPDATA%\discord\Local Storage\leveldb\</code>
+                Stored in Discord's files. All local, basically.<br />
             </div>
 
             {dirty && (
                 <div className="vc-fc-banner">
-                    <span>⚠ Unsaved changes</span>
+                    <span>Unsaved changes</span>
                     <div style={{ display: "flex", gap: 8 }}>
                         <Button variant="primary" size="small" onClick={save}>Save</Button>
                         <Button variant="dangerPrimary" size="small" onClick={() => { setPending([...list]); setDirty(false); }}>Discard</Button>
@@ -210,14 +164,21 @@ function FakeConnectionsPanel() {
                     ? <div className="vc-fc-empty">No connections yet. Add one below.</div>
                     : pending.map(c => (
                         <div key={c.uid} className="vc-fc-card">
-                            <span className="vc-fc-card-platform">{getPlatformLabel(c.type)}</span>
-                            <span className="vc-fc-card-name">{c.name}</span>
-                            {c.url && <span className="vc-fc-card-url" title={c.url}>🔗</span>}
+                            <span
+                                className="vc-fc-chip"
+                                style={{ background: PLATFORM_COLORS[c.type] ?? "#5865F2" }}
+                            >
+                                {getPlatformLabel(c.type)[0]}
+                            </span>
+                            <div className="vc-fc-card-text">
+                                <span className="vc-fc-card-name">{c.name}</span>
+                                <span className="vc-fc-card-platform">{getPlatformLabel(c.type)}{c.url ? " · linked" : ""}</span>
+                            </div>
                             <Button
-                                variant="dangerPrimary"
+                                variant="dangerSecondary"
                                 size="small"
                                 onClick={() => update(pending.filter(x => x.uid !== c.uid))}
-                                style={{ marginLeft: "auto", flexShrink: 0 }}
+                                style={{ flexShrink: 0 }}
                             >
                                 Remove
                             </Button>
@@ -245,17 +206,6 @@ function FakeConnectionsPanel() {
                 <div>
                     <label className="vc-fc-field-label">Display Name</label>
                     <TextInput value={name} onChange={setName} placeholder="e.g. YourUsername" />
-                </div>
-
-                <div>
-                    <label className="vc-fc-field-label">
-                        Link <span style={{ fontWeight: 400, opacity: 0.6 }}>(optional — makes it clickable)</span>
-                    </label>
-                    <TextInput
-                        value={url}
-                        onChange={setUrl}
-                        placeholder="e.g. https://youtube.com/@YourChannel"
-                    />
                 </div>
 
                 <Button
@@ -290,7 +240,7 @@ function FakeConnectionsPanel() {
                 Save Connections
             </Button>
 
-            <div style={{ fontSize: 11, color: "var(--text-muted)" }}>
+            <div className="vc-fc-footer-hint">
                 After saving, reopen your profile to see the connections.
             </div>
         </div>
@@ -298,15 +248,6 @@ function FakeConnectionsPanel() {
 }
 
 const settings = definePluginSettings({
-    textColor: {
-        type: OptionType.SELECT,
-        description: "Text color for connection names on your profile",
-        default: "white",
-        options: [
-            { label: "White (dark themes)", value: "white" },
-            { label: "Black (light / Nitro gradient themes)", value: "black" },
-        ]
-    },
     _panel: {
         type: OptionType.COMPONENT,
         description: "",
@@ -316,17 +257,51 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "FakeConnections",
-    description: "Add fake connections to your own profile. Supports custom display names, optional clickable links, and per-theme text color.",
+    description: "Add fake connections to your own profile. They render natively in your profile modal and popout.",
     authors: [doiksubDevs.ghxst],
     tags: ["Sigil"],
     settings,
 
-    renderProfileSection: {
-        render: ConnectionsSection,
-        priority: 0,
-    },
+    patches: [
+        {
+            find: "UserProfileStore",
+            replacement: {
+                match: /(?<=getUserProfile\(\i\){return )(.+?)(?=})/,
+                replace: "$self.addFakeConnections($1)"
+            },
+        },
+    ],
 
     async start() {
         await loadConnections();
+        FluxDispatcher.addInterceptor(onDispatch);
+    },
+
+    stop() {
+        FluxDispatcher.removeInterceptor(onDispatch);
+    },
+
+    addFakeConnections(user: any) {
+        try {
+            const myId = UserStore.getCurrentUser()?.id;
+            if (!user || !myId || !_cache.length) return user;
+
+            if (Array.isArray(user.connectedAccounts) && user.connectedAccounts.some((a: any) => String(a.id).startsWith("fc-"))) {
+                return user;
+            }
+
+            const profileId = user.userId ?? user.id;
+            if (profileId !== myId) return user;
+            return {
+                ...user,
+                connectedAccounts: [
+                    ...(user.connectedAccounts ?? []),
+                    ..._cache.map(c => ({ type: c.type, id: c.uid, name: c.name })),
+                ],
+            };
+        } catch (e) {
+            logger.error("addFakeConnections crashed:", e);
+            return user;
+        }
     },
 });

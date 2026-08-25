@@ -32,10 +32,10 @@ function buildWhois(user: any): string {
         // why do they still have ${user.tag} when discrims got removed like years ago
         `ID: ${user.id}`,
         `Created: ${fmtDate(SnowflakeUtils.extractTimestamp(user.id))}`,
-        `Created (Formatted): ${new Date(SnowflakeUtils.extractTimestamp(user.id)).toLocaleString()}`,
+        // unless they're a selfbot
         `Bot: ${user.bot ? "Yes" : "No"}`,
         user.system ? `System: ${user.system ? "Yes" : "No"}` : null,
-        `Verified: ${user.verified ? "Yes" : "No"}`,
+        `Verified (like official discord dms): ${user.verified ? "Yes" : "No"}`,
         `Premium: ${PREMIUM_TYPES[user.premiumType ?? 0] ?? "uhhh... iono..."}`,
         avatarUrl ? `Avatar: ${avatarUrl}` : null,
     ].filter(Boolean);
@@ -83,7 +83,7 @@ export default definePlugin({
                 }
 
                 sendBotMessage(ctx.channel.id, {
-                    content: `**Who is — ${user.globalName ?? user.username}**\n${buildWhois(user)}`,
+                    content: `who is ${user.globalName ?? user.username}?\n${buildWhois(user)}`,
                 });
             },
         },

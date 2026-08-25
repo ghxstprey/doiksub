@@ -666,7 +666,7 @@ export const DevsById = /* #__PURE__*/ (() =>
  * Separate from upstream Devs to make rebasing on Vencord painless.
  * Use these in your pack/plugin authors arrays, e.g.
  *
- *     authors: [doiksubDevs.ghxst, doiksubDevs.sqz, doiksubDevs.oddy]
+ *     authors: [doiksubDevs.ghxst, doiksubDevs.sqz, doiksubDevs.oddy, doiksubDevs.god]
  */
 export const doiksubDevs = /* #__PURE__*/ Object.freeze({
     ghxst: {
@@ -682,8 +682,8 @@ export const doiksubDevs = /* #__PURE__*/ Object.freeze({
         id: 1527236156310425651n,
     },
     god: {
-        name: "yungpharaoh",
-        id: 1136337246631497849n,
+        name: "sigil4k (xkashz)",
+        id: 540630501304565803n,
     },
 } satisfies Record<string, Dev>);
 

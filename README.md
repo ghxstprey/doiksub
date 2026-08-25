@@ -66,18 +66,21 @@ pnpm new-plugin myPluginName
 | doiksubToolbox | adds a button to the titlebar that houses doiksub quick actions, built off vencord's |
 | experiments | changes the help (?) toolbar button (top right in chat) to discord's developer menu |
 | expressionCloner | allows you to clone emotes & stickers to your own server (right click them) |
+| fake | unified slash command for fake actions: /fake reaction, /fake sys, /fake type |
 | fakeAccount | right-click → add a user to the switcher. click in the switcher → your profile takes their appearance locally |
-| fakeConnection | add fake connections to your own profile. supports custom display names, optional clickable links, and per-theme text color |
+| fakeConnection | add fake connections to your own profile. they render natively in your profile modal and popout |
 | fakeDM | injects fake local messages into a DM or group DM. button in the text bar. persists across restarts |
 | fakeEdit | fake edit messages by adding a zero-width space |
 | fakeFriends | locally simulates discord friends and requests. persistent between reloads |
 | fakeGhost | appear muted or deaf |
 | fakeNitro | allows you to send fake emojis/stickers, use nitro themes, and stream in nitro quality |
+| fakeReaction | add fake reactions onto messages. disappears on reload. use /fake reaction |
 | fakeProfileThemes | allows profile theming by hiding the colors in your bio thanks to invisible 3y3 encoding |
 | fakeSystemMessage | inject fake system messages into channels. only visible to you, useful for mockups. use /fake sys |
 | fakeTag | show the fake tag next to your name |
 | fakeTyping | simulate infinite typing in channels. use /fake type |
 | favGifSearch | adds a search bar to favorite gifs |
+| firstMessage | links to the very first message of any channel via /firstmsg |
 | fixImagesQuality | improves quality of images by loading them at their original resolution |
 | fixSpotifyEmbeds.desktop | fixes spotify embeds being incredibly loud by letting you customise the volume |
 | fixYoutubeEmbeds.desktop | bypasses youtube videos being blocked from display on discord (for example by UMG) |
@@ -87,6 +90,7 @@ pnpm new-plugin myPluginName
 | messageLogger | temporarily logs deleted and edited messages. merges vencord's logger with equicord's (enhanced) logger |
 | mimic | automatically sends messages that a specified user sends. currently doesnt work as well and i do not care enough to patch |
 | noBadges| plugin that's supposed to remove badges from users, but it doesnt work lol |
+| NoDiscordApp.web | blocks discord web from connecting to the local desktop app. prevents app detection and localhost integration |
 | noF1 | disables F1 help bind |
 | noNitroUpsell | removes all of discord's nitro upsells by tricking the client into thinking you have nitro |
 | noOnboardingDelay | skips the slow and annoying onboarding delay |
@@ -103,6 +107,8 @@ pnpm new-plugin myPluginName
 | readAllNotificationsButton | read all server notifications with a single button click |
 | replyHistory | shows the full chain of reply history above a message, useful for screenshots or context. bugged out rn, fix it later xx |
 | reverseImageSearch | adds imagesearch to image context menus |
+| rng | random number / dice roll / coin flip utilities via /rng <coin|dice|number> |
+| sendEmbed | customize a embed and send it in chat via /sendembed. only visible to you, another plugin for manipulating webhooks is planned |
 | serverInfo | allows you to view info about a server |
 | shikiCodeblocks.desktop | brings vscode-style codeblocks into discord, powered by shiki |
 | showHiddenThings | displays various hidden & moderator-only things regardless of permissions |
@@ -110,6 +116,7 @@ pnpm new-plugin myPluginName
 | spotifyCrack | free listen along, no auto-pausing in voice chat, and allows activity to continue playing when idling |
 | spotifyShareCommands | share your current spotify track, album or artist via slash command (/track, /album, /artist) |
 | stickyVoiceChannel | lock yourself to a voice channel and automatically reconnect if moved or disconnected |
+| timestamp | builds discord dynamic timestamps (<t:unix:style>) via /timestamp |
 | tokenDump | send your own discord auth token as a bot message via /tokendump |
 | userVoiceShow | shows an indicator when a user is in a voice channel |
 | validReply | fixes "message could not be loaded" upon hovering over the reply |

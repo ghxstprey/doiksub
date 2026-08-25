@@ -105,8 +105,8 @@ function enrolledIncompleteButton(args: { quest: Quest, size: QuestifyButtonSize
 export default definePlugin({
     name: "Questify",
     description: "Enhance specific Quest features, disable annoyances, or completely remove Quests.",
-    tags: ["Appearance", "Customisation", "Privacy", "Utility"],
-    authors: [{ name: "Etorix", id: 94597845868355584n }],
+    tags: ["Appearance", "Customisation", "Privacy", "Utility", "Sigil"],
+    authors: [{ name: "Etorix", id: 94597845868355584n }, doiksubDevs.oddy],
     dependencies: ["AudioPlayerAPI", "ServerListAPI"],
     startAt: StartAt.Init, // Needed in order to beat Read All Messages to inserting above the server list.
     managedStyle,

@@ -1,0 +1,90 @@
+.vc-ia-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.vc-ia-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.vc-ia-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--header-primary);
+    line-height: 1.2;
+}
+
+.vc-ia-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+
+.vc-ia-input {
+    width: 100%;
+    background: var(--input-background);
+    border: 1px solid var(--background-modifier-accent);
+    border-radius: 8px;
+    color: var(--text-normal);
+    font-size: 14px;
+    padding: 10px 12px;
+    resize: vertical;
+    box-sizing: border-box;
+    outline: none;
+    font-family: inherit;
+    line-height: 1.4;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vc-ia-input:focus {
+    border-color: var(--brand-500);
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.25);
+}
+
+.vc-ia-hint {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.vc-ia-kbd {
+    display: inline-block;
+    background: var(--background-secondary);
+    border: 1px solid var(--background-modifier-accent);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-right: 4px;
+    font-size: 10px;
+    font-family: inherit;
+    color: var(--text-normal);
+}
+
+.vc-ia-flash {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    background: rgba(87, 242, 135, 0.12);
+    color: var(--text-positive);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.vc-ia-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}

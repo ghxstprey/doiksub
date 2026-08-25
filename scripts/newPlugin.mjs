@@ -4,19 +4,23 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-// Usage: node scripts/newPlugin.mjs <pluginName>
+// Usage: node scripts/newPlugin.mjs <pluginName> [--test]
 // Creates src/plugins/<pluginName>/index.tsx with boilerplate
+// pass --alpha to create it in src/alplugins instead
 
 import { mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
 
-const name = process.argv[2];
+const args = process.argv.slice(2);
+const name = args.find(a => !a.startsWith("--"));
+const test = args.includes("--alpha");
+
 if (!name) {
-    console.error("Usage: node scripts/newPlugin.mjs <name>");
+    console.error("Usage: node scripts/newPlugin.mjs <name> [--test]");
     process.exit(1);
 }
 
-const dir = join("src", "plugins", name);
+const dir = join("src", test ? "alplugins" : "plugins", name);
 mkdirSync(dir, { recursive: true });
 
 const template = `/*

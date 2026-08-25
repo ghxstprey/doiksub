@@ -151,7 +151,7 @@ export const globPlugins = kind => ({
         });
 
         build.onLoad({ filter, namespace: "import-plugins" }, async () => {
-            const pluginDirs = ["plugins/_api", "plugins/_core", "plugins", "userplugins"];
+            const pluginDirs = ["plugins/_api", "plugins/_core", "plugins", "alplugins", "userplugins"];
             let code = "";
             let pluginsCode = "\n";
             let metaCode = "\n";
@@ -167,6 +167,8 @@ export const globPlugins = kind => ({
                     const fileName = file.name;
                     if (fileName.startsWith("_") || fileName.startsWith(".")) continue;
                     if (fileName === "index.ts") continue;
+                    // ignore loose non-code files (readmes, notes, etc.) that aren't plugin entry points
+                    if (!file.isDirectory() && !/\.[jt]sx?$/.test(fileName)) continue;
 
                     const target = getPluginTarget(fileName);
 

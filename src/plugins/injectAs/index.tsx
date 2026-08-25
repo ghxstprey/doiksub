@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import "./styles.css";
+
 import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { doiksubDevs } from "@utils/constants";
 import {
@@ -15,7 +17,7 @@ import {
     openModal,
 } from "@utils/modal";
 import definePlugin from "@utils/types";
-import { FluxDispatcher, Menu, React, UserStore } from "@webpack/common";
+import { Button, FluxDispatcher, IconUtils, Menu, React, UserStore } from "@webpack/common";
 
 // ─── Snowflake generator ──────────────────────────────────────────────────────
 let _idCounter = 0;
@@ -88,6 +90,13 @@ function InjectModal({ modalProps, author, channelId }: InjectModalProps) {
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
     const displayName: string = author.globalName ?? author.username ?? "Unknown";
+    const avatarUrl = (() => {
+        try {
+            return IconUtils.getUserAvatarURL(author, false, 64);
+        } catch {
+            return "https://cdn.discordapp.com/embed/avatars/0.png";
+        }
+    })();
 
     React.useEffect(() => {
         const id = setTimeout(() => textareaRef.current?.focus(), 60);
@@ -106,66 +115,51 @@ function InjectModal({ modalProps, author, channelId }: InjectModalProps) {
     return (
         <ModalRoot {...modalProps} size="small">
             <ModalHeader separator={false}>
-                <span style={{ fontWeight: 700, color: "var(--header-primary)", fontSize: 16 }}>
-                    Inject as {displayName}
-                </span>
+                <div className="vc-ia-header">
+                    <img className="vc-ia-avatar" src={avatarUrl} alt="" />
+                    <div>
+                        <div className="vc-ia-title">Inject as {displayName}</div>
+                        <div className="vc-ia-subtitle">only visible to you</div>
+                    </div>
+                </div>
                 <ModalCloseButton onClick={modalProps.onClose} />
             </ModalHeader>
 
             <ModalContent>
-                <div style={{ paddingTop: 8, paddingBottom: 4 }}>
-                    <textarea
-                        ref={textareaRef}
-                        rows={4}
-                        placeholder={`Message as ${displayName}… (Enter to inject, Shift+Enter for newline)`}
-                        value={text}
-                        onChange={e => setText(e.target.value)}
-                        onKeyDown={e => {
-                            if (e.key === "Enter" && !e.shiftKey) {
-                                e.preventDefault();
-                                submit();
-                            }
-                        }}
-                        style={{
-                            width: "100%",
-                            background: "var(--input-background)",
-                            border: "1px solid var(--background-modifier-accent)",
-                            borderRadius: 8,
-                            color: "var(--text-normal)",
-                            fontSize: 14,
-                            padding: "10px 12px",
-                            resize: "vertical",
-                            boxSizing: "border-box",
-                            outline: "none",
-                            fontFamily: "inherit",
-                            lineHeight: 1.4,
-                        }}
-                    />
-                    {flash && (
-                        <p style={{ margin: "6px 0 0", fontSize: 12, color: "var(--text-positive)" }}>
-                            {flash}
-                        </p>
-                    )}
+                <textarea
+                    ref={textareaRef}
+                    rows={4}
+                    className="vc-ia-input"
+                    placeholder={`Message as ${displayName}…`}
+                    value={text}
+                    onChange={e => setText(e.target.value)}
+                    onKeyDown={e => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            submit();
+                        }
+                    }}
+                />
+                <div className="vc-ia-hint">
+                    <span><kbd className="vc-ia-kbd">Enter</kbd> inject</span>
+                    <span><kbd className="vc-ia-kbd">Shift + Enter</kbd> newline</span>
                 </div>
+                {flash && <div className="vc-ia-flash">{flash}</div>}
             </ModalContent>
 
             <ModalFooter>
-                <button
-                    onClick={submit}
-                    disabled={!text.trim()}
-                    style={{
-                        padding: "8px 20px",
-                        borderRadius: 4,
-                        border: "none",
-                        fontWeight: 600,
-                        fontSize: 14,
-                        cursor: text.trim() ? "pointer" : "not-allowed",
-                        background: text.trim() ? "var(--brand-experiment)" : "var(--background-modifier-accent)",
-                        color: text.trim() ? "#fff" : "var(--text-muted)",
-                    }}
-                >
-                    Inject
-                </button>
+                <div className="vc-ia-footer">
+                    <span style={{ fontSize: 11, color: "var(--text-muted)" }}>
+                        Fake local message in this channel
+                    </span>
+                    <Button
+                        variant="primary"
+                        disabled={!text.trim()}
+                        onClick={submit}
+                    >
+                        Inject
+                    </Button>
+                </div>
             </ModalFooter>
         </ModalRoot>
     );

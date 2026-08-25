@@ -1,3 +1,8 @@
+.vc-fc-profile {
+    margin-top: 10px;
+    width: 100%;
+}
+
 .vc-fc-list {
     display: flex;
     flex-direction: column;
@@ -105,33 +110,52 @@
     align-items: center;
     gap: 10px;
     background: var(--background-secondary);
+    border: 1px solid transparent;
     border-radius: 8px;
-    padding: 7px 12px;
-    margin-bottom: 4px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
-.vc-fc-card-platform {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--header-primary);
-    min-width: 110px;
+.vc-fc-card:hover {
+    background: var(--background-secondary-alt);
+    border-color: var(--background-modifier-accent);
+}
+
+.vc-fc-chip {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
     flex-shrink: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.vc-fc-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
 }
 
 .vc-fc-card-name {
-    font-size: 13px;
-    color: var(--text-muted);
-    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--header-primary);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.vc-fc-card-url {
-    font-size: 13px;
-    flex-shrink: 0;
-    opacity: 0.7;
-    cursor: default;
+.vc-fc-card-platform {
+    font-size: 11px;
+    color: var(--text-muted);
 }
 
 .vc-fc-divider {
@@ -158,5 +182,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
+}
+
+.vc-fc-footer-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
 }

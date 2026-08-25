@@ -1,90 +1,30 @@
 @echo off
 setlocal enabledelayedexpansion
-echo.
+cd /d "%~dp0"
 
-echo [1/5] checking for Node.js...
-where node >nul 2>nul
-if %errorlevel% neq 0 (
-    echo ERROR: Node.js is not installed or not in PATH.
-    echo please install Node.js ^>= 22 from https://nodejs.org/en/download
-    pause
-    exit /b 1
+echo [1/3] checking for Node.js ^>= 22...
+where node >nul 2>nul || call :fail "Node.js is not installed or not in PATH. get it from https://nodejs.org/en/download"
+for /f "delims=" %%i in ('node -p process.version') do set NODE_VERSION=%%i
+for /f "tokens=1 delims=." %%a in ("!NODE_VERSION:v=!") do if %%a lss 22 call :fail "Node.js !NODE_VERSION! is too old, need ^>= 22. update from https://nodejs.org/"
+echo       found !NODE_VERSION!
+
+echo [2/3] checking for pnpm and dependencies...
+where pnpm >nul 2>nul || npm install -g pnpm || call :fail "failed to install pnpm. please install it manually."
+if not exist node_modules (
+    echo       installing dependencies, this may take a few minutes on first run...
+    call pnpm install --frozen-lockfile || call :fail "failed to install dependencies."
 )
 
-for /f "tokens=*" %%i in ('node -e "process.stdout.write(process.version)"') do set NODE_VERSION=%%i
-echo found Node.js !NODE_VERSION!
-
-set NODE_MAJOR=!NODE_VERSION:v=!
-for /f "tokens=1 delims=." %%a in ("!NODE_MAJOR!") do set NODE_MAJOR=%%a
-
-if !NODE_MAJOR! lss 22 (
-    echo ERROR: Node.js version !NODE_VERSION! is too old. please install Node.js ^>= 22.
-    echo download from https://nodejs.org/
-    pause
-    exit /b 1
-)
-
-echo Node.js version OK.
-echo.
-
-echo [2/5] checking for pnpm...
-where pnpm >nul 2>nul
-if %errorlevel% neq 0 (
-    echo       pnpm not found. installing pnpm globally...
-    call npm install -g pnpm @REM i think this is correct
-    if %errorlevel% neq 0 (
-        echo ERROR: failed to install pnpm. please install it manually.
-        pause
-        exit /b 1
-    )
-    echo       pnpm installed successfully.
-) else (
-    echo       pnpm is already installed.
-)
-echo.
-
-echo [3/5] checking dependencies...
-if not exist "node_modules" (
-    echo       node_modules not found. Installing dependencies...
-    echo      this may take a few minutes on first run.
-    call pnpm install --frozen-lockfile
-    if %errorlevel% neq 0 (
-        echo ERROR: failed to install dependencies.
-        pause
-        exit /b 1
-    )
-    echo       dependencies installed successfully.
-) else (
-    echo       dependencies already installed.
-)
-echo.
-
-echo [4/5] building web extensions of doiksub...
-call pnpm buildWeb
-if %errorlevel% neq 0 (
-    echo ERROR: build failed.
-    pause
-    exit /b 1
-)
-
-echo [5/5] building and injecting doiksub...
-call pnpm build
-if %errorlevel% neq 0 (
-    echo ERROR: build failed.
-    pause
-    exit /b 1
-)
-
-node scripts/runInstaller.mjs -- --install
-
-if %errorlevel% neq 0 (
-    echo.
-    echo ERROR: Installation failed.
-    pause
-    exit /b 1
-)
+echo [3/3] building and injecting doiksub...
+call pnpm buildWeb || call :fail "web extension build failed."
+call pnpm build || call :fail "build failed."
+call pnpm inject || call :fail "installation failed."
 
 echo.
-echo start whatever discord u patched now
-echo cya
-echo.
+echo done. start whatever discord u patched now. cya
+exit /b 0
+
+:fail
+echo ERROR: %~1
+pause
+exit /b 1

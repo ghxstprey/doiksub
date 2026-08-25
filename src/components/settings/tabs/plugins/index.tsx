@@ -77,6 +77,7 @@ const enum SearchStatus {
     ENABLED,
     DISABLED,
     NEW,
+    DOIK,
     USER_PLUGINS,
     API_PLUGINS
 }
@@ -181,6 +182,9 @@ function PluginSettings() {
                 break;
             case SearchStatus.NEW:
                 if (!newPlugins?.includes(plugin.name)) return false;
+                break;
+            case SearchStatus.DOIK:
+                if (!plugin.tags?.includes("Sigil")) return false;
                 break;
             case SearchStatus.USER_PLUGINS:
                 if (!PluginMeta[plugin.name]?.userPlugin) return false;
@@ -291,6 +295,7 @@ function PluginSettings() {
                             { label: "Show Enabled", value: SearchStatus.ENABLED },
                             { label: "Show Disabled", value: SearchStatus.DISABLED },
                             { label: "Show New", value: SearchStatus.NEW },
+                            { label: "Doiksub (Sigil)", value: SearchStatus.DOIK },
                             hasUserPlugins && { label: "Show UserPlugins", value: SearchStatus.USER_PLUGINS },
                             { label: "Show API Plugins", value: SearchStatus.API_PLUGINS },
                         ].filter(isTruthy)}

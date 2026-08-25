@@ -73,6 +73,20 @@ const NITRO_LEVELS = [
     { label: t("Opal (72+ months)"), icon: "https://cdn.discordapp.com/badge-icons/5b154df19c53dce2af92c9b61e6be5e2.png" },
 ];
 
+const AGE_LABELS = [
+    "1 Year", "2 Years", "3 Years",
+    "4 Years", "5 Years", "6 Years",
+    "7 Years", "8 Years", "9 Years",
+    "10 Years", "11 Years"
+];
+
+// Real Discord CDN assets — sqz only found these two so far. Years without an
+// icon here fall back to a generated numeric badge.
+const AGE_ICON_MAP: Record<number, string> = {
+    5: "https://cdn.discordapp.com/assets/content/1db184b6d10a61a37dc30efdc74d587560fac5291c8bb329977e93bb5a312602.png",
+    7: "https://cdn.discordapp.com/assets/content/c095e3e73591843a22dc979d1fcfe3d6cf6841d1f51387d208d19f8bed01deb7.png",
+};
+
 const BOOST_LABELS_RAW = [
     "1 Month", "2 Months", "3 Months", "6 Months",
     "9 Months", "12 Months", "15 Months", "18 Months", "24 Months"
@@ -1032,6 +1046,29 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
                     <BadgeBtn key={i} label={lbl} icon={BOOST_ICONS[i]} active={boostLevel === i} onClick={() => onBoostLevel(i)} />
                 ))}
             </div>
+            <SectionLabel style={{ marginTop: 8 }}>{t("Account Age Badge")}</SectionLabel>
+            <div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 4 }}>
+                {t("Single pick — shows how many years old your account is. Years without a real icon get a generated badge.")}
+            </div>
+            <div className="cp-badges">
+                {AGE_LABELS.map((lbl, i) => {
+                    const years = i + 1;
+                    const id = `age:${years}`;
+                    return (
+                        <BadgeBtn
+                            key={id}
+                            label={lbl}
+                            icon={AGE_ICON_MAP[years]}
+                            active={customIds.includes(id)}
+                            onClick={() => onCustomIds(
+                                customIds.includes(id)
+                                    ? customIds.filter(x => x !== id)
+                                    : [...customIds.filter(x => !x.startsWith("age:")), id]
+                            )}
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 }
@@ -1362,6 +1399,43 @@ function BadgeTooltipContent({ name, rarity, subtitle, icon }: { name: string; r
 }
 
 const badgeStyle: React.CSSProperties = { borderRadius: "50%", width: "22px", height: "22px" };
+
+// Generated fallback for age badges we don't have a real icon asset for:
+// a small gradient circle showing "Ny" (e.g. "3y").
+function mkAgeTextBadge(years: number): ProfileBadge {
+    const label = `${years} Year${years > 1 ? "s" : ""} on Discord`;
+    const Tooltip = (Vencord as any).Webpack.Common?.Tooltip;
+
+    const circle = (props: any = {}) => (
+        <div
+            {...props}
+            style={{
+                width: 22, height: 22, borderRadius: "50%",
+                background: "linear-gradient(135deg, #5865f2, #eb459e)",
+                color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 8, fontWeight: 800, cursor: "default",
+                ...props.style,
+            }}
+        >
+            {years}y
+        </div>
+    );
+
+    if (!Tooltip) {
+        return { id: "cp-age", description: label, position: BadgePosition.START, component: () => circle() };
+    }
+
+    return {
+        id: "cp-age",
+        description: label,
+        position: BadgePosition.START,
+        component: () => (
+            <Tooltip text={label}>
+                {(tooltipProps: any) => circle(tooltipProps)}
+            </Tooltip>
+        ),
+    };
+}
 
 function mkBadge(id: string, name: string, icon: string, rarity?: string, subtitle?: string): ProfileBadge {
     if (!rarity && !subtitle) {
@@ -2007,6 +2081,19 @@ export default definePlugin({
 
                 const cids = pd.customBadgeIds ?? [];
                 if (cids.includes("oldname")) badgeList.push(mkBadge("cp-oldname", "Legacy Username", OLD_NAME_BADGE_ICON, undefined, pd.oldName || "OldUser#0000"));
+                const ageId = cids.find(x => x.startsWith("age:"));
+                if (ageId) {
+                    const years = parseInt(ageId.slice(4), 10);
+                    if (!isNaN(years) && years > 0) {
+                        const ageLabel = `${years} Year${years > 1 ? "s" : ""}`;
+                        const ageIcon = AGE_ICON_MAP[years];
+                        badgeList.push(
+                            ageIcon
+                                ? mkBadge("cp-age", ageLabel, ageIcon)
+                                : mkAgeTextBadge(years)
+                        );
+                    }
+                }
                 if (cids.includes("automod")) badgeList.push(mkBadge("cp-automod", "Automod", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/automod.png"));
                 if (cids.includes("has_commands")) badgeList.push(mkBadge("cp-has-commands", "Has Commands", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/has_commands.png"));
                 if (cids.includes("quest")) badgeList.push(mkBadge("cp-quest", "Quests", "https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png"));

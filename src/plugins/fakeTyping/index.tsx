@@ -47,7 +47,7 @@ export async function executeTyping(args: CommandArgument[], ctx: CommandContext
 
 export default definePlugin({
     name: "FakeTyping",
-    description: "Simulate infinite typing in channels. Use /fake type. Doesn't work if you have silent typing on.",
+    description: "Simulate infinite typing in channels. Use /fake type. Doesn't work if you have silentTyping on.",
     authors: [doiksubDevs.sqz, doiksubDevs.god],
     tags: ["Sigil"],
     dependencies: ["Fake", "CommandsAPI"],

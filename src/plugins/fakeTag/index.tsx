@@ -31,7 +31,7 @@ const settings = definePluginSettings({
     tag: {
         type: OptionType.STRING,
         description: "Tag text (up to 5 chars, auto-uppercased).",
-        default: "MALL",
+        default: "DOIK",
         onChange() {
             if (settings.store.enabled) notifyUpdate();
         },

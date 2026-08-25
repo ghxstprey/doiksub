@@ -23,5 +23,8 @@ ExtensionCache/
 /settings
 .clinerules
 
-# swift.bat and swift.sh, build scripts used by diff platform devs
+# local testing plugins, never pushed
+src/alplugins
+
+# swift.bat and swift.py, build scripts used by diff platform
 swift.*
