@@ -1048,7 +1048,7 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
             </div>
             <SectionLabel style={{ marginTop: 8 }}>{t("Account Age Badge")}</SectionLabel>
             <div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 4 }}>
-                {t("Single pick — shows how many years old your account is. Years without a real icon get a generated badge.")}
+                {t("Single pick, shows how many years old your account is. Years without a real icon get a generated badge.")}
             </div>
             <div className="cp-badges">
                 {AGE_LABELS.map((lbl, i) => {

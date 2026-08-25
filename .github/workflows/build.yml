@@ -1,0 +1,51 @@
+name: Build Nightly
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        run: npm install -g pnpm@11.9.0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build doiksub
+        run: pnpm build
+
+      - name: Upload to nightly release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: nightly
+          name: nightly
+          body: |
+            Automated build of doiksub from commit ${{ github.sha }}.
+
+            These are the desktop client mod files consumed by Vesktop forks (meoew.com).
+            Assets are overwritten on every push to main.
+          make_latest: true
+          fail_on_unmatched_files: true
+          files: |
+            dist/vencordDesktopMain.js
+            dist/vencordDesktopPreload.js
+            dist/vencordDesktopRenderer.js
+            dist/vencordDesktopRenderer.css
