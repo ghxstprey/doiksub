@@ -661,13 +661,6 @@ export const DevsById = /* #__PURE__*/ (() =>
     ))
 )() as Record<string, Dev>;
 
-/**
- * doiksub developer identities.
- * Separate from upstream Devs to make rebasing on Vencord painless.
- * Use these in your pack/plugin authors arrays, e.g.
- *
- *     authors: [doiksubDevs.ghxst, doiksubDevs.sqz, doiksubDevs.oddy, doiksubDevs.god]
- */
 export const doiksubDevs = /* #__PURE__*/ Object.freeze({
     ghxst: {
         name: "ghxstprey (996ghxst)",
@@ -682,7 +675,7 @@ export const doiksubDevs = /* #__PURE__*/ Object.freeze({
         id: 1527236156310425651n,
     },
     god: {
-        name: "sigil4k (xkashz)",
+        name: "sigil4k",
         id: 540630501304565803n,
     },
 } satisfies Record<string, Dev>);
