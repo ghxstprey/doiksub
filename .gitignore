@@ -28,3 +28,6 @@ src/alplugins
 
 # swift.bat and swift.py, build scripts used by diff platform
 swift.*
+
+# lets me test meoew.com with the unpushed build so its at least functioning before yall see this
+scripts/testDoiksub.ps1

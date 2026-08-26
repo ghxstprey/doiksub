@@ -39,11 +39,9 @@ export const settings = definePluginSettings({
 });
 
 function Icon({ isShown }: { isShown: boolean; }) {
-    // popout open: the meoew.com splash - static angular M, halo bobs gently,
-    // a spark orbits the halo ring. stroke uses currentColor so it adapts to theme.
     if (isShown) {
         return (
-            <svg viewBox="0 0 512 512" width={18} height={18} className="vc-toolbox-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={512} height={512} className="vc-toolbox-icon">
                 <g>
                     <animateTransform
                         attributeName="transform"
@@ -56,10 +54,9 @@ function Icon({ isShown }: { isShown: boolean; }) {
                     />
 
                     <g transform="rotate(-6 256 96)">
-                        {/* halo ring */}
-                        <ellipse cx="256" cy="96" rx="114" ry="34" fill="none" stroke="currentColor" strokeWidth={30} />
+                        <ellipse cx="256" cy="96" rx="114" ry="34"
+                            fill="none" stroke="currentColor" strokeWidth={30} />
 
-                        {/* loading spark orbiting the ring */}
                         <circle r="15" fill="#d43a3f">
                             <animateMotion
                                 dur="1.9s"
@@ -70,16 +67,8 @@ function Icon({ isShown }: { isShown: boolean; }) {
                     </g>
                 </g>
 
-                {/* the M: completely still */}
-                <path
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="square"
-                    strokeLinejoin="bevel"
-                    strokeWidth={56}
-                    d="M 84 414 L 172 172 L 256 386 L 340 172 L 428 414"
-                />
-                {/* easter egg: Y tail + A crossbars */}
+                <path fill="none" stroke="currentColor" strokeLinecap="square" strokeLinejoin="bevel" strokeWidth={56}
+                    d="M 84 414 L 172 172 L 256 386 L 340 172 L 428 414" />
                 <path fill="none" stroke="currentColor" strokeLinecap="butt" strokeWidth={50} d="M 256 380 L 256 468" />
                 <path fill="none" stroke="currentColor" strokeLinecap="butt" strokeWidth={32} d="M 138 285 L 210 285" />
                 <path fill="none" stroke="currentColor" strokeLinecap="butt" strokeWidth={32} d="M 302 285 L 374 285" />
@@ -89,12 +78,19 @@ function Icon({ isShown }: { isShown: boolean; }) {
 
     // default toolbox glyph
     return (
-        <svg viewBox="0 0 27 27" width={18} height={18} className="vc-toolbox-icon">
-            <path
-                fill="currentColor"
-                d="M9 0h1v1h1v2h1v2h3V3h1V1h1V0h1v2h1v2h1v7h-1v-1h-3V9h1V6h-1v4h-3v1h1v-1h2v1h3v1h-1v1h-3v2h1v1h1v1h1v3h-1v4h-2v-1h-1v-4h-1v4h-1v1h-2v-4H9v-3h1v-1h1v-1h1v-2H9v-1H8v-1h3V6h-1v3h1v1H8v1H7V4h1V2h1M5 19h2v1h1v1h1v3H4v-1h2v-1H4v-2h1m15-1h2v1h1v2h-2v1h2v1h-5v-3h1v-1h1m4 3h4v1h-4"
-            />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={512} height={512} className="vc-toolbox-icon">
+            <title>Meoew.com</title>
+            <g fill="none" stroke="currentColor">
+                <path d="M 84 414 L 172 172 L 256 386 L 340 172 L 428 414"
+                    strokeWidth={56} strokeLinecap="square" strokeLinejoin="bevel" />
+                <path d="M 256 380 L 256 468" strokeWidth={50} strokeLinecap="butt" />
+                <path d="M 138 285 L 210 285" strokeWidth={32} strokeLinecap="butt" />
+                <path d="M 302 285 L 374 285" strokeWidth={32} strokeLinecap="butt" />
+                <ellipse cx="256" cy="96" rx="114" ry="34"
+                    transform="rotate(-6 256 96)" strokeWidth={30} />
+            </g>
         </svg>
+
     );
 }
 
