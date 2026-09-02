@@ -152,8 +152,8 @@ async function parseFile(fileName: string) {
                         if (isObjectLiteralExpression(e)) {
                             const nameProp = getObjectProp(e, "name");
                             const idProp = getObjectProp(e, "id");
-                            if (!isStringLiteral(nameProp)) throw fail("inline author object has no string 'name' property");
-                            if (!isBigIntLiteral(idProp)) throw fail("inline author object has no bigint 'id' property");
+                            if (!nameProp || !isStringLiteral(nameProp)) throw fail("inline author object has no string 'name' property");
+                            if (!idProp || !isBigIntLiteral(idProp)) throw fail("inline author object has no bigint 'id' property");
                             return {
                                 name: nameProp.text,
                                 id: idProp.text.slice(0, -1)
@@ -233,7 +233,12 @@ function isPluginFile({ name }: { name: string; }) {
     const plugins = [] as PluginData[];
     const readmes = {} as Record<string, string>;
 
-    await Promise.all(["src/plugins", "src/plugins/_core"].flatMap(dir =>
+    const dirs = ["src/plugins", "src/plugins/_core"];
+    try {
+        if (readdirSync("src/alplugins").length > 0) dirs.push("src/alplugins");
+    } catch {}
+
+    await Promise.all(dirs.flatMap(dir =>
         readdirSync(dir, { withFileTypes: true })
             .filter(isPluginFile)
             .map(async dirent => {

@@ -18,7 +18,6 @@
 
 import "./style.css";
 
-import { addProfileBadge, BadgePosition, BadgeUserArgs, ProfileBadge, removeProfileBadge } from "@api/Badges";
 import { addMemberListDecorator, removeMemberListDecorator } from "@api/MemberListDecorators";
 import { addMessageDecoration, removeMessageDecoration } from "@api/MessageDecorations";
 import { definePluginSettings } from "@api/Settings";
@@ -26,7 +25,7 @@ import { Devs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { DiscordPlatform, OnlineStatus, User } from "@vencord/discord-types";
 import { filters, findStoreLazy, mapMangledModuleLazy } from "@webpack";
-import { AuthenticationStore, PresenceStore, Tooltip, UserStore, useStateFromStores } from "@webpack/common";
+import { AuthenticationStore, PresenceStore, React, TextInput, Tooltip, UserStore, useStateFromStores } from "@webpack/common";
 
 export interface Session {
     sessionId: string;
@@ -46,15 +45,12 @@ const { useStatusFillColor } = mapMangledModuleLazy([".5625*", "translate"], {
     useStatusFillColor: filters.byCode(".hex")
 });
 
-const platformMap = {
-    embedded: "Console",
-    vr: "VR"
-};
-
-const badge: ProfileBadge = {
-    id: "vc_platform_indicator_wrapper",
-    getBadges,
-    position: BadgePosition.START,
+const gatewayLines: Partial<Record<DiscordPlatform, string>> = {
+    desktop: "Discord Client",
+    web: "Discord Web",
+    mobile: "Discord iOS / Android",
+    embedded: "Discord Embedded",
+    vr: "Discord VR"
 };
 
 const indicatorLocations = {
@@ -64,11 +60,6 @@ const indicatorLocations = {
             user && !user.bot ? <PlatformIndicator user={user} small={true} /> : null
         ),
         onDisable: () => removeMemberListDecorator("platform-indicator")
-    },
-    badges: {
-        description: "In user profiles, as badges",
-        onEnable: () => addProfileBadge(badge),
-        onDisable: () => removeProfileBadge(badge)
     },
     messages: {
         description: "Inside messages",
@@ -105,6 +96,11 @@ const settings = definePluginSettings({
         description: "Whether to make the mobile indicator match the color of the user status.",
         default: true,
         restartNeeded: true
+    },
+    _panel: {
+        type: OptionType.COMPONENT,
+        description: "",
+        component: InspectorPanel,
     }
 });
 
@@ -127,7 +123,7 @@ function Icon(path: string, opts?: { viewBox?: string; width?: number; height?: 
 }
 
 function getPlatformTooltip(platform: DiscordPlatform): string {
-    return platformMap[platform] ?? platform.charAt(0).toUpperCase() + platform.slice(1);
+    return gatewayLines[platform] ?? platform.charAt(0).toUpperCase() + platform.slice(1);
 }
 
 const PlatformIcon = ({ platform, status, small }: { platform: DiscordPlatform, status: OnlineStatus; small: boolean; }) => {
@@ -162,32 +158,6 @@ function ensureOwnStatus(user: User) {
     }
 }
 
-function getBadges({ userId }: BadgeUserArgs): ProfileBadge[] {
-    const user = UserStore.getUser(userId);
-
-    if (!user || user.bot) return [];
-
-    ensureOwnStatus(user);
-
-    const status = PresenceStore.getClientStatus(user.id);
-    if (!status) return [];
-
-    return Object.entries(status).map(([platform, status]) => ({
-        key: `vc-platform-indicator-${platform}`,
-        id: `vc-platform-indicator-${platform}`,
-        component: () => (
-            <span className="vc-platform-indicator">
-                <PlatformIcon
-                    key={platform}
-                    platform={platform as DiscordPlatform}
-                    status={status}
-                    small={false}
-                />
-            </span>
-        ),
-    }));
-}
-
 const PlatformIndicator = ({ user, small = false }: { user: User; small?: boolean; }) => {
     ensureOwnStatus(user);
 
@@ -214,6 +184,45 @@ const PlatformIndicator = ({ user, small = false }: { user: User; small?: boolea
         </span>
     );
 };
+
+function InspectorPanel() {
+    const [userId, setUserId] = React.useState("");
+
+    const user = UserStore.getUser(userId.trim()) ?? UserStore.getCurrentUser();
+    if (user) ensureOwnStatus(user);
+
+    const status = user ? PresenceStore.getClientStatus(user.id) : null;
+    const connections = status
+        ? Object.entries(status).map(([platform, status]) => ({
+            platform,
+            status: status as OnlineStatus,
+            tooltip: getPlatformTooltip(platform as DiscordPlatform)
+        }))
+        : [];
+
+    return (
+        <div style={{ padding: "8px 0 12px" }}>
+            <TextInput
+                type="text"
+                value={userId}
+                onChange={setUserId}
+                placeholder="User ID (defaults to yourself)"
+            />
+            {connections.length === 0 ? (
+                <div style={{ marginTop: 8, color: "var(--text-muted)", fontSize: 13 }}>
+                    No active connections for this user.
+                </div>
+            ) : (
+                connections.map(({ platform, status, tooltip }) => (
+                    <div key={platform} style={{ display: "flex", justifyContent: "space-between", marginTop: 8, fontSize: 13 }}>
+                        <span>{tooltip}</span>
+                        <span style={{ textTransform: "capitalize", color: "var(--text-muted)" }}>{status}</span>
+                    </div>
+                ))
+            )}
+        </div>
+    );
+}
 
 export default definePlugin({
     name: "PlatformIndicators",

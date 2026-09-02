@@ -5,7 +5,6 @@
  */
 
 import { definePluginSettings } from "@api/Settings";
-import { Notice } from "@components/Notice";
 import { doiksubDevs } from "@utils/constants";
 import definePlugin, { OptionType } from "@utils/types";
 import { UserStore } from "@webpack/common";
@@ -32,6 +31,10 @@ const settings = definePluginSettings({
             {
                 label: "Console",
                 value: "console",
+            },
+            {
+                label: "VR",
+                value: "vr",
             },
         ]
     }
@@ -71,7 +74,10 @@ export default definePlugin({
                 case "mobile":
                     return { browser: "Discord iOS" };
                 case "console":
-                    return { browser: "Discord Console" };
+                case "embedded":
+                    return { browser: "Discord Embedded" };
+                case "vr":
+                    return { browser: "Discord VR" };
                 default:
                     return null;
             }
