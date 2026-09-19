@@ -1,6 +1,6 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2022 Vendicated and contributors
+ * doiksub, a modification for Discord's desktop app
+ * Copyright (c) 2026 ghxstprey and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,8 @@ import gitHash from "~git-hash";
 import { CommonProps, HashLink, Newer, Updatable } from "./Components";
 
 function VesktopSection() {
+    // im not renaming ts jst in case it breaks
+    // sorry to mooch off yo work
     if (!IS_VESKTOP) return null;
 
     const [isVesktopOutdated] = useAwaiter<boolean>(VesktopNative.app.isOutdated, { fallbackValue: false });
@@ -44,19 +46,19 @@ function VesktopSection() {
     return (
         <Flex className={Margins.bottom20} flexDirection="column" gap="1em">
             <Card variant="info">
-                <HeadingSecondary>Vesktop & Vencord</HeadingSecondary>
-                <Paragraph>Vesktop and Vencord are two separate things. This updater is for Vencord.</Paragraph>
+                <HeadingSecondary>Meoew.com & doiksub</HeadingSecondary>
+                <Paragraph>Meoew.com and doiksub are two separate things. This updater is for doiksub.</Paragraph>
                 <Paragraph className={Margins.top8}>
-                    You receive separate popups for Vesktop updates. You can also manually update by installing the <Link href="https://vesktop.dev/install">latest version</Link>.
+                    You receive separate popups for Meoew.com updates. You can also manually update by installing the <Link href="https://github.com/sqzass/meoew.com/releases">latest version</Link>.
                 </Paragraph>
             </Card>
 
             {isVesktopOutdated && (
                 <Card variant="warning">
-                    <HeadingSecondary>Vesktop Outdated</HeadingSecondary>
+                    <HeadingSecondary>Meoew.com Outdated</HeadingSecondary>
                     <Flex flexDirection="column" gap="0.5em">
-                        <Paragraph>Your version of Vesktop is outdated!</Paragraph>
-                        <Button variant="link" onClick={() => VesktopNative.app.openUpdater()}>Open Vesktop Updater</Button>
+                        <Paragraph>Your version of Meoew.com is outdated!</Paragraph>
+                        <Button variant="link" onClick={() => VesktopNative.app.openUpdater()}>Open Meoew.com Updater</Button>
                     </Flex>
                 </Card>
             )}
@@ -83,13 +85,13 @@ function Updater() {
 
             <FormSwitch
                 title="Automatically update"
-                description="Automatically update Vencord without confirmation prompt"
+                description="Automatically update doiksub without confirmation prompt"
                 value={settings.autoUpdate}
                 onChange={(v: boolean) => settings.autoUpdate = v}
             />
             <FormSwitch
                 title="Get notified when an automatic update completes"
-                description="Show a notification when Vencord automatically updates"
+                description="Show a notification when doiksub automatically updates"
                 value={settings.autoUpdateNotification}
                 onChange={(v: boolean) => settings.autoUpdateNotification = v}
                 disabled={!settings.autoUpdate}

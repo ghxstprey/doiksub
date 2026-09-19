@@ -150,7 +150,7 @@ function VencordSettings() {
                         size={Button.Sizes.SMALL}
                         look={Button.Looks.OUTLINED}
                         color={Button.Colors.CUSTOM}
-                        style={{ color: "#696969ff" }}
+                        style={{ color: "#c2c2c2ff" }}
                         onClick={() => VencordNative.native.openExternal("https://vencord.dev")}
                     >
                         Donate to Vencord

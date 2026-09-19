@@ -25,6 +25,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Compute short commit hash
+        id: sha
+        run: echo "short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
       - name: Build doiksub
         run: pnpm build
 
@@ -43,11 +47,22 @@ jobs:
             README.md \
             LICENSE
 
+      # The archive above ships the non-standalone dist (for Discord desktop injection).
+      # The loose assets below are loaded by Vesktop forks (meoew.com) from a plain folder,
+      # so they need the standalone build: http updater + no folded process.platform.
+      - name: Build doiksub (standalone)
+        env:
+          DOIKSUB_HASH: ${{ steps.sha.outputs.short }}
+        run: pnpm build --standalone
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          # The name must end in the commit hash (see src/shared/releaseHash.ts): both the
+          # built-in updater and meoew.com read the hash from the release name.
+          name: ${{ github.ref_name }} ${{ steps.sha.outputs.short }}
           files: |
             release/doiksub.tar.gz
             dist/vencordDesktopMain.js

@@ -29,14 +29,25 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Compute short commit hash
+        id: sha
+        run: echo "short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
       - name: Build doiksub
-        run: pnpm build
+        # --standalone: these assets are loaded by Vesktop forks (meoew.com) from a plain
+        # folder, so they must use the http updater (the git one has no repo to run in) and
+        # must not have process.platform folded to the CI runner's platform.
+        env:
+          DOIKSUB_HASH: ${{ steps.sha.outputs.short }}
+        run: pnpm build --standalone
 
       - name: Upload to nightly release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: nightly
-          name: nightly
+          # The built hash is read back out of the release name (src/shared/releaseHash.ts),
+          # so it must end in the same short sha that DOIKSUB_HASH bakes into ~git-hash.
+          name: nightly ${{ steps.sha.outputs.short }}
           body: |
             Automated build of doiksub from commit ${{ github.sha }}.
 

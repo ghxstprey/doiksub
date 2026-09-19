@@ -8,13 +8,18 @@ import { findOption, sendBotMessage } from "@api/Commands";
 import { doiksubDevs } from "@utils/constants";
 import definePlugin from "@utils/types";
 import { CommandArgument, CommandContext } from "@vencord/discord-types";
-import { FluxDispatcher, MessageStore, UserStore } from "@webpack/common";
+import { EmojiStore, FluxDispatcher, MessageStore, UserStore } from "@webpack/common";
 
-function parseEmoji(raw: string): { name: string; id: string | null; animated: boolean } {
+interface ParsedReactionEmoji {
+    name: string;
+    id: string | null;
+    animated: boolean;
+}
+
+function parseEmoji(raw: string): ParsedReactionEmoji {
     const trimmed = raw.trim();
 
-    // Discord format: <:name:id> or <a:name:id>
-    const discordMatch = trimmed.match(/^<(a)?:([a-zA-Z0-9_]+):(\d{17,20})>$/);
+    const discordMatch = trimmed.match(/^<(a)?:([\w-]+):(\d{17,21})>$/);
     if (discordMatch) {
         return {
             animated: !!discordMatch[1],
@@ -23,49 +28,77 @@ function parseEmoji(raw: string): { name: string; id: string | null; animated: b
         };
     }
 
-    // Colon format: :name:id, a:name:id, or name:id
-    const m = trimmed.match(/^(a)?:?([a-zA-Z0-9_]+):?(\d{17,20})?:?$/);
-    if (m) {
-        const animated = !!m[1];
-        const name = m[2];
-        const id = m[3] ?? null;
-        return { name, id, animated };
+    const customMatch = trimmed.match(/^(?:(a):)?(?::)?([\w-]+):(\d{17,21}):?$/);
+    if (customMatch) {
+        return {
+            animated: !!customMatch[1],
+            name: customMatch[2],
+            id: customMatch[3],
+        };
     }
 
-    return { name: trimmed, id: null, animated: false };
+    const cleanName = trimmed.replace(/^:|:$/g, "");
+    const resolved = EmojiStore?.getDisambiguatedEmojiContext(null)?.getByName(cleanName);
+    if (resolved) {
+        if (resolved.type === 1) {
+            return {
+                name: resolved.name,
+                id: resolved.id,
+                animated: resolved.animated,
+            };
+        }
+        if (resolved.type === 0) {
+            return {
+                name: resolved.surrogates,
+                id: null,
+                animated: false,
+            };
+        }
+    }
+
+    return { name: cleanName, id: null, animated: false };
 }
 
 function latestMessage(channelId: string): any | null {
     try {
         const messages = MessageStore.getMessages(channelId);
         if (!messages) return null;
-        const last = typeof messages.last === "function" ? messages.last() : Array.from(messages)[messages.length - 1];
-        return last ?? null;
+        return messages.last?.() ?? messages._array?.at(-1) ?? null;
     } catch {
         return null;
     }
 }
 
 export async function executeReaction(args: CommandArgument[], ctx: CommandContext) {
-    const emojiRaw = findOption<string>(args, "emoji", "");
+    const emojiArg = args.find(a => a.name === "emoji") as any;
+    const emojiRaw: string = emojiArg?.value
+        || (emojiArg?.emoji ? `<${emojiArg.emoji.animated ? "a" : ""}:${emojiArg.emoji.name}:${emojiArg.emoji.id}>` : "")
+        || "";
     if (!emojiRaw) {
         sendBotMessage(ctx.channel.id, { content: "You must provide an emoji." });
         return;
     }
 
     const emoji = parseEmoji(emojiRaw);
-    const msgIdArg = findOption<string>(args, "message", "");
-    const userId = findOption<string>(args, "user", UserStore.getCurrentUser()?.id);
+    const rawMsgArg = findOption<string>(args, "message", "").trim();
+    const rawUserArg = findOption<string>(args, "user", UserStore.getCurrentUser()?.id);
+    const userId = rawUserArg?.replace(/[<@!>]/g, "");
 
-    let messageId = msgIdArg;
+    let messageId = (rawMsgArg.match(/\/(\d{17,21})$/) ?? [])[1] ?? rawMsgArg;
+    let targetMessage: any = null;
+
     if (!messageId) {
-        const msg = latestMessage(ctx.channel.id);
-        if (!msg) {
+        targetMessage = latestMessage(ctx.channel.id);
+        if (!targetMessage) {
             sendBotMessage(ctx.channel.id, { content: "Couldn't find a message to react to in this channel." });
             return;
         }
-        messageId = msg.id;
+        messageId = targetMessage.id;
+    } else {
+        targetMessage = MessageStore.getMessage(ctx.channel.id, messageId);
     }
+
+    const messageAuthorId = targetMessage?.author?.id ?? UserStore.getCurrentUser()?.id;
 
     FluxDispatcher.dispatch({
         type: "MESSAGE_REACTION_ADD",
@@ -74,7 +107,10 @@ export async function executeReaction(args: CommandArgument[], ctx: CommandConte
         userId,
         emoji,
         burst: false,
-        messageAuthorId: UserStore.getCurrentUser()?.id,
+        burstColors: [],
+        optimistic: false,
+        guildId: ctx.channel.guild_id,
+        messageAuthorId,
     });
 }
 
@@ -86,11 +122,6 @@ export default definePlugin({
     enabledByDefault: true,
     dependencies: ["Fake", "CommandsAPI"],
 
-    start() {
-        // No-op, command is handled by Fake
-    },
-
-    stop() {
-        // No-op
-    },
+    start() { },
+    stop() { },
 });

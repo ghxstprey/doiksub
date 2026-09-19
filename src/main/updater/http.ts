@@ -18,6 +18,7 @@
 
 import { fetchBuffer, fetchJson } from "@main/utils/http";
 import { IpcEvents } from "@shared/IpcEvents";
+import { releaseHash } from "@shared/releaseHash";
 import { DOIKSUB_USER_AGENT as VENCORD_USER_AGENT } from "@shared/vencordUserAgent";
 import { ipcMain } from "electron";
 import { writeFile } from "fs/promises";
@@ -59,7 +60,14 @@ async function calculateGitChanges() {
 async function fetchUpdates() {
     const data = await githubGet("/releases/latest");
 
-    const hash = data.name.slice(data.name.lastIndexOf(" ") + 1);
+    const hash = releaseHash(data.name);
+    // a release without a hash in its name can never match ~git-hash, so it would look
+    // like an update on every check and re-download the same files forever
+    if (!hash) {
+        console.error("[Vencord] Release name does not end in a commit hash, refusing to update:", data.name);
+        return false;
+    }
+
     if (hash === gitHash)
         return false;
 
