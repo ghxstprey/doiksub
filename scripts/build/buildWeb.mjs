@@ -153,7 +153,7 @@ async function buildExtension(target, files) {
             let content = await readFile(join("browser", f));
             if (f.startsWith("manifest")) {
                 const json = JSON.parse(content.toString("utf-8"));
-                json.version = VERSION;
+                json.version = VERSION.replace(/-.*/, "");
                 content = Buffer.from(new TextEncoder().encode(JSON.stringify(json)));
             }
 

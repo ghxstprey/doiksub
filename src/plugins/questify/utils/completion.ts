@@ -6,7 +6,7 @@
 
 import type { PluginNative } from "@utils/types";
 import type { Quest, User } from "@vencord/discord-types";
-import { QuestLocation, QuestTaskType } from "@vencord/discord-types/enums";
+import { QuestLocation, QuestTargetedContent, QuestTaskType } from "@vencord/discord-types/enums";
 import { findByCodeLazy, findLazy } from "@webpack";
 import { AuthorizedAppsStore, FluxDispatcher, QuestStore, RestAPI, showToast, Toasts, UserStore } from "@webpack/common";
 
@@ -800,9 +800,9 @@ function getFallbackEnrollmentMetadata(entry: AutoCompleteEntry): QuestEnrollmen
     const cta = resolveQuestCTA(entry.task.type);
 
     return {
-        questContent: QuestLocation.QUEST_HOME_DESKTOP,
+        questContent: QuestTargetedContent.QUEST_HOME_DESKTOP,
         questContentCTA: cta,
-        sourceQuestContent: QuestLocation.QUEST_HOME_DESKTOP,
+        sourceQuestContent: QuestTargetedContent.QUEST_HOME_DESKTOP,
         sourceQuestContentCTA: cta,
     };
 }
