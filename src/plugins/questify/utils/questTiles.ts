@@ -359,7 +359,7 @@ export function getLastFilterChoices(): { group: string, filter: string; }[] | n
     const { rememberQuestPageFilters, lastQuestPageFilters } = getQuestifySettings();
 
     return rememberQuestPageFilters
-        ? Object.values(lastQuestPageFilters).map(item => structuredClone(item) as { group: string, filter: string; })
+        ? (Object.values(lastQuestPageFilters) as { group: string, filter: string; }[]).map(item => ({ ...item }))
         : null;
 }
 
@@ -374,7 +374,7 @@ export function setLastFilterChoices(filters: { group: string, filter: string; }
         return;
     }
 
-    getQuestifySettings().lastQuestPageFilters = structuredClone(filters).reduce((acc, item) => {
+    getQuestifySettings().lastQuestPageFilters = filters.map(f => ({ ...f })).reduce((acc, item) => {
         acc[getFilterChoiceKey(item)] = item;
 
         return acc;
