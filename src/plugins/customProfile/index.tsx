@@ -1005,9 +1005,9 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
                     active={customIds.includes("internaldev")}
                     onClick={() => onCustomIds(customIds.includes("internaldev") ? customIds.filter(x => x !== "internaldev") : [...customIds, "internaldev"])} />
                 <BadgeBtn label={t("Supports Commands")}
-                    icon="https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/has_commands.png"
-                    active={customIds.includes("has_commands")}
-                    onClick={() => onCustomIds(customIds.includes("has_commands") ? customIds.filter(x => x !== "has_commands") : [...customIds, "has_commands"])} />
+                    icon="https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/has_commands.png" // too lazy 2 rename sry
+                    active={customIds.includes("supports_commands")}
+                    onClick={() => onCustomIds(customIds.includes("supports_commands") ? customIds.filter(x => x !== "supports_commands") : [...customIds, "supports_commands"])} />
                 <BadgeBtn label={t("Automod")}
                     icon="https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/automod.png"
                     active={customIds.includes("automod")}
@@ -2064,7 +2064,7 @@ export default definePlugin({
                     }
                 }
                 if (cids.includes("automod")) badgeList.push(mkBadge("cp-automod", "Automod", "https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/automod.png"));
-                if (cids.includes("has_commands")) badgeList.push(mkBadge("cp-has-commands", "Supports Commands", "https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/has_commands.png"));
+                if (cids.includes("supports_commands")) badgeList.push(mkBadge("cp-supports-commands", "Supports Commands", "https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/supports_commands.png"));
                 if (cids.includes("quest")) badgeList.push(mkBadge("cp-quest", "Quests", "https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png"));
                 if (cids.includes("orbs")) badgeList.push(mkBadge("cp-orbs", "Orbs Apprentice", "https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png"));
                 if (cids.includes("aprilfools2026")) badgeList.push(mkBadge("cp-april", "April Fools 2026 - Level 4", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "Level 4 Reached"));
