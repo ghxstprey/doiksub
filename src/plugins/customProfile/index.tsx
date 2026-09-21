@@ -23,7 +23,7 @@ import virtualMerge from "virtual-merge";
 
 import { doiksubDevs } from "@utils/constants";
 
-// English-only labels — no translation dependency anymore.
+// English-only labels - no translation dependency anymore.
 const t = (s: string) => s;
 
 const DS_KEY = "customProfile_data";
@@ -62,6 +62,7 @@ const BADGES = [
 const OLD_NAME_BADGE_ICON = "https://cdn.discordapp.com/badge-icons/6de6d34650760ba5551a79732e98ed60.png";
 
 const NITRO_LEVELS = [
+    { label: t("Nitro (Empty)"), icon: "https://cdn.discordapp.com/badge-icons/7294f50817c5fe9fd98631d230ac2e5d.png" },
     { label: t("Nitro (0 months)"), icon: "https://cdn.discordapp.com/badge-icons/2ba85e8026a8614b640c2837bcdfe21b.png" },
     { label: t("Bronze (1 month)"), icon: "https://cdn.discordapp.com/badge-icons/4f33c4a9c64ce221936bd256c356f91f.png" },
     { label: t("Silver (3 months)"), icon: "https://cdn.discordapp.com/badge-icons/4514fab914bdbfb4ad2fa23df76121a6.png" },
@@ -73,15 +74,6 @@ const NITRO_LEVELS = [
     { label: t("Opal (72+ months)"), icon: "https://cdn.discordapp.com/badge-icons/5b154df19c53dce2af92c9b61e6be5e2.png" },
 ];
 
-const AGE_LABELS = [
-    "1 Year", "2 Years", "3 Years",
-    "4 Years", "5 Years", "6 Years",
-    "7 Years", "8 Years", "9 Years",
-    "10 Years", "11 Years"
-];
-
-// Real Discord CDN assets — sqz only found these two so far. Years without an
-// icon here fall back to a generated numeric badge.
 const AGE_ICON_MAP: Record<number, string> = {
     5: "https://cdn.discordapp.com/assets/content/1db184b6d10a61a37dc30efdc74d587560fac5291c8bb329977e93bb5a312602.png",
     7: "https://cdn.discordapp.com/assets/content/c095e3e73591843a22dc979d1fcfe3d6cf6841d1f51387d208d19f8bed01deb7.png",
@@ -92,7 +84,6 @@ const BOOST_LABELS_RAW = [
     "9 Months", "12 Months", "15 Months", "18 Months", "24 Months"
 ];
 const BOOST_LABELS = BOOST_LABELS_RAW.map(l => t(l));
-const BOOST_MONTHS = [1, 2, 3, 6, 9, 12, 15, 18, 24];
 const BOOST_ICONS = [
     "https://cdn.discordapp.com/badge-icons/51040c70d4f20a921ad6674ff86fc95c.png", // 1 month
     "https://cdn.discordapp.com/badge-icons/0e4080d1d333bc7ad29ef6528b6f2fb7.png", // 2 months
@@ -1001,7 +992,27 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
                     icon="https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png"
                     active={customIds.includes("quest")}
                     onClick={() => onCustomIds(customIds.includes("quest") ? customIds.filter(x => x !== "quest") : [...customIds, "quest"])} />
-                <BadgeBtn label={t("Orbs — Apprentice")}
+                <BadgeBtn label={t("Clown")}
+                    icon="https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/a_clown.png"
+                    active={customIds.includes("clown")}
+                    onClick={() => onCustomIds(customIds.includes("clown") ? customIds.filter(x => x !== "clown") : [...customIds, "clown"])} />
+                <BadgeBtn label={t("Premium Bot")}
+                    icon="https://raw.githubusercontent.com/PandaDevOfficial/badges-discord/5eba6290f524185e5e141fc3262295ad1a4f521f/assets/premiumbot.png"
+                    active={customIds.includes("premiumbot")}
+                    onClick={() => onCustomIds(customIds.includes("premiumbot") ? customIds.filter(x => x !== "premiumbot") : [...customIds, "premiumbot"])} />
+                <BadgeBtn label={t("Internal Dev")}
+                    icon="https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/internal_dev.png"
+                    active={customIds.includes("internaldev")}
+                    onClick={() => onCustomIds(customIds.includes("internaldev") ? customIds.filter(x => x !== "internaldev") : [...customIds, "internaldev"])} />
+                <BadgeBtn label={t("Has Commands")}
+                    icon="https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/has_commands.png"
+                    active={customIds.includes("has_commands")}
+                    onClick={() => onCustomIds(customIds.includes("has_commands") ? customIds.filter(x => x !== "has_commands") : [...customIds, "has_commands"])} />
+                <BadgeBtn label={t("Automod")}
+                    icon="https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/automod.png"
+                    active={customIds.includes("automod")}
+                    onClick={() => onCustomIds(customIds.includes("automod") ? customIds.filter(x => x !== "automod") : [...customIds, "automod"])} />
+                <BadgeBtn label={t("Orbs - Apprentice")}
                     icon="https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png"
                     active={customIds.includes("orbs")}
                     onClick={() => onCustomIds(customIds.includes("orbs") ? customIds.filter(x => x !== "orbs") : [...customIds, "orbs"])} />
@@ -1035,7 +1046,7 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
                     <input className="cp-input" value={oldName} placeholder="OldUser#0000"
                         onChange={e => onOldName(e.target.value)} />
                     <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 3 }}>
-                        {t('Ex: ghxstprey#0666 — will appear as "Old username: ghxstprey#0666" when hovering the badge.')}
+                        {t('Ex: ghxstprey#0666 - will appear as "Old username: ghxstprey#0666" when hovering the badge.')}
                     </div>
                 </div>
             )}
@@ -1048,16 +1059,16 @@ function BadgePicker({ selected, onChange, nitroType, onNitroType, boostLevel, o
             </div>
             <SectionLabel style={{ marginTop: 8 }}>{t("Account Age Badge")}</SectionLabel>
             <div style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 4 }}>
-                {t("Single pick, shows how many years old your account is. Years without a real icon get a generated badge.")}
+                {t("Single pick, shows how many years old your account is. Only years with a real Discord icon are available.")}
             </div>
             <div className="cp-badges">
-                {AGE_LABELS.map((lbl, i) => {
-                    const years = i + 1;
+                {Object.keys(AGE_ICON_MAP).map(yearsStr => {
+                    const years = Number(yearsStr);
                     const id = `age:${years}`;
                     return (
                         <BadgeBtn
                             key={id}
-                            label={lbl}
+                            label={t(`${years} Year${years > 1 ? "s" : ""}`)}
                             icon={AGE_ICON_MAP[years]}
                             active={customIds.includes(id)}
                             onClick={() => onCustomIds(
@@ -1270,7 +1281,7 @@ function CustomProfileModal({ rootProps }: { rootProps: any; }) {
                 <Field label={t("Bio")} value={data.bio ?? ""} placeholder={t("My description...")} onChange={v => set("bio", v)} />
                 <Field label={t("Pronouns")} value={data.pronouns ?? ""} placeholder={t("he/him")} onChange={v => set("pronouns", v)} />
                 <div className="cp-field">
-                    <SectionLabel>{t("Profile color (Nitro — gradient possible)")}</SectionLabel>
+                    <SectionLabel>{t("Profile color (Nitro - gradient possible)")}</SectionLabel>
                     <div className="cp-color-row" style={{ marginBottom: 6 }}>
                         <span style={{ fontSize: 11, color: "var(--text-muted)", marginRight: 6 }}>{t("Color 1")}</span>
                         <input type="color" value={accentHex || "#5865f2"} onChange={e => { const n = parseInt(e.target.value.replace("#", ""), 16); if (!isNaN(n)) set("accentColor", n); }} className="cp-color-swatch" />
@@ -1400,43 +1411,6 @@ function BadgeTooltipContent({ name, rarity, subtitle, icon }: { name: string; r
 
 const badgeStyle: React.CSSProperties = { borderRadius: "50%", width: "22px", height: "22px" };
 
-// Generated fallback for age badges we don't have a real icon asset for:
-// a small gradient circle showing "Ny" (e.g. "3y").
-function mkAgeTextBadge(years: number): ProfileBadge {
-    const label = `${years} Year${years > 1 ? "s" : ""} on Discord`;
-    const Tooltip = (Vencord as any).Webpack.Common?.Tooltip;
-
-    const circle = (props: any = {}) => (
-        <div
-            {...props}
-            style={{
-                width: 22, height: 22, borderRadius: "50%",
-                background: "linear-gradient(135deg, #5865f2, #eb459e)",
-                color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 8, fontWeight: 800, cursor: "default",
-                ...props.style,
-            }}
-        >
-            {years}y
-        </div>
-    );
-
-    if (!Tooltip) {
-        return { id: "cp-age", description: label, position: BadgePosition.START, component: () => circle() };
-    }
-
-    return {
-        id: "cp-age",
-        description: label,
-        position: BadgePosition.START,
-        component: () => (
-            <Tooltip text={label}>
-                {(tooltipProps: any) => circle(tooltipProps)}
-            </Tooltip>
-        ),
-    };
-}
-
 function mkBadge(id: string, name: string, icon: string, rarity?: string, subtitle?: string): ProfileBadge {
     if (!rarity && !subtitle) {
         return { id, description: name, iconSrc: icon, position: BadgePosition.START, props: { style: badgeStyle } };
@@ -1478,7 +1452,7 @@ export default definePlugin({
                 replace: "$self.patchBannerUrl(arguments[0])||$&"
             }
         },
-        // UserProfileStore patch removed — caused invisible channels for members
+        // UserProfileStore patch removed - caused invisible channels for members
         // with high permissions. getUserProfile is called by Discord to calculate
         // VIEW_CHANNEL and other permissions. virtualMerge with premiumType:2 corrupted
         // these calculations even with isMe() guard. DomObserver + fakeCurrentUser are enough.
@@ -1780,7 +1754,7 @@ export default definePlugin({
                 if (storedData.badgeFlags) {
                     merged.publicFlags = storedData.badgeFlags;
                 }
-                // Do NOT set merged.badges = [] here — that would wipe out badges added by
+                // Do NOT set merged.badges = [] here - that would wipe out badges added by
                 // userProfileBadges and cause "all badges disappear" when enabling a single badge.
             } else if (isEnabled && storedData.nitro === false) {
                 // Si Nitro simulation est OFF, on force la suppression des badges simulés
@@ -2084,24 +2058,19 @@ export default definePlugin({
                 const ageId = cids.find(x => x.startsWith("age:"));
                 if (ageId) {
                     const years = parseInt(ageId.slice(4), 10);
-                    if (!isNaN(years) && years > 0) {
-                        const ageLabel = `${years} Year${years > 1 ? "s" : ""}`;
-                        const ageIcon = AGE_ICON_MAP[years];
-                        badgeList.push(
-                            ageIcon
-                                ? mkBadge("cp-age", ageLabel, ageIcon)
-                                : mkAgeTextBadge(years)
-                        );
+                    const ageIcon = AGE_ICON_MAP[years];
+                    if (!isNaN(years) && ageIcon) {
+                        badgeList.push(mkBadge("cp-age", `${years} Year${years > 1 ? "s" : ""}`, ageIcon));
                     }
                 }
-                if (cids.includes("automod")) badgeList.push(mkBadge("cp-automod", "Automod", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/automod.png"));
-                if (cids.includes("has_commands")) badgeList.push(mkBadge("cp-has-commands", "Has Commands", "https://raw.githubusercontent.com/ghxstprey/doiksub/raw/main/assets/has_commands.png"));
+                if (cids.includes("automod")) badgeList.push(mkBadge("cp-automod", "Automod", "https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/automod.png"));
+                if (cids.includes("has_commands")) badgeList.push(mkBadge("cp-has-commands", "Has Commands", "https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/has_commands.png"));
                 if (cids.includes("quest")) badgeList.push(mkBadge("cp-quest", "Quests", "https://cdn.discordapp.com/badge-icons/7d9ae358c8c5e118768335dbe68b4fb8.png"));
                 if (cids.includes("orbs")) badgeList.push(mkBadge("cp-orbs", "Orbs Apprentice", "https://cdn.discordapp.com/badge-icons/83d8a1eb09a8d64e59233eec5d4d5c2d.png"));
                 if (cids.includes("aprilfools2026")) badgeList.push(mkBadge("cp-april", "April Fools 2026 - Level 4", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "Level 4 Reached"));
-                if (cids.includes("meadow")) badgeList.push(mkBadge("cp-meadow", "Last Meadow", "https://cdn.discordapp.com/badge-icons/ca105ad9cfc8580c765101d17bbb2323.png", "Level 100 Reached"));
-                if (cids.includes("clown")) badgeList.push(mkBadge("cp-clown", "A Clown", "https://raw.githubusercontent.com/ghxstprey/doiksub/assets/a_clown.png"));
+                if (cids.includes("clown")) badgeList.push(mkBadge("cp-clown", "A Clown", "https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/a_clown.png"));
                 if (cids.includes("premiumbot")) badgeList.push(mkBadge("cp-premiumbot", "Premium Bot", "https://raw.githubusercontent.com/PandaDevOfficial/badges-discord/5eba6290f524185e5e141fc3262295ad1a4f521f/assets/premiumbot.png"));
+                if (cids.includes("internaldev")) badgeList.push(mkBadge("cp-internaldev", "Internal Dev", "https://raw.githubusercontent.com/ghxstprey/doiksub/refs/heads/main/assets/discord_icons/internal_dev.png"));
 
                 const giftStyle: React.CSSProperties = { width: "24px", height: "24px", objectFit: "contain", mixBlendMode: "screen" as any, borderRadius: 0 };
                 const mkGift = (id: string, name: string, icon: string): ProfileBadge => ({ id, description: name, iconSrc: icon, position: BadgePosition.START, props: { style: giftStyle } });
